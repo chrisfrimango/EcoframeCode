@@ -6,8 +6,7 @@ import ImageTextSection from "@/components/ImageTextSection.vue";
 
 <template>
   <Cta />
+  <Categories />
   <ImageTextSection image-position="left" />
   <ImageTextSection image-position="right" />
-  <Categories />
-  <ImageTextSection />
 </template>
