@@ -7,5 +7,7 @@ import ImageTextSection from "@/components/ImageTextSection.vue";
 <template>
   <Cta />
   <Categories />
+  <Categories />
+  <Categories />
   <ImageTextSection />
 </template>
