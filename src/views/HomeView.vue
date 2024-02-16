@@ -2,8 +2,7 @@
 import Cta from "@/components/Cta.vue";
 import Categories from "../components/Categories.vue";
 import ImageTextSection from "@/components/ImageTextSection.vue";
-import Icons from "@/components/Icons.vue";
-import DisplayPeople from "@/components/DisplayPeople.vue"
+import Footer from "@/components/Footer.vue";
 </script>
 
 <template>
@@ -11,5 +10,7 @@ import DisplayPeople from "@/components/DisplayPeople.vue"
   <Icons />
   <DisplayPeople />
   <Categories />
-  <ImageTextSection />
+  <ImageTextSection image-position="left" />
+  <ImageTextSection image-position="right" />
+  <Footer />
 </template>
