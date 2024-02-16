@@ -7,6 +7,8 @@ import Footer from "@/components/Footer.vue";
 
 <template>
   <Cta />
+  <Icons />
+  <DisplayPeople />
   <Categories />
   <ImageTextSection image-position="left" />
   <ImageTextSection image-position="right" />
