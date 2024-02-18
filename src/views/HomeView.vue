@@ -10,6 +10,8 @@ import Footer from "@/components/Footer.vue";
   <Icons />
   <DisplayPeople />
   <Categories />
+  <Categories />
+  <Categories />
   <ImageTextSection image-position="left" />
   <ImageTextSection image-position="right" />
   <Footer />
