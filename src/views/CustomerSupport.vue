@@ -1,0 +1,3 @@
+<template>
+  <BContainer> </BContainer>
+</template>
