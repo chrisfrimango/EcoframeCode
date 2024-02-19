@@ -1,73 +1,48 @@
 <template>
-  <footer class="bg-body-tertiary">
-    <!-- Grid container -->
-    <div class="container p-4">
-      <!--Grid row-->
-      <div class="row">
-        <!--Grid column-->
-        <div class="col-lg-6 col-md-12 mb-4 mb-md-0">
-          <h5 class="text-uppercase">Footer Content</h5>
+  <BContainer class="footer-container" fluid>
+    <BRow>
+      <BCol cols="6">
+        <h2>ECO<b>FRAME</b></h2>
+        <ul class="footer-list">
+          <li><a href="">About us</a></li>
+          <li><a href="">Contact</a></li>
+        </ul>
+      </BCol>
+      <BCol>
+        <h3>Info</h3>
 
-          <p>
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Iste atque ea quis
-            molestias. Fugiat pariatur maxime quis culpa corporis vitae repudiandae
-            aliquam voluptatem veniam, est atque cumque eum delectus sint!
-          </p>
-        </div>
-        <!--Grid column-->
+        <a href="">Delivery</a><br>
+        <a href="">Warrenty</a><br>
+        <a href="">Support</a><br>
+        <a href="">Sitemap</a><br>
+        <a href="">Privacy Policy</a><br>
+        <a href="">Terms & Conditions</a>
+      </BCol>
+      <BCol>
+        <h3>Shops</h3>
+        <p>Sweden <br> Vasagatan 23, Göteborg</p>
 
-        <!--Grid column-->
-        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-          <h5 class="text-uppercase">Links</h5>
-
-          <ul class="list-unstyled mb-0">
-            <li>
-              <a href="#!" class="text-body">Link 1</a>
-            </li>
-            <li>
-              <a href="#!" class="text-body">Link 2</a>
-            </li>
-            <li>
-              <a href="#!" class="text-body">Link 3</a>
-            </li>
-            <li>
-              <a href="#!" class="text-body">Link 4</a>
-            </li>
-          </ul>
-        </div>
-        <!--Grid column-->
-
-        <!--Grid column-->
-        <div class="col-lg-3 col-md-6 mb-4 mb-md-0">
-          <h5 class="text-uppercase mb-0">Links</h5>
-
-          <ul class="list-unstyled">
-            <li>
-              <a href="#!" class="text-body">Link 1</a>
-            </li>
-            <li>
-              <a href="#!" class="text-body">Link 2</a>
-            </li>
-            <li>
-              <a href="#!" class="text-body">Link 3</a>
-            </li>
-            <li>
-              <a href="#!" class="text-body">Link 4</a>
-            </li>
-          </ul>
-        </div>
-        <!--Grid column-->
-      </div>
-      <!--Grid row-->
-    </div>
-    <!-- Grid container -->
-
-    <!-- Copyright -->
-    <div class="text-center p-3" style="background-color: rgba(0, 0, 0, 0.05);">
-      © 2024 Copyright:
-      <a class="text-body" href="/">ECOFRAME.COM</a>
-    </div>
-    <!-- Copyright -->
-  </footer>
-
+        <p class="font-weight-light">
+          Open hours <br>
+          Monday-Friday: 10-18 <br>
+          Saturday: 12-18 <br>
+          Sunday: Closed
+        </p>
+      </BCol>
+    </BRow>
+  </BContainer>
 </template>
+
+
+<style>
+.footer-container {
+  background-color: #025162;
+  color: white;
+  padding: 80px;
+}
+.footer-list {
+  list-style-type: none;
+
+}
+
+</style>
