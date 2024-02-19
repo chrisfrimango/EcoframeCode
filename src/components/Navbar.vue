@@ -30,7 +30,7 @@ import { BContainer } from 'bootstrap-vue-next';
         </div>
         <div class="collapse navbar-collapse" id="navbarNav">
           <div class="navbar-nav me-auto">
-            <router-link class="nav-link me-5" to="/">Shops</router-link>
+            <router-link class="nav-link me-5" to="/shop">Shops</router-link>
             <router-link class="nav-link me-5" to="/">Info</router-link>
             <router-link class="nav-link me-5" to="/">Blog</router-link>
             <router-link class="nav-link me-5" to="/">About Us</router-link>

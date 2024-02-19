@@ -1,35 +1,125 @@
 <script setup>
-// import { ref } from "vue";
+import { ref } from "vue";
 import { useProductStore } from "../stores/productStore";
-
 const productStore = useProductStore();
-console.log(productStore.products);
 
-const uniqueCategories = productStore.getUniqueCategories();
-console.log(uniqueCategories);
+const props = defineProps({
+  categoryToDisplay: String,
+});
+const categoryToDisplay = ref(
+  productStore.getCategory(props.categoryToDisplay)
+);
+
+console.log(categoryToDisplay.value);
+
+// Rendera 1 kategorier med 4 produkter var, dynamiskt kunna ändra val av kategorier i categoriesToDisplay
+// const categories = ref([
+//   {
+//     title: "Popular",
+//     products: productStore.products
+//       .filter((p) => p.category === "Popular")
+//       .slice(0, 4),
+//   },
+//   {
+//     title: "New",
+//     products: productStore.products
+//       .filter((p) => p.category === "New Arrivals")
+//       .slice(0, 4),
+//   },
+//   {
+//     title: "Sunwear",
+//     products: productStore.products
+//       .filter((p) => p.category === "Sunglasses")
+//       .slice(0, 4),
+//   },
+// ]);
 </script>
 
 <template>
   <BContainer fluid>
-    <h2 class="display-5 text-center">{{ uniqueCategories[0] }}</h2>
-    <BRow class="g-0 custom-height">
+    <h2 class="text-center my-4">{{ props.categoryToDisplay }}</h2>
+    <BRow>
       <BCol
-        col="12"
-        class="bg-color"
-        v-for="categories in uniqueCategories"
-        :key="categories"
+        col="6"
+        md="3"
+        v-for="category in categoryToDisplay"
+        :key="category.id"
       >
-        {{ categories }}
+        <BCard
+          class="rounded-0"
+          border-variant="light"
+          :title="category.modelName"
+          img-src="/src/assets/sunwear.png"
+          img-alt="Image"
+          img-top
+          tag="products"
+          style="max-width: 20rem"
+        >
+          <BCardText> {{ category.brand }}</BCardText>
+          <BCardText> {{ category.price }} SEK </BCardText>
+          <a href="#" class="text-danger" style="text-decoration: underline"
+            >See Details</a
+          >
+        </BCard>
       </BCol>
     </BRow>
+    <BCol class="d-flex justify-content-center m-4">
+      <BButton variant="primary">Se all</BButton>
+    </BCol>
   </BContainer>
+
+  <!-- <div class="container">
+    <div
+      v-for="category in categories"
+      :key="category.title"
+      class="category-section mb-5"
+    >
+      <h2 class="text-center my-4">{{ category.title }}</h2>
+      <div class="row">
+
+        <div
+          class="col-6 col-md-3"
+          v-for="product in category.products"
+          :key="product.id"
+        >
+          <div class="card">
+            <img
+              src="../assets/sunwear.png"
+              class="card-img-top"
+              alt="Product Image"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ product.modelName }}</h5>
+              <p class="card-text">{{ product.price }} SEK</p>
+              <a href="#" class="text-danger" style="text-decoration: underline"
+                >See Details</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="text-center mt-3">
+        <button class="btn btn-primary">See All</button>
+      </div>
+    </div>
+  </div> -->
 </template>
 
 <style scoped>
-.custom-height {
-  min-height: 30vh;
+.card-img-top {
+  width: 100%;
+  height: auto;
 }
-.bg-color {
-  background-color: #ebebeb;
+@media (max-width: 768px) {
+  .card {
+    margin-bottom: 20px;
+  }
+  .card-img-top {
+    width: 80px;
+    height: 80px;
+  }
+  .card-body {
+    padding: 10px;
+  }
 }
 </style>
