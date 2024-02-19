@@ -1,38 +1,99 @@
 <script setup>
 import { ref } from "vue";
 import { useProductStore } from "../stores/productStore";
-
 const productStore = useProductStore();
 
-const categories = ref([
-  {
-    title: "Popular",
-    products: productStore.products.filter(p => p.category === "Popular").slice(0, 4),
-  },
-  {
-    title: "New",
-    products: productStore.products.filter(p => p.category === "New Arrivals").slice(0, 4),
-  },
-  {
-    title: "Sunwear",
-    products: productStore.products.filter(p => p.category === "Sunglasses").slice(0, 4),
-  },
-]);
+const props = defineProps({
+  categoryToDisplay: String,
+});
+const categoryToDisplay = ref(
+  productStore.getCategory(props.categoryToDisplay)
+);
+
+console.log(categoryToDisplay.value);
+
+// Rendera 1 kategorier med 4 produkter var, dynamiskt kunna ändra val av kategorier i categoriesToDisplay
+// const categories = ref([
+//   {
+//     title: "Popular",
+//     products: productStore.products
+//       .filter((p) => p.category === "Popular")
+//       .slice(0, 4),
+//   },
+//   {
+//     title: "New",
+//     products: productStore.products
+//       .filter((p) => p.category === "New Arrivals")
+//       .slice(0, 4),
+//   },
+//   {
+//     title: "Sunwear",
+//     products: productStore.products
+//       .filter((p) => p.category === "Sunglasses")
+//       .slice(0, 4),
+//   },
+// ]);
 </script>
 
 <template>
-  <div class="container">
-    <div v-for="category in categories" :key="category.title" class="category-section mb-5">
+  <BContainer fluid>
+    <h2 class="text-center my-4">{{ props.categoryToDisplay }}</h2>
+    <BRow>
+      <BCol
+        col="6"
+        md="3"
+        v-for="category in categoryToDisplay"
+        :key="category.id"
+      >
+        <BCard
+          class="rounded-0"
+          border-variant="light"
+          :title="category.modelName"
+          img-src="/src/assets/sunwear.png"
+          img-alt="Image"
+          img-top
+          tag="products"
+          style="max-width: 20rem"
+        >
+          <BCardText> {{ category.brand }}</BCardText>
+          <BCardText> {{ category.price }} SEK </BCardText>
+          <a href="#" class="text-danger" style="text-decoration: underline"
+            >See Details</a
+          >
+        </BCard>
+      </BCol>
+    </BRow>
+    <BCol class="d-flex justify-content-center m-4">
+      <BButton variant="primary">Se all</BButton>
+    </BCol>
+  </BContainer>
+
+  <!-- <div class="container">
+    <div
+      v-for="category in categories"
+      :key="category.title"
+      class="category-section mb-5"
+    >
       <h2 class="text-center my-4">{{ category.title }}</h2>
       <div class="row">
-        <!-- 4 produkter per kategori -->
-        <div class="col-6 col-md-3" v-for="product in category.products" :key="product.id">
+
+        <div
+          class="col-6 col-md-3"
+          v-for="product in category.products"
+          :key="product.id"
+        >
           <div class="card">
-            <img src="../assets/sunwear.png" class="card-img-top" alt="Product Image">
+            <img
+              src="../assets/sunwear.png"
+              class="card-img-top"
+              alt="Product Image"
+            />
             <div class="card-body">
               <h5 class="card-title">{{ product.modelName }}</h5>
-              <p class="card-text"> {{ product.price }} SEK</p>
-              <a href="#" class="text-danger" style="text-decoration: underline;">See Details</a>
+              <p class="card-text">{{ product.price }} SEK</p>
+              <a href="#" class="text-danger" style="text-decoration: underline"
+                >See Details</a
+              >
             </div>
           </div>
         </div>
@@ -41,9 +102,8 @@ const categories = ref([
         <button class="btn btn-primary">See All</button>
       </div>
     </div>
-  </div>
+  </div> -->
 </template>
-
 
 <style scoped>
 .card-img-top {
