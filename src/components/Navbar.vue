@@ -44,7 +44,7 @@ import { BContainer } from 'bootstrap-vue-next';
             <router-link class="nav-link text-dark" to="/"
               ><i class="fas fa-heart"></i
             ></router-link>
-            <router-link class="nav-link text-dark" to="/"
+            <router-link class="nav-link text-dark" to="/cart"
               ><i class="fas fa-shopping-cart"></i
             ></router-link>
           </div>

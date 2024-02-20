@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
+    cart: [],
     products: [
       {
         category: "Sunwear",
@@ -180,5 +181,32 @@ export const useProductStore = defineStore({
       );
       return category ? category.products : [];
     },
+    updateItemQuantity(itemId, amount) {
+      const item = this.cart.find(item => item.id === itemId);
+      if (item) {
+        item.quantity += amount;
+        if (item.quantity <= 0) {
+          this.removeItemFromCart(itemId);
+        }
+      }
+    },
+    // Ta bort en produkt från varukorgen
+    removeItemFromCart(itemId) {
+      const index = this.cart.findIndex(item => item.id === itemId);
+      if (index !== -1) {
+        this.cart.splice(index, 1);
+      }
+    },
+
   },
+
+  getters: {
+    getCartItems: (state) => {
+      return state.cart;
+    },
+    // totala priset för varukorgen
+    cartTotal: (state) => {
+      return state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
+    }
+  }
 });
