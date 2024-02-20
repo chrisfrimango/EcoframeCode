@@ -1,7 +1,7 @@
 <template>
   <BContainer class="footer-container" fluid>
     <BRow>
-      <BCol cols="6">
+      <BCol sm="12" md="6" cols="6">
         <h2>ECO<b>FRAME</b></h2>
         <ul class="footer-list">
           <li><a href="">About us</a></li>
@@ -9,15 +9,17 @@
         </ul>
 
       </BCol>
-      <BCol>
+      <BCol sm="12" md="3">
         <h3>Info</h3>
+        <ul class="footer-list">
+          <li><a href="">Delivery</a></li>
+          <li><a href="">Warrenty</a></li>
+          <li><a href="">Support</a></li>
+          <li><a href="">Sitemap</a></li>
+          <li><a href="">Privacy Policy</a></li>
+          <li><a href="">Terms & Conditions</a></li>
+        </ul>
 
-        <a href="">Delivery</a><br>
-        <a href="">Warrenty</a><br>
-        <a href="">Support</a><br>
-        <a href="">Sitemap</a><br>
-        <a href="">Privacy Policy</a><br>
-        <a href="">Terms & Conditions</a>
       </BCol>
       <BCol>
         <h3>Shops</h3>
@@ -43,7 +45,8 @@
 }
 .footer-list {
   list-style-type: none;
-
+  padding-left: 0;
+  color: inherit;
 }
 
 </style>

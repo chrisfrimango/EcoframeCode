@@ -1,10 +1,10 @@
 <template>
   <BContainer fluid>
     <BRow>
-      <BCol  class="no-padding" v-if="imagePosition === 'left'" >
+      <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'left'" >
         <img src="../assets/eye-check.png" alt="Image" />
       </BCol>
-      <BCol  class="no-padding" >
+      <BCol sm="12" lg="6" class="no-padding" >
         <div id="text-box">
           <h2>Lorem, ipsum.</h2>
           <p>
@@ -16,7 +16,7 @@
         <a href="">Read more</a>
       </div>
       </BCol>
-      <BCol class="no-padding" v-if="imagePosition === 'right'" >
+      <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'right'" >
          <img src="../assets/eye-close-up.png" alt="Image" />
       </BCol>
     </BRow>
@@ -31,14 +31,11 @@ img {
   width: 100%;
 }
 #text-box {
-padding-left: 5rem;
-padding-right: 5rem;
-padding-top: 5rem;
+padding: 5rem;
 }
 #text-box a {
   color: #DE3D4C;
 }
-
 </style>
 
 <script>
