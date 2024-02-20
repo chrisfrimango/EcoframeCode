@@ -8,7 +8,7 @@ const showAccountModal = ref(false);
   <BContainer>
     <BRow>
       <BCol col="12" class="d-flex p-4">
-        <h2 class="display-5"><span>eco</span>frame</h2>
+        <h2 to="home" class="display-5"><span>eco</span>frame</h2>
       </BCol>
       <BCol
         col="12"
@@ -23,9 +23,11 @@ const showAccountModal = ref(false);
           offset="10"
           text="Customer support"
         >
-          <BDropdownItem>FAQs</BDropdownItem>
-          <BDropdownItem>Contact</BDropdownItem>
-          <BDropdownItem>Terms of Purchase and devlivery</BDropdownItem>
+          <BDropdownItem to="/CustomerSupport">FAQs</BDropdownItem>
+          <BDropdownItem to="/CustomerSupport">Contact</BDropdownItem>
+          <BDropdownItem to="/CustomerSupport"
+            >Terms of Purchase and devlivery</BDropdownItem
+          >
         </BDropdown>
 
         <BDropdown
