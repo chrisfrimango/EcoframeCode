@@ -5,6 +5,7 @@ export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
     cart: [],
+    discount: 10,
     products: [
       {
         category: "Sunwear",
@@ -16,7 +17,7 @@ export const useProductStore = defineStore({
             price: 1200,
             image: "https://picsum.photos/200/300",
             color: "Black",
-            Rating: 4,
+            rating: 4,
           },
           {
             id: uuidv4(),
@@ -25,7 +26,8 @@ export const useProductStore = defineStore({
             price: 2200,
             image: "https://picsum.photos/200/300",
             color: "Brown",
-            Rating: 3,
+            rating: 3,
+            sale: 800,
           },
           {
             id: uuidv4(),
@@ -34,7 +36,7 @@ export const useProductStore = defineStore({
             price: 4200,
             image: "https://picsum.photos/200/300",
             color: "Black",
-            Rating: 5,
+            rating: 5,
           },
           {
             id: uuidv4(),
@@ -43,7 +45,7 @@ export const useProductStore = defineStore({
             price: 5200,
             image: "https://picsum.photos/200/300",
             color: "Light",
-            Rating: 4,
+            rating: 4,
           },
         ],
       },
@@ -57,7 +59,8 @@ export const useProductStore = defineStore({
             price: 3200,
             image: "https://picsum.photos/200/300",
             color: "Blue",
-            Rating: 4,
+            rating: 4,
+            sale: 2000,
           },
           {
             id: uuidv4(),
@@ -66,7 +69,7 @@ export const useProductStore = defineStore({
             price: 1200,
             image: "https://picsum.photos/200/300",
             color: "Red",
-            Rating: 3,
+            rating: 3,
           },
           {
             id: uuidv4(),
@@ -75,7 +78,7 @@ export const useProductStore = defineStore({
             price: 1000,
             image: "https://picsum.photos/200/300",
             color: "Gold",
-            Rating: 5,
+            rating: 5,
           },
           {
             id: uuidv4(),
@@ -84,7 +87,8 @@ export const useProductStore = defineStore({
             price: 1500,
             image: "https://picsum.photos/200/300",
             color: "Light",
-            Rating: 4,
+            rating: 4,
+            sale: 1000,
           },
         ],
       },
@@ -98,16 +102,16 @@ export const useProductStore = defineStore({
             price: 1500,
             image: "https://picsum.photos/200/300",
             color: "Black",
-            Rating: 2,
+            rating: 2,
           },
           {
-            id: uuidv4(),
+            id: 627467264726746,
             modelName: "Wraparound",
             brand: "Tom Ford",
             price: 2500,
             image: "https://picsum.photos/200/300",
             color: "Brown",
-            Rating: 3,
+            rating: 3,
           },
           {
             id: uuidv4(),
@@ -116,7 +120,8 @@ export const useProductStore = defineStore({
             price: 2300,
             image: "https://picsum.photos/200/300",
             color: "Black",
-            Rating: 5,
+            rating: 5,
+            sale: 2000,
           },
           {
             id: uuidv4(),
@@ -125,7 +130,7 @@ export const useProductStore = defineStore({
             price: 2000,
             image: "https://picsum.photos/200/300",
             color: "Light",
-            Rating: 1,
+            rating: 1,
           },
         ],
       },
@@ -139,7 +144,7 @@ export const useProductStore = defineStore({
             price: 1300,
             image: "https://picsum.photos/200/300",
             color: "Green",
-            Rating: 4,
+            rating: 4,
           },
           {
             id: uuidv4(),
@@ -148,7 +153,7 @@ export const useProductStore = defineStore({
             price: 1000,
             image: "https://picsum.photos/200/300",
             color: "Yellow",
-            Rating: 3,
+            rating: 3,
           },
           {
             id: uuidv4(),
@@ -157,7 +162,8 @@ export const useProductStore = defineStore({
             price: 1800,
             image: "https://picsum.photos/200/300",
             color: "Red",
-            Rating: 5,
+            rating: 5,
+            sale: 1200,
           },
           {
             id: uuidv4(),
@@ -166,15 +172,25 @@ export const useProductStore = defineStore({
             price: 4200,
             image: "https://picsum.photos/200/300",
             color: "Black",
-            Rating: 1,
+            rating: 1,
           },
         ],
       },
     ],
   }),
   actions: {
-    // campain price function
-
+    getProductsOnSale() {
+      return this.products
+        .flatMap((category) => category.products)
+        .filter((product) => product.sale);
+    },
+    // setPriceAfterDiscount(id) {
+    //   const item = this.products.find((item) => item.id === id);
+    //   if (item) {
+    //     const newprice = item - price - (item.price * this.discount) / 100;
+    //     return newprice;
+    //   }
+    // },
     getCategory(findCategory) {
       const category = this.products.find(
         (category) => category.category === findCategory
@@ -182,7 +198,7 @@ export const useProductStore = defineStore({
       return category ? category.products : [];
     },
     updateItemQuantity(itemId, amount) {
-      const item = this.cart.find(item => item.id === itemId);
+      const item = this.cart.find((item) => item.id === itemId);
       if (item) {
         item.quantity += amount;
         if (item.quantity <= 0) {
@@ -192,12 +208,11 @@ export const useProductStore = defineStore({
     },
     // Ta bort en produkt från varukorgen
     removeItemFromCart(itemId) {
-      const index = this.cart.findIndex(item => item.id === itemId);
+      const index = this.cart.findIndex((item) => item.id === itemId);
       if (index !== -1) {
         this.cart.splice(index, 1);
       }
     },
-
   },
 
   getters: {
@@ -206,7 +221,19 @@ export const useProductStore = defineStore({
     },
     // totala priset för varukorgen
     cartTotal: (state) => {
-      return state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-    }
-  }
+      return state.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    },
+    // getDiscountedPrice: (state) => (id) => {
+    //   const product = state.products
+    //     .flatMap(category => category.products)
+    //     .find(product => product.id === id);
+    //   if (product) {
+    //     return product.sale
+    //   }
+    //   return null;
+    // },
+  },
 });

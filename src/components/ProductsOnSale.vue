@@ -3,38 +3,26 @@ import { ref } from "vue";
 import { useProductStore } from "../stores/productStore";
 const productStore = useProductStore();
 
-const props = defineProps({
-  categoryToDisplay: String,
-});
-const categoryToDisplay = ref(
-  productStore.getCategory(props.categoryToDisplay)
-);
-
-console.log(categoryToDisplay.value);
+const productOnSale = ref(productStore.getProductsOnSale());
+console.log(productOnSale.value);
 </script>
 
 <template>
   <BContainer fluid>
-    <h2 class="text-center my-4">{{ props.categoryToDisplay }}</h2>
     <BRow>
-      <BCol
-        col="6"
-        md="3"
-        v-for="category in categoryToDisplay"
-        :key="category.id"
-      >
+      <BCol col="12" md="12" v-for="product in productOnSale" :key="product.id">
         <BCard
           class="rounded-0"
           border-variant="light"
-          :title="category.modelName"
+          :title="product.modelName"
           img-src="/src/assets/sunwear.png"
           img-alt="Image"
           img-top
           tag="products"
           style="max-width: 20rem"
         >
-          <BCardText> {{ category.brand }}</BCardText>
-          <BCardText> {{ category.price }} SEK </BCardText>
+          <BCardText> {{ product.brand }}</BCardText>
+          <BCardText> {{ product.sale }} SEK </BCardText>
           <a
             to="/product"
             class="text-danger"
@@ -44,9 +32,9 @@ console.log(categoryToDisplay.value);
         </BCard>
       </BCol>
     </BRow>
-    <BCol class="d-flex justify-content-center m-4">
+    <!-- <BCol class="d-flex justify-content-center m-4">
       <BButton variant="primary">See all</BButton>
-    </BCol>
+    </BCol> -->
   </BContainer>
 </template>
 
