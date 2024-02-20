@@ -7,6 +7,7 @@
           <li><a href="">About us</a></li>
           <li><a href="">Contact</a></li>
         </ul>
+
       </BCol>
       <BCol>
         <h3>Info</h3>
