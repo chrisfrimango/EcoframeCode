@@ -5,6 +5,7 @@ export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
     cart: [],
+    discount: 10,
     products: [
       {
         category: "Sunwear",
@@ -101,13 +102,16 @@ export const useProductStore = defineStore({
             Rating: 2,
           },
           {
-            id: uuidv4(),
+            id: 627467264726746,
             modelName: "Wraparound",
             brand: "Tom Ford",
             price: 2500,
             image: "https://picsum.photos/200/300",
             color: "Brown",
             Rating: 3,
+            // sale: function () {
+            //   return this.price - (this.price * 10) / 100;
+            // },
           },
           {
             id: uuidv4(),
@@ -173,8 +177,13 @@ export const useProductStore = defineStore({
     ],
   }),
   actions: {
-    // campain price function
-
+    setPriceAfterDiscount(id) {
+      const item = this.products.find((item) => item.id === id);
+      if (item) {
+        const newprice = item - price - (item.price * this.discount) / 100;
+        return newprice;
+      }
+    },
     getCategory(findCategory) {
       const category = this.products.find(
         (category) => category.category === findCategory
@@ -182,7 +191,7 @@ export const useProductStore = defineStore({
       return category ? category.products : [];
     },
     updateItemQuantity(itemId, amount) {
-      const item = this.cart.find(item => item.id === itemId);
+      const item = this.cart.find((item) => item.id === itemId);
       if (item) {
         item.quantity += amount;
         if (item.quantity <= 0) {
@@ -192,12 +201,11 @@ export const useProductStore = defineStore({
     },
     // Ta bort en produkt från varukorgen
     removeItemFromCart(itemId) {
-      const index = this.cart.findIndex(item => item.id === itemId);
+      const index = this.cart.findIndex((item) => item.id === itemId);
       if (index !== -1) {
         this.cart.splice(index, 1);
       }
     },
-
   },
 
   getters: {
@@ -206,7 +214,19 @@ export const useProductStore = defineStore({
     },
     // totala priset för varukorgen
     cartTotal: (state) => {
-      return state.cart.reduce((total, item) => total + item.price * item.quantity, 0);
-    }
-  }
+      return state.cart.reduce(
+        (total, item) => total + item.price * item.quantity,
+        0
+      );
+    },
+    // getDiscountedPrice: (state) => (id) => {
+    //   const product = state.products
+    //     .flatMap(category => category.products)
+    //     .find(product => product.id === id);
+    //   if (product) {
+    //     return product.sale
+    //   }
+    //   return null;
+    // },
+  },
 });

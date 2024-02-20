@@ -44,9 +44,15 @@
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
           <div class="d-none d-lg-flex align-items-center">
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-search"></i></router-link>
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-heart"></i></router-link>
-            <router-link class="nav-link text-dark" to="/cart"><i class="bi bi-cart"></i></router-link>
+            <router-link class="nav-link text-dark me-2" to="/"
+              ><i class="bi bi-search"></i
+            ></router-link>
+            <router-link class="nav-link text-dark me-2" to="/"
+              ><i class="bi bi-heart"></i
+            ></router-link>
+            <router-link class="nav-link text-dark" to="/cart"
+              ><i class="bi bi-cart"></i
+            ></router-link>
           </div>
         </div>
       </div>
