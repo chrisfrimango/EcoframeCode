@@ -71,6 +71,7 @@ function checkout() {
 .varukorg-container {
   width: 90%;
   margin: auto;
+  margin-bottom: 50px;
   text-align: center;
 }
 
