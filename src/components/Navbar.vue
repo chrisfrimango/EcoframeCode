@@ -15,14 +15,22 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="d-flex ms-auto d-lg-none">
-          <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-search"></i></router-link>
-          <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-heart"></i></router-link>
-          <router-link class="nav-link text-dark" to="/cart"><i class="bi bi-cart"></i></router-link>
+          <router-link class="nav-link text-dark me-2" to="/"
+            ><i class="bi bi-search"></i
+          ></router-link>
+          <router-link class="nav-link text-dark me-2" to="/"
+            ><i class="bi bi-heart"></i
+          ></router-link>
+          <router-link class="nav-link text-dark" to="/cart"
+            ><i class="bi bi-cart"></i
+          ></router-link>
         </div>
         <!-- Större skärmar -->
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-            <router-link class="nav-item nav-link" to="/shop">Shops</router-link>
+            <router-link class="nav-item nav-link" to="/shop"
+              >Shops</router-link
+            >
             <router-link class="nav-item nav-link" to="/">Info</router-link>
             <router-link class="nav-item nav-link" to="/">Blog</router-link>
             <router-link class="nav-item nav-link" to="/">About Us</router-link>
@@ -30,9 +38,15 @@
           </ul>
           <!-- Ikonerna för större skärmar -->
           <div class="d-none d-lg-flex align-items-center">
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-search"></i></router-link>
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-heart"></i></router-link>
-            <router-link class="nav-link text-dark" to="/cart"><i class="bi bi-cart"></i></router-link>
+            <router-link class="nav-link text-dark me-2" to="/"
+              ><i class="bi bi-search"></i
+            ></router-link>
+            <router-link class="nav-link text-dark me-2" to="/"
+              ><i class="bi bi-heart"></i
+            ></router-link>
+            <router-link class="nav-link text-dark" to="/cart"
+              ><i class="bi bi-cart"></i
+            ></router-link>
           </div>
         </div>
       </div>
@@ -54,7 +68,7 @@
 }
 
 .navbar-toggler {
-  border-color: rgba(0,0,0,.1);
+  border-color: rgba(0, 0, 0, 0.1);
 }
 
 .navbar-collapse {

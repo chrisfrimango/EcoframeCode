@@ -35,7 +35,10 @@ console.log(categoryToDisplay.value);
         >
           <BCardText> {{ category.brand }}</BCardText>
           <BCardText> {{ category.price }} SEK </BCardText>
-          <a href="#" class="text-danger" style="text-decoration: underline"
+          <a
+            to="/product"
+            class="text-danger"
+            style="text-decoration: underline"
             >See Details</a
           >
         </BCard>
