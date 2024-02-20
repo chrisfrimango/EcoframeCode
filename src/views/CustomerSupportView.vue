@@ -49,9 +49,6 @@ import { BCol } from "bootstrap-vue-next";
         </BRow>
       </BCol>
     </BRow>
-    <!-- bild search -->
-    <!-- vanliga frågor med svar och rubrik samt icon  -->
-    <!-- kontaktformulär -->
   </BContainer>
 </template>
 
