@@ -1,21 +1,29 @@
 <script setup>
+import { useRouter } from "vue-router";
 import { ref } from "vue";
 import { useProductStore } from "../stores/productStore";
+const router = useRouter();
 const productStore = useProductStore();
 
 const props = defineProps({
   categoryToDisplay: String,
 });
+
 const categoryToDisplay = ref(
   productStore.getCategory(props.categoryToDisplay)
 );
+
+const goToProductPage = (productId) => {
+  console.log(productId);
+  router.push({ name: "ProductPage", params: { productId } });
+};
 
 console.log(categoryToDisplay.value);
 </script>
 
 <template>
   <BContainer fluid>
-    <h2 class="text-center my-4">{{ props.categoryToDisplay }}</h2>
+    <h2 class="text-center my-4 text-primary">{{ props.categoryToDisplay }}</h2>
     <BRow>
       <BCol
         col="6"
@@ -33,21 +41,28 @@ console.log(categoryToDisplay.value);
           tag="products"
           style="max-width: 20rem"
         >
-          <BCardText> {{ category.brand }}</BCardText>
+          <BCardText class="mb-1 custom-font-style">
+            {{ category.brand }}</BCardText
+          >
           <BCardText> {{ category.price }} SEK </BCardText>
-          <a
-            to="/product"
-            class="text-danger"
+          <router-link
+            @click.prevent="goToProductPage(category.id)"
+            to="/product/:id"
+            class="text-primary"
             style="text-decoration: underline"
-            >See Details</a
+            >See Details</router-link
           >
         </BCard>
       </BCol>
     </BRow>
     <BCol class="d-flex justify-content-center m-4">
-      <BButton variant="primary">See all</BButton>
+      <BButton to="/shop" variant="primary">See all</BButton>
     </BCol>
   </BContainer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.custom-font-style {
+  font-weight: 200;
+}
+</style>

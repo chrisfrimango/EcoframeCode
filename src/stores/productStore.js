@@ -6,6 +6,7 @@ export const useProductStore = defineStore({
   state: () => ({
     cart: [],
     discount: 10,
+    productId: null,
     products: [
       {
         category: "Sunwear",
@@ -27,7 +28,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Brown",
             rating: 3,
-            sale: 800,
+            salesPrice: 800,
           },
           {
             id: uuidv4(),
@@ -60,10 +61,10 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Blue",
             rating: 4,
-            sale: 2000,
+            salesPrice: 2000,
           },
           {
-            id: uuidv4(),
+            id: 1111,
             modelName: "Rimless",
             brand: "Versace",
             price: 1200,
@@ -88,7 +89,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Light",
             rating: 4,
-            sale: 1000,
+            salesPrice: 1000,
           },
         ],
       },
@@ -121,7 +122,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 5,
-            sale: 2000,
+            salesPrice: 2000,
           },
           {
             id: uuidv4(),
@@ -163,7 +164,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Red",
             rating: 5,
-            sale: 1200,
+            salesPrice: 1200,
           },
           {
             id: uuidv4(),
@@ -179,24 +180,40 @@ export const useProductStore = defineStore({
     ],
   }),
   actions: {
+    // Hämtar produkter som är på rea
     getProductsOnSale() {
       return this.products
         .flatMap((category) => category.products)
-        .filter((product) => product.sale);
+        .filter((product) => product.salesPrice);
     },
-    // setPriceAfterDiscount(id) {
-    //   const item = this.products.find((item) => item.id === id);
-    //   if (item) {
-    //     const newprice = item - price - (item.price * this.discount) / 100;
-    //     return newprice;
-    //   }
-    // },
+    // Uppdaterar priset på en produkt som är på rea
+    updateProductSalesPrice(productId) {
+      const product = this.getProductsOnSale().find(
+        (product) => product.id === productId
+      );
+
+      if (product) {
+        const newPrice = product.price - (product.price * this.discount) / 100;
+        product.salesPrice = newPrice;
+        return newPrice;
+      }
+      return null;
+    },
+    // Hämtar alla produkter i en kategori
     getCategory(findCategory) {
       const category = this.products.find(
         (category) => category.category === findCategory
       );
       return category ? category.products : [];
     },
+    // Hämtar produkten med ett specifikt id
+    getProductById(productId) {
+      console.log("productId", productId, "funkar hit");
+      return this.products
+        .flatMap((category) => category.products)
+        .find((product) => product.id === productId);
+    },
+
     updateItemQuantity(itemId, amount) {
       const item = this.cart.find((item) => item.id === itemId);
       if (item) {
@@ -226,14 +243,5 @@ export const useProductStore = defineStore({
         0
       );
     },
-    // getDiscountedPrice: (state) => (id) => {
-    //   const product = state.products
-    //     .flatMap(category => category.products)
-    //     .find(product => product.id === id);
-    //   if (product) {
-    //     return product.sale
-    //   }
-    //   return null;
-    // },
   },
 });

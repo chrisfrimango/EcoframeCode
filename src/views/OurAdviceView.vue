@@ -11,6 +11,14 @@ const textContentRight = ref(
 </script>
 
 <template>
+  <h1 class="text-center margin-top">Our advice</h1>
   <Advice image-position="left" :text-content="textContentLeft" />
   <Advice image-position="right" :text-content="textContentRight" />
 </template>
+
+<style scoped>
+.margin-top {
+  margin-top: 5rem;
+  margin-bottom: 2rem;
+}
+</style>
