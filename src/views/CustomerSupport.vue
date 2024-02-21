@@ -1,3 +1,0 @@
-<template>
-  <BContainer> </BContainer>
-</template>

@@ -36,7 +36,7 @@
       <p>Din varukorg är tom.</p>
     </div>
     <div class="buttons mt-4 d-flex flex-column align-items-center">
-      <button class="btn btn-outline-primary mb-2" style="min-width: 200px;" @click="continueShopping">Fortsätt handla</button>
+      <button class="btn btn-outline-dark mb-2" style="min-width: 200px;" @click="continueShopping">Fortsätt handla</button>
       <button class="btn btn-success" style="min-width: 200px;" @click="checkout">Till kassan</button>
     </div>
   </div>
@@ -71,6 +71,7 @@ function checkout() {
 .varukorg-container {
   width: 90%;
   margin: auto;
+  margin-bottom: 50px;
   text-align: center;
 }
 

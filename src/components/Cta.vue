@@ -5,11 +5,8 @@
       <BCol md="6" class="bg-color d-flex align-items-center">
         <BContainer class="p-5">
           <h2 class="display-5 text-dark">Spring Sale</h2>
-          <p class="lead">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
-            eiusmod tempor incididunt ut labore et dolore magna aliqua.
-          </p>
-          <BButton variant="primary">Shop Now</BButton>
+          <p class="lead">20% off selected frames</p>
+          <BButton to="/sales" variant="primary">Shop Now</BButton>
         </BContainer>
       </BCol>
       <BCol md="6" class="image-col">

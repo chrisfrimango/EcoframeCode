@@ -25,7 +25,7 @@
 .image-container {
   display: flex;
   justify-content: space-between;
-  gap:150px;
+  gap:210px;
   padding-bottom: 30px;
   padding-top:30px;
 }
@@ -58,8 +58,8 @@ border: 1px solid rgb(3, 89, 163);
 
 
 .image-circle img {
-  max-width: 80%; 
-  max-height: 80%; 
+  max-width: 60%; 
+  max-height: 70%; 
 }
 
 .infoText {
@@ -68,9 +68,16 @@ font-size: 20px;
 
 @media screen and (max-width: 768px) {
 .image-container {
-flex-direction: column;
-align-items: center;
-gap:10px;
+display:flex;
+flex-direction:row;
+gap:20px;
+}
+.image-circle {
+width:100px;
+height: 100px;
+}
+.infoText {
+font-size: 16px;
 }
 }
 </style>

@@ -3,14 +3,14 @@
     <div class="image-with-overlay">
       <img src="@/assets/man-sunglasses.jpg" alt="Man with sunglasses">
       <div class="overlay">
-        <div class="text">Sunwear</div>
+        <h2 class="text">Sunwear</h2>
         <input @click="onClick" type="button" class="button" value="Buy">
       </div>
     </div>
     <div class="image-with-overlay">
       <img src="@/assets/woman-glasses.jpg" alt="Woman with glasses">
       <div class="overlay">
-        <div class="text">Optical </div>
+        <h2 class="text">Optical </h2>
         <input @click="onClick" type="button" class="button" value="Buy">
       </div>
     </div>
@@ -61,9 +61,7 @@ border: none;
 
 .text {
   color: white;
-  font-size: 35px;
   margin-bottom: 15px;
-  font-weight: bold;
 }
 
 .button {
@@ -76,4 +74,14 @@ border: none;
   font-size: 20px;
   font-weight: bold;
 }
+
+@media screen and (max-width: 768px) {
+.image-container{
+flex-direction: column;
+}
+.image-with-overlay {
+padding-bottom: 10px;
+}
+}
+
 </style>
