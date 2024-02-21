@@ -12,9 +12,9 @@
           quod. Unde, excepturi aliquam numquam aliquid cupiditate saepe, vel in
           asperiores ducimus voluptate rem provident. Quidem sed cum commodi
           tenetur.
-        </p>
-        <a href="">Read more</a>
-      </div>
+          </p>
+          <a href="">Read more</a>
+        </div>
       </BCol>
       <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'right'" >
          <img src="../assets/eye-close-up.png" alt="Image" />
