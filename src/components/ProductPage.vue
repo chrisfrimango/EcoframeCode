@@ -42,7 +42,7 @@
   </BContainer>
 </template>
 
-<style>
+<style scoped>
 
 
 .columns {

@@ -1,12 +1,12 @@
 <template>
   <BContainer fluid>
-    <BRow>
+    <BRow id="order-container">
       <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'left'">
         <img src="../assets/eye-check.png" alt="Image" />
       </BCol>
-      <BCol sm="12" lg="6" class="no-padding">
+      <BCol sm="12" lg="6" class="no-padding" id="text-content">
         <div id="text-box">
-          <h2>Lorem, ipsum.</h2>
+          <h2>{{ heading }}</h2>
           <p>
             {{ textContent }}
           </p>
@@ -20,7 +20,7 @@
   </BContainer>
 </template>
 
-<style>
+<style scoped>
 .no-padding {
   padding: 0;
 }
@@ -33,6 +33,11 @@ img {
 #text-box a {
   color: #de3d4c;
 }
+@media (max-width: 992px) {
+  #text-content {
+    order: 1;
+  }
+}
 </style>
 
 <script>
@@ -40,6 +45,7 @@ export default {
   props: {
     imagePosition: String,
     textContent: String,
+    heading: String,
   },
 };
 </script>
