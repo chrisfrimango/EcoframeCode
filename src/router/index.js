@@ -3,8 +3,9 @@ import HomeView from "../views/HomeView.vue";
 import ShopView from "../views/ShopView.vue";
 import CartView from "../views/CartView.vue";
 import CustomerSupportView from "../views/CustomerSupportView.vue";
-import SaleView from "../views/SaleView.vue";
-import CheckoutView from "../views/CheckoutView.vue";
+import SalesView from "../views/SalesView.vue";
+import ProductPageViewTEST from "../views/ProductPageViewTEST.vue";
+import CheckoutView from "@/views/CheckoutView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -20,9 +21,14 @@ const router = createRouter({
       component: CustomerSupportView,
     },
     {
-      path: "/sale",
-      name: "Sale",
-      component: SaleView,
+      path: "/product/:productId",
+      name: "ProductPage",
+      component: ProductPageViewTEST,
+    },
+    {
+      path: "/sales",
+      name: "Sales",
+      component: SalesView,
     },
     {
       path: "/shop",
