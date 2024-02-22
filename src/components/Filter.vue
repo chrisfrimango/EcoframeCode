@@ -1,4 +1,5 @@
 <template>
+
   <div class="container filter-wrapper">
     <button class="btn btn-light d-block d-md-none mb-3" @click="toggleShowFilters" style="width: 60%; margin: 0 auto; background-color: white;">
       {{ showFilters ? 'Hide Filters' : 'Show Filters' }}

@@ -17,7 +17,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li><router-link class="nav-item nav-link" to="/">Home</router-link></li>
-            <!-- Updated dropdowns with @click.native.prevent -->
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click.native.prevent="handleDropdownToggle('navbarDropdown')">
                 Glasses
@@ -29,7 +29,7 @@
                 <li><router-link class="dropdown-item" to="/shop/kids">Kids</router-link></li>
               </ul>
             </li>
-            <!-- Customer Support Dropdown -->
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click.native.prevent="handleDropdownToggle('customerSupportDropdown')">
                 Customer Support
@@ -40,7 +40,7 @@
                 <li><router-link class="dropdown-item" to="/CustomerSupport/Terms">Terms of Purchase and Delivery</router-link></li>
               </ul>
             </li>
-            <!-- Account Dropdown -->
+           
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click.native.prevent="handleDropdownToggle('accountDropdown')">
                 Account
