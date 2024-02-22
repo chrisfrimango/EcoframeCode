@@ -1,6 +1,6 @@
 <script setup>
 const props = defineProps({
-  discountToDisplay: String,
+  discountToDisplay: Number,
 });
 </script>
 

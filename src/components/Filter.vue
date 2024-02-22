@@ -1,57 +1,87 @@
 <template>
-  <div class="container">
-    <!-- Mobilvy: Filterknapp -->
-    <button
-      class="btn btn-light d-block d-lg-none mb-3"
-      @click="toggleShowFilters"
-      style="background-color: white;">
-      {{ showFilters ? 'Dölj Filter' : 'Visa Filter' }}
+
+  <div class="container filter-wrapper">
+    <button class="btn btn-light d-block d-md-none mb-3" @click="toggleShowFilters" style="width: 60%; margin: 0 auto; background-color: white;">
+      {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
     </button>
 
-    <!-- Filterinnehåll -->
-    <div v-show="showFilters" class="filter-content px-2 py-3" style="background-color: white;">
+    <div v-show="showFilters" class="filter-content px-2 py-3">
       <div class="filter-title mb-4">
-        <h2 class="text-primary">Filter</h2>
+        <h2 class="text-primary">Filters</h2>
       </div>
 
-      <div class="product-cards mb-4">
-        <div class="row g-2">
-          <div class="col-6 col-md-6" v-for="n in 6" :key="`product-${n}`">
-            <div class="card h-100 text-center">
-              <img src="@/assets/color-lens.png" class="rounded-circle mx-auto d-block mt-3 img-fluid" alt="Produktbild" style="width: 100px; height: 100px; object-fit: cover;">
-              <div class="card-body">
-                <p class="card-text">Contact lenses</p>
-              </div>
+      <div class="row mb-4 product-cards">
+        <div class="col-12 col-md-6">
+          <router-link to="/shop/sunwear" class="card text-center">
+            <img src="@/assets/sunwear.png" alt="Sunwear" class="img-fluid">
+            <div class="card-body">
+              <p class="card-text">Sunwear</p>
             </div>
-          </div>
+          </router-link>
+        </div>
+        <div class="col-12 col-md-6">
+          <router-link to="/shop/optical" class="card text-center">
+            <img src="@/assets/sunwear.png" alt="Optical" class="img-fluid">
+            <div class="card-body">
+              <p class="card-text">Optical</p>
+            </div>
+          </router-link>
         </div>
       </div>
 
-      <div class="filter-section mb-4" v-for="(filter, index) in filters" :key="index">
-        <div class="card">
-          <div class="card-header">{{ filter.title }}</div>
+      <div class="additional-filters">
+        <div class="card mb-4">
+          <div class="card-header">Colour</div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item" v-for="(option, oIndex) in filter.options" :key="`option-${oIndex}`">
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" :value="option" :id="`filter-${index}-${oIndex}`">
-                <label class="form-check-label" :for="`filter-${index}-${oIndex}`">
-                  Lorem ipsum
-                </label>
-              </div>
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedColours" value="Black">
+              Black
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedColours" value="Brown">
+              Brown
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedColours" value="Beige">
+              Light
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedColours" value="Beige">
+              Blue
+            </li>
+             <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedColours" value="Beige">
+              Yellow
             </li>
           </ul>
         </div>
-      </div>
 
-      <div class="rating-filter mb-4">
+        <div class="card mb-4">
+          <div class="card-header">Price</div>
+          <ul class="list-group list-group-flush">
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedPrices" value="Under 1000 SEK">
+              Under 1000 SEK
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedPrices" value="1000 - 3000 SEK">
+              1000 - 3000 SEK
+            </li>
+            <li class="list-group-item d-flex align-items-center">
+              <input type="checkbox" class="me-2" v-model="selectedPrices" value="Over 3000 SEK">
+              Over 3000 SEK
+            </li>
+          </ul>
+        </div>
+
         <div class="card">
-          <div class="card-header text-primary">Rating</div>
+          <div class="card-header">Rating</div>
           <div class="card-body">
-            <div v-for="rating in 5" :key="rating" class="d-flex align-items-center mb-2">
+            <div v-for="rating in [5, 4, 3, 2, 1]" :key="rating" class="d-flex align-items-center mb-2">
               <div class="flex-grow-1">
-                <span v-for="star in 5" :key="`star-${rating}-${star}`" class="star" :class="{ 'text-warning': star <= (6-rating), 'text-secondary': star > (6-rating) }">★</span>
+                <span v-for="star in 5" :key="`star-${rating}-${star}`" class="star" :class="{ 'text-warning': star <= rating, 'text-secondary': star > rating }">★</span>
               </div>
-              <div class="ms-2">{{ ratingCounts[6 - rating] }}</div>
+              <div class="ms-2">{{ ratingCounts[5 - rating] }} reviews</div>
             </div>
           </div>
         </div>
@@ -62,61 +92,84 @@
 
 <script>
 export default {
-  name: 'FilterComponent',
   data() {
     return {
-      showFilters: window.innerWidth <= 768,
-      filters: [
-        { title: 'Availability', options: [1, 2, 3, 4, 5] },
-        { title: 'Price', options: [1, 2, 3, 4, 5] },
-        { title: 'Brand', options: ['Brand A', 'Brand B', 'Brand C', 'Brand D', 'Brand E'] }
-      ],
-      ratingCounts: [0,18,50,203,461,589],
-    }
+      showFilters: true,
+      isMobileView: window.innerWidth < 768,
+      ratingCounts: [589, 461, 203, 50, 18],
+      selectedColours: [],
+      selectedPrices: [],
+      selectedRatings: [],
+    };
+  },
+  computed: {
+    products() {
+      const store = useProductStore();
+      return store.products;
+    },
+    filteredProducts() {
+      return this.products.filter((product) => {
+        const colourMatch = this.selectedColours.length ? this.selectedColours.includes(product.color) : true;
+        const priceMatch = this.selectedPrices.length ? this.selectedPrices.some((range) => {
+          if (range === 'Under 1000 SEK') return product.price < 1000;
+          if (range === '1000 - 3000 SEK') return product.price >= 1000 && product.price <= 3000;
+          if (range === 'Over 3000 SEK') return product.price > 3000;
+          return false;
+        }) : true;
+        const ratingMatch = this.selectedRatings.length ? this.selectedRatings.includes(product.Rating) : true;
+        return colourMatch && priceMatch && ratingMatch;
+      });
+    },
   },
   methods: {
     toggleShowFilters() {
       this.showFilters = !this.showFilters;
+    },
+    adjustView() {
+      this.isMobileView = window.innerWidth < 768;
     }
   },
   mounted() {
-    this.adjustFiltersVisibility();
-    window.addEventListener('resize', this.adjustFiltersVisibility);
+    window.addEventListener('resize', this.adjustView);
   },
   beforeDestroy() {
-    window.removeEventListener('resize', this.adjustFiltersVisibility);
+    window.removeEventListener('resize', this.adjustView);
   },
-  methods: {
-    adjustFiltersVisibility() {
-      this.showFilters = window.innerWidth > 768;
-    },
-    toggleShowFilters() {
-      this.showFilters = !this.showFilters;
-    }
-  }
-}
-</script>
+  watch: {
 
+    selectedColours() {
+      this.filteredProducts = this.computeFilteredProducts();
+    },
+    selectedPrices() {
+      this.filteredProducts = this.computeFilteredProducts();
+    },
+    selectedRatings() {
+      this.filteredProducts = this.computeFilteredProducts();
+    },
+  },
+};
+</script>
 <style scoped>
-.rounded-circle {
-  max-width: 100px;
-  height: auto;
-  object-fit: cover;
-  padding: 5px;
-  background-color: white;
+.card img {
+  width: 100%;
+  height: 80px;
 }
-.card-header {
-  color: #007bff;
-  font-size: 20px;
-}
-.star {
-  cursor: pointer;
-  font-size: 20px;
-}
-.text-warning {
-  color: #ffc107;
-}
-.text-secondary {
-  color: #6c757d;
+
+@media (max-width: 991px) {
+  .card img {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  .filter-wrapper {
+    width: 60%;
+    margin: 0 auto;
+  }
+  .btn {
+    width: 100%;
+  }
+  .product-cards .card {
+    margin-bottom: 15px;
+  }
 }
 </style>
