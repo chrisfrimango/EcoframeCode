@@ -8,10 +8,6 @@ const productStore = useProductStore();
 const searchQuery = ref("");
 const activeDropdown = ref(null);
 
-// const navigate = (path) => {
-//       router.push(path);
-//     };
-
 const search = () => {
   console.log("Search:", searchQuery.value);
 };
@@ -108,8 +104,16 @@ const goToAllProductPage = (category) => {
                 </li> -->
               </ul>
             </li>
-            <li><router-link class="nav-item nav-link" to="/">About us</router-link></li>
-            <li><router-link class="nav-item nav-link" to="/">Contact</router-link></li>
+            <li>
+              <router-link class="nav-item nav-link" to="/"
+                >About us</router-link
+              >
+            </li>
+            <li>
+              <router-link class="nav-item nav-link" to="/"
+                >Contact</router-link
+              >
+            </li>
 
             <li class="nav-item dropdown">
               <a
@@ -130,9 +134,7 @@ const goToAllProductPage = (category) => {
                 aria-labelledby="customerSupportDropdown"
               >
                 <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport"
-                    >FAQs</router-link
-                  >
+                  <router-link class="dropdown-item" to="/">FAQs</router-link>
                 </li>
                 <li>
                   <router-link
@@ -142,7 +144,7 @@ const goToAllProductPage = (category) => {
                   >
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport/Terms"
+                  <router-link class="dropdown-item" to="/"
                     >Terms of Purchase and Delivery</router-link
                   >
                 </li>
@@ -163,12 +165,10 @@ const goToAllProductPage = (category) => {
               </a>
               <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                 <li>
-                  <router-link class="dropdown-item" to="/account/login"
-                    >Login</router-link
-                  >
+                  <router-link class="dropdown-item" to="/">Login</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/account/create"
+                  <router-link class="dropdown-item" to="/"
                     >Create Account</router-link
                   >
                 </li>
@@ -215,7 +215,7 @@ const goToAllProductPage = (category) => {
   padding-right: 5px;
 }
 
-.icon-large{
+.icon-large {
   font-size: 20px;
   margin-left: 15px;
 }
