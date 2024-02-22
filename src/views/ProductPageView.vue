@@ -57,10 +57,5 @@ console.log(product.value);
 
       </BCol>
     </BRow>
-    <BRow>
-      <BCol>
-
-      </BCol>
-    </BRow>
   </BContainer>
 </template>
