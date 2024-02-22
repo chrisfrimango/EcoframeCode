@@ -58,7 +58,7 @@ const router = createRouter({
     {
       path: "/Advice",
       name: "MoreAdvise",
-      component: MoreAdviceView
+      component: MoreAdviceView,
       path: '/shop/sunwear',
       name: 'Sunwear',
       component: Sunwear,
