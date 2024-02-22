@@ -10,18 +10,27 @@ const product = ref(productStore.getProductById(productId.value));
 console.log(product.value);
 </script>
 
+<style scoped>
+.infopadding {
+  padding: 2rem;
+}
+.btn {
+  width: 150px;
+}
+</style>
+
 <template>
 
 <BContainer fluid>
     <BRow>
       <BCol sm="12" md="6" class="columns">
-        <img src="../assets/sunwear.png" alt="">
+        <img src="../assets/sunwear.png" alt="Image">
       </BCol>
-      <BCol sm="12" md="6" class="columns">
+      <BCol sm="12" md="6" class="columns infopadding">
         <BRow class="product-info breadcrumb">
           <nav aria-label="breadcrumb" class="no-padding">
             <ol class="breadcrumb no-padding">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
               <li class="breadcrumb-item"><a href="/Shop">Shop</a></li>
               <li class="breadcrumb-item active" aria-current="page">{{ product.modelName }}</li>
             </ol>
