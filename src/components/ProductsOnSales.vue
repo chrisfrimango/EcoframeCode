@@ -1,10 +1,17 @@
 <script setup>
+import { useRouter } from "vue-router";
+const router = useRouter();
 import { ref } from "vue";
 import { useProductStore } from "../stores/productStore";
 const productStore = useProductStore();
 
 const productOnSale = ref(productStore.getProductsOnSale());
 console.log(productOnSale.value);
+
+const goToProductPage = (productId) => {
+  console.log(productId);
+  router.push({ name: "ProductPage", params: { productId } });
+};
 </script>
 
 <template>
@@ -34,7 +41,8 @@ console.log(productOnSale.value);
           </BCardText>
           <BCol class="d-flex gap-5">
             <router-link
-              to="/"
+              @click.prevent="goToProductPage(product.id)"
+              to="/product/:id"
               class="text-primary"
               style="text-decoration: underline"
               >See Details</router-link
