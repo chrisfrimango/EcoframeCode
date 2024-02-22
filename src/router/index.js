@@ -4,7 +4,7 @@ import ShopView from "../views/ShopView.vue";
 import CartView from "../views/CartView.vue";
 import CustomerSupportView from "../views/CustomerSupportView.vue";
 import SalesView from "../views/SalesView.vue";
-import ProductPageViewTEST from "../views/ProductPageViewTEST.vue";
+import ProductPageView from "../views/ProductPageView.vue";
 import CheckoutView from "@/views/CheckoutView.vue";
 
 const router = createRouter({
@@ -23,7 +23,7 @@ const router = createRouter({
     {
       path: "/product/:productId",
       name: "ProductPage",
-      component: ProductPageViewTEST,
+      component: ProductPageView,
     },
     {
       path: "/sales",
