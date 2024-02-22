@@ -199,6 +199,11 @@ export const useProductStore = defineStore({
       }
       return null;
     },
+    // Hämtar alla kategorier
+    getCategories() {
+      return this.products.map((category) => category.category);
+    },
+
     // Hämtar alla produkter i en kategori
     getCategory(findCategory) {
       const category = this.products.find(

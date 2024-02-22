@@ -20,7 +20,6 @@ const showAccountModal = ref(false);
       >
         <BDropdown
           end
-          class="custom-link"
           variant="link"
           @click="showHelpModal = !showHelpModal"
           v-model="showHelpModal"
@@ -35,7 +34,6 @@ const showAccountModal = ref(false);
         </BDropdown>
 
         <BDropdown
-          class="custom-link"
           variant="link"
           @click="showAccountModal = !showAccountModal"
           v-model="showAccountModal"
@@ -50,7 +48,7 @@ const showAccountModal = ref(false);
   </BContainer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 h2 {
   font-size: 2.5rem;
   font-weight: 700;

@@ -4,12 +4,12 @@
     <BRow class="g-0 custom-card">
       <BCol md="6" class="bg-color d-flex align-items-center">
         <BContainer class="p-5">
-          <h2 class="display-5 text-dark">Spring Sale</h2>
-          <p class="lead">20% off selected frames</p>
+          <h2 class="display-5 text-danger">Spring Sale</h2>
+          <p class="lead text-danger">20% off selected frames</p>
           <BButton to="/sales" variant="primary">Shop Now</BButton>
         </BContainer>
       </BCol>
-      <BCol md="6" class="image-col">
+      <BCol md="6" class="image-col d-none d-md-flex">
         <img
           src="/src/assets/cta-image.jpg"
           class="img-fluid full-height-width"

@@ -21,7 +21,7 @@ import { BCol } from "bootstrap-vue-next";
       />
       <h1 class="position-absolute text-center text-light">Customer support</h1>
     </BRow>
-    <BRow class="m-4">
+    <BRow class="mt-5 mb-5">
       <BCol col="6" class="m-0 p-0">
         <h3 class="text-center p-2">Freuqently asked questions</h3>
         <FAQ />
