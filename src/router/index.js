@@ -7,6 +7,10 @@ import SalesView from "../views/SalesView.vue";
 import ProductPageView from "../views/ProductPageView.vue";
 import CheckoutView from "@/views/CheckoutView.vue";
 import MoreAdviceView from "@/views/MoreAdviceView.vue";
+import Sunwear from '@/components/Sunwear.vue'
+import Popular from '@/components/Popular.vue'
+import NewArrivals from '@/components/NewArrivals.vue'
+import Kids from '@/components/Kids.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -55,6 +59,24 @@ const router = createRouter({
       path: "/Advice",
       name: "MoreAdvise",
       component: MoreAdviceView
+      path: '/shop/sunwear',
+      name: 'Sunwear',
+      component: Sunwear,
+    },
+    {
+      path: '/shop/popular',
+      name: 'Popular',
+      component: Popular,
+    },
+    {
+      path: '/shop/new-arrivals',
+      name: 'NewArrivals',
+      component: NewArrivals,
+    },
+    {
+      path: '/shop/kids',
+      name: 'Kids',
+      component: Kids,
     },
   ],
 });

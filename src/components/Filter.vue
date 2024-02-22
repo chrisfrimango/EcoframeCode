@@ -136,7 +136,6 @@ export default {
     window.removeEventListener('resize', this.adjustView);
   },
   watch: {
-
     selectedColours() {
       this.filteredProducts = this.computeFilteredProducts();
     },

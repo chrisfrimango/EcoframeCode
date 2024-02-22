@@ -108,6 +108,8 @@ const goToAllProductPage = (category) => {
                 </li> -->
               </ul>
             </li>
+            <li><router-link class="nav-item nav-link" to="/">About us</router-link></li>
+            <li><router-link class="nav-item nav-link" to="/">Contact</router-link></li>
 
             <li class="nav-item dropdown">
               <a
@@ -211,6 +213,11 @@ const goToAllProductPage = (category) => {
 .container-fluid {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.icon-large{
+  font-size: 20px;
+  margin-left: 15px;
 }
 
 .navbar-toggler {
