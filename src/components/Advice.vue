@@ -10,7 +10,7 @@
           <p>
             {{ textContent }}
           </p>
-          <a href="">Read more</a>
+          <a href="/Advice">Read more</a>
         </div>
       </BCol>
       <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'right'">
@@ -29,9 +29,6 @@ img {
 }
 #text-box {
   padding: 5rem;
-}
-#text-box a {
-  color: #de3d4c;
 }
 @media (max-width: 992px) {
   #text-content {

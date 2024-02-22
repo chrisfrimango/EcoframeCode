@@ -7,9 +7,6 @@ import SalesView from "../views/SalesView.vue";
 import ProductPageView from "../views/ProductPageView.vue";
 import CheckoutView from "@/views/CheckoutView.vue";
 
-// import Sunwear from '@/Shop/categorier'
-
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
