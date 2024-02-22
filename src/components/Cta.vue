@@ -9,7 +9,7 @@
           <BButton to="/sales" variant="primary">Shop Now</BButton>
         </BContainer>
       </BCol>
-      <BCol md="6" class="image-col">
+      <BCol md="6" class="image-col d-none d-md-flex">
         <img
           src="/src/assets/cta-image.jpg"
           class="img-fluid full-height-width"

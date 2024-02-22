@@ -24,19 +24,12 @@ console.log(product.value);
           tag="products"
           style="max-width: 20rem"
         >
-          <BCardText class="mb-1 custom-font-style">
-            {{ product.brand }}</BCardText
-          >
+          <BCardText class="mb-1"> {{ product.brand }}</BCardText>
           <BCardText> {{ product.price }} SEK </BCardText>
-          <router-link
-            @click.prevent="goToProductPage(category.id)"
-            to="/product/:id"
-            class="text-primary"
-            style="text-decoration: underline"
-            >See Details</router-link
-          >
         </BCard>
       </BCol>
     </BRow>
   </BContainer>
 </template>
+
+<style lang="scss" scoped></style>
