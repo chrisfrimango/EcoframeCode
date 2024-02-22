@@ -9,7 +9,7 @@
         <Filter />
       </div>
       <div class="col-lg-9">
-
+        <AllProducts />
       </div>
     </div>
   </div>
@@ -17,10 +17,12 @@
 
 <script>
 import Filter from '../components/Filter.vue';
+import AllProducts from '../components/AllProducts.vue';
 
 export default {
   components: {
-    Filter
+    Filter,
+    AllProducts
   }
 }
 </script>

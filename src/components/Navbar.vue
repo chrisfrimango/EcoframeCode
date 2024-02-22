@@ -1,19 +1,30 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { useProductStore } from "../stores/productStore";
 const router = useRouter();
 const productStore = useProductStore();
 
 const searchQuery = ref("");
 const activeDropdown = ref(null);
+const windowWidth = ref(window.innerWidth);
 
-// const navigate = (path) => {
-//       router.push(path);
-//     };
+const updateWindowWidth = () => {
+  windowWidth.value = window.innerWidth;
+};
 
-const search = () => {
-  console.log("Search:", searchQuery.value);
+onMounted(() => {
+  window.addEventListener('resize', updateWindowWidth);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('resize', updateWindowWidth);
+});
+
+const categories = ref(productStore.getCategories());
+
+const goToAllProductPage = (category) => {
+  router.push({ name: "Shop", params: { category } });
 };
 
 const handleDropdownToggle = (dropdownId) => {
@@ -24,15 +35,8 @@ const handleDropdownToggle = (dropdownId) => {
   }
   activeDropdown.value = dropdownId;
 };
-
-const categories = ref(productStore.getCategories());
-
-console.log(categories.value);
-
-const goToAllProductPage = (category) => {
-  router.push({ name: "Shop", params: { category } });
-};
 </script>
+
 
 <template>
   <BContainer class="pb-2 pt-2 custom-space">
@@ -53,13 +57,10 @@ const goToAllProductPage = (category) => {
           </button>
           <div class="d-flex">
             <router-link class="nav-link text-dark me-2" to="/"
-              ><i class="bi bi-search"></i
-            ></router-link>
-            <router-link class="nav-link text-dark me-2" to="/"
-              ><i class="bi bi-heart"></i
+              ><i class="bi bi-heart icon-large"></i
             ></router-link>
             <router-link class="nav-link text-dark" to="/cart"
-              ><i class="bi bi-cart"></i
+              ><i class="bi bi-cart icon-large"></i
             ></router-link>
           </div>
         </div>
@@ -111,7 +112,7 @@ const goToAllProductPage = (category) => {
             <li><router-link class="nav-item nav-link" to="/">About us</router-link></li>
             <li><router-link class="nav-item nav-link" to="/">Contact</router-link></li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -149,7 +150,7 @@ const goToAllProductPage = (category) => {
               </ul>
             </li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -190,13 +191,10 @@ const goToAllProductPage = (category) => {
           </form>
           <div class="d-none d-lg-flex align-items-center">
             <router-link class="nav-link text-dark me-2" to="/"
-              ><i class="bi bi-search"></i
-            ></router-link>
-            <router-link class="nav-link text-dark me-2" to="/"
-              ><i class="bi bi-heart"></i
+              ><i class="bi bi-heart icon-large"></i
             ></router-link>
             <router-link class="nav-link text-dark" to="/cart"
-              ><i class="bi bi-cart"></i
+              ><i class="bi bi-cart icon-large"></i
             ></router-link>
           </div>
         </div>
