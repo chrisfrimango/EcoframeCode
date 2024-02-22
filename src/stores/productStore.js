@@ -94,7 +94,7 @@ export const useProductStore = defineStore({
         ],
       },
       {
-        category: "New Arrivals",
+        category: "New",
         products: [
           {
             id: uuidv4(),

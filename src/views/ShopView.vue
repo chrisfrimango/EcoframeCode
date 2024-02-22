@@ -8,21 +8,19 @@
       <div class="col-lg-3">
         <Filter />
       </div>
-      <div class="col-lg-9">
-
-      </div>
+      <div class="col-lg-9"></div>
     </div>
   </div>
 </template>
 
 <script>
-import Filter from '../components/Filter.vue';
+import Filter from "../components/Filter.vue";
 
 export default {
   components: {
-    Filter
-  }
-}
+    Filter,
+  },
+};
 </script>
 <style scoped>
 @media (min-width: 992px) {
