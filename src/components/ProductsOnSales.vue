@@ -1,0 +1,61 @@
+<script setup>
+import { ref } from "vue";
+import { useProductStore } from "../stores/productStore";
+const productStore = useProductStore();
+
+const productOnSale = ref(productStore.getProductsOnSale());
+console.log(productOnSale.value);
+</script>
+
+<template>
+  <BContainer fluid>
+    <BRow>
+      <BCol
+        md="4"
+        v-for="product in productOnSale"
+        :key="product.id"
+        class="mt-5 d-flex justify-content-center"
+      >
+        <BCard
+          class="rounded-0 mb-5"
+          border-variant="light"
+          :title="product.modelName"
+          img-src="/src/assets/sunwear.png"
+          img-alt="Image"
+          tag="products"
+          style="max-width: 20rem"
+        >
+          <BCardText> {{ product.brand }}</BCardText>
+          <BCardText class="onsale-color mb-1">
+            {{ productStore.updateProductSalesPrice(product.id) }} SEK
+          </BCardText>
+          <BCardText class="custom-font-style">
+            {{ product.price }} SEK
+          </BCardText>
+          <BCol class="d-flex gap-5">
+            <router-link
+              to="/"
+              class="text-primary"
+              style="text-decoration: underline"
+              >See Details</router-link
+            >
+            <BCardText>Color: {{ product.color }}</BCardText>
+          </BCol>
+        </BCard>
+      </BCol>
+    </BRow>
+  </BContainer>
+</template>
+
+<style scoped>
+.custom-font-style {
+  text-decoration: line-through;
+  font-weight: 200;
+  color: #6c757d;
+}
+
+.onsale-color {
+  color: #de3d4c;
+  font-weight: 600;
+}
+</style>

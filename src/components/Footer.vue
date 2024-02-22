@@ -7,7 +7,12 @@
           <li><a href="">About us</a></li>
           <li><a href="">Contact</a></li>
         </ul>
-
+        <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
+          <button type="button" class="btn btn-outline-light"><i class="bi bi-facebook"></i></button>
+          <button type="button" class="btn btn-outline-light"><i class="bi bi-instagram"></i></button>
+          <button type="button" class="btn btn-outline-light"><i class="bi bi-twitter-x"></i></button>
+        </div>
+        <p id="copyright">©EcoFrame 2024</p>
       </BCol>
       <BCol sm="12" md="3">
         <h3>Info</h3>
@@ -26,7 +31,7 @@
         <p>Sweden <br> Vasagatan 23, Göteborg</p>
 
         <p class="font-weight-light">
-          Open hours <br>
+          <b>Open hours</b> <br>
           Monday-Friday: 10-18 <br>
           Saturday: 12-18 <br>
           Sunday: Closed
@@ -37,7 +42,7 @@
 </template>
 
 
-<style>
+<style scoped>
 .footer-container {
   background-color: #025162;
   color: white;
@@ -48,5 +53,10 @@
   padding-left: 0;
   color: inherit;
 }
-
+a {
+  color: white;
+}
+#copyright {
+  margin-top: 1rem;
+}
 </style>
