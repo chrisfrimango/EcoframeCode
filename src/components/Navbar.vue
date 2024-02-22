@@ -23,7 +23,7 @@
                 Glasses
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><router-link class="dropdown-item" to="/shop/sunwear">Sunwear</router-link></li>
+                <li><router-link class="dropdown-item" to="/shop">Sunwear</router-link></li>
                 <li><router-link class="dropdown-item" to="/shop/popular">Popular</router-link></li>
                 <li><router-link class="dropdown-item" to="/shop/new-arrivals">New Arrivals</router-link></li>
                 <li><router-link class="dropdown-item" to="/shop/kids">Kids</router-link></li>
@@ -40,7 +40,7 @@
                 <li><router-link class="dropdown-item" to="/CustomerSupport/Terms">Terms of Purchase and Delivery</router-link></li>
               </ul>
             </li>
-           
+
             <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click.native.prevent="handleDropdownToggle('accountDropdown')">
                 Account

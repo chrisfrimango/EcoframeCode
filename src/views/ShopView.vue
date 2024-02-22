@@ -1,7 +1,7 @@
 <template>
   <div class="shop-view container">
     <Cta />
-    <div class="row justify-content-center mb-4">
+    <div class="row justify-content-center mt-5 mb-5">
       <h2 class="text-center">Shop</h2>
     </div>
     <div class="row">
@@ -9,7 +9,7 @@
         <Filter />
       </div>
       <div class="col-lg-9">
-      <!-- shop innehåll ska vara här -->
+
       </div>
     </div>
   </div>
