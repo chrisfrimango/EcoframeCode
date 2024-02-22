@@ -31,11 +31,11 @@ const router = createRouter({
       name: "Sales",
       component: SalesView,
     },
-    {
-      path: "/shop",
-      name: "Shop",
-      component: ShopView,
-    },
+    // {
+    //   path: "/shop",
+    //   name: "Shop",
+    //   component: ShopView,
+    // },
     {
       path: "/shop/:category",
       name: "Shop",
