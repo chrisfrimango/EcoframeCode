@@ -1,12 +1,12 @@
 <template>
   <div class="container mt-5 varukorg-container">
-    <h2 class="mb-4 text-center">Varukorg</h2>
+    <h2 class="mb-4 text-center">Cart</h2>
     <div v-if="cartItems.length > 0">
       <div class="row text-center mb-3 header-row">
-        <div class="col-2">Produkt</div>
-        <div class="col-3">Pris</div>
-        <div class="col-3">Antal</div>
-        <div class="col-4">Totalt</div>
+        <div class="col-2">Product</div>
+        <div class="col-3">Price</div>
+        <div class="col-3">Quantity</div>
+        <div class="col-4">Total amount</div>
       </div>
       <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
         <div class="row align-items-center text-center item-row">
@@ -22,7 +22,7 @@
         </div>
           <div class="col-2">{{ item.quantity * item.price }} SEK</div>
           <div class="col-2">
-            <a href="#" class="text-danger" @click.prevent="removeFromCart(item.id)">Ta bort</a>
+            <a href="#" class="text-danger" @click.prevent="removeFromCart(item.id)">Remove</a>
           </div>
         </div>
       </div>
@@ -33,11 +33,11 @@
       </div>
     </div>
     <div v-else class="empty-cart-container">
-      <p>Din varukorg är tom.</p>
+      <p>Your cart is empty.</p>
     </div>
     <div class="buttons mt-4 d-flex flex-column align-items-center">
-      <button class="btn btn-outline-dark mb-2" style="min-width: 200px;" @click="continueShopping">Fortsätt handla</button>
-      <button class="btn btn-success" style="min-width: 200px;" @click="checkout">Till kassan</button>
+      <button class="btn btn-outline-dark mb-2" style="min-width: 200px;" @click="continueShopping">Continue shopping</button>
+      <button class="btn btn-success" style="min-width: 200px;" @click="checkout">Till Checkout</button>
     </div>
   </div>
 </template>

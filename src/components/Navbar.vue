@@ -8,9 +8,8 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="d-flex">
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-search"></i></router-link>
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-heart"></i></router-link>
-            <router-link class="nav-link text-dark" to="/cart"><i class="bi bi-cart"></i></router-link>
+            <router-link class="nav-link text-dark me-2 icon-large" to="/"><i class="bi bi-heart"></i></router-link>
+            <router-link class="nav-link text-dark icon-large" to="/cart"><i class="bi bi-cart"></i></router-link>
           </div>
         </div>
         <!-- Desktop View -->
@@ -23,14 +22,16 @@
                 Glasses
               </a>
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <li><router-link class="dropdown-item" to="/shop">Sunwear</router-link></li>
-                <li><router-link class="dropdown-item" to="/shop/popular">Popular</router-link></li>
-                <li><router-link class="dropdown-item" to="/shop/new-arrivals">New Arrivals</router-link></li>
-                <li><router-link class="dropdown-item" to="/shop/kids">Kids</router-link></li>
+                <li><router-link class="dropdown-item" to="/shop/Sunwear">Sunwear</router-link></li>
+                <li><router-link class="dropdown-item" to="/shop/Popular">Popular</router-link></li>
+                <li><router-link class="dropdown-item" to="/shop/NewArrivals">New Arrivals</router-link></li>
+                <li><router-link class="dropdown-item" to="/shop/Kids">Kids</router-link></li>
               </ul>
             </li>
+            <li><router-link class="nav-item nav-link" to="/">About us</router-link></li>
+            <li><router-link class="nav-item nav-link" to="/">Contact</router-link></li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a class="nav-link dropdown-toggle" href="#" id="customerSupportDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click.native.prevent="handleDropdownToggle('customerSupportDropdown')">
                 Customer Support
               </a>
@@ -41,7 +42,7 @@
               </ul>
             </li>
 
-            <li class="nav-item dropdown">
+            <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" @click.native.prevent="handleDropdownToggle('accountDropdown')">
                 Account
               </a>
@@ -55,9 +56,8 @@
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" v-model="searchQuery" @keyup.enter="search">
           </form>
           <div class="d-none d-lg-flex align-items-center">
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-search"></i></router-link>
-            <router-link class="nav-link text-dark me-2" to="/"><i class="bi bi-heart"></i></router-link>
-            <router-link class="nav-link text-dark" to="/cart"><i class="bi bi-cart"></i></router-link>
+            <router-link class="nav-link text-dark me-2 icon-large" to="/"><i class="bi bi-heart"></i></router-link>
+            <router-link class="nav-link text-dark icon-large" to="/cart"><i class="bi bi-cart"></i></router-link>
           </div>
         </div>
       </div>
@@ -70,7 +70,8 @@ export default {
   data() {
     return {
       searchQuery: '',
-      activeDropdown: null
+      activeDropdown: null,
+      windowWidth: window.innerWidth,
     };
   },
   methods: {
@@ -89,7 +90,16 @@ export default {
       }
       this.activeDropdown = dropdownId;
     },
+      handleResize() {
+        this.windowWidth = window.innerWidth;
+    }
   },
+    mounted() {
+    window.addEventListener('resize', this.handleResize);
+  },
+  beforeDestroy() {
+    window.removeEventListener('resize', this.handleResize);
+  }
 }
 </script>
 
@@ -97,6 +107,11 @@ export default {
 .container-fluid {
   padding-left: 5px;
   padding-right: 5px;
+}
+
+.icon-large{
+  font-size: 20px;
+  margin-left: 15px;
 }
 
 .navbar-toggler {
