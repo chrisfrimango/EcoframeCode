@@ -6,6 +6,7 @@ import CustomerSupportView from "../views/CustomerSupportView.vue";
 import SalesView from "../views/SalesView.vue";
 import ProductPageView from "../views/ProductPageView.vue";
 import CheckoutView from "@/views/CheckoutView.vue";
+import MoreAdviceView from "@/views/MoreAdviceView.vue";
 import Sunwear from '@/components/Sunwear.vue'
 import Popular from '@/components/Popular.vue'
 import NewArrivals from '@/components/NewArrivals.vue'
@@ -55,6 +56,9 @@ const router = createRouter({
       component: CheckoutView,
     },
     {
+      path: "/Advice",
+      name: "MoreAdvise",
+      component: MoreAdviceView,
       path: '/shop/sunwear',
       name: 'Sunwear',
       component: Sunwear,
