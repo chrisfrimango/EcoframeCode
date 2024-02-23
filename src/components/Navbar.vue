@@ -14,11 +14,11 @@ const updateWindowWidth = () => {
 };
 
 onMounted(() => {
-  window.addEventListener('resize', updateWindowWidth);
+  window.addEventListener("resize", updateWindowWidth);
 });
 
 onUnmounted(() => {
-  window.removeEventListener('resize', updateWindowWidth);
+  window.removeEventListener("resize", updateWindowWidth);
 });
 
 const categories = ref(productStore.getCategories());
@@ -36,7 +36,6 @@ const handleDropdownToggle = (dropdownId) => {
   activeDropdown.value = dropdownId;
 };
 </script>
-
 
 <template>
   <BContainer class="pb-2 pt-2 custom-space">
@@ -109,8 +108,16 @@ const handleDropdownToggle = (dropdownId) => {
                 </li> -->
               </ul>
             </li>
-            <li><router-link class="nav-item nav-link" to="/">About us</router-link></li>
-            <li><router-link class="nav-item nav-link" to="/">Contact</router-link></li>
+            <li>
+              <router-link class="nav-item nav-link" to="/"
+                >About us</router-link
+              >
+            </li>
+            <li>
+              <router-link class="nav-item nav-link" to="/"
+                >Contact</router-link
+              >
+            </li>
 
             <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
@@ -131,9 +138,7 @@ const handleDropdownToggle = (dropdownId) => {
                 aria-labelledby="customerSupportDropdown"
               >
                 <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport"
-                    >FAQs</router-link
-                  >
+                  <router-link class="dropdown-item" to="/">FAQs</router-link>
                 </li>
                 <li>
                   <router-link
@@ -143,7 +148,7 @@ const handleDropdownToggle = (dropdownId) => {
                   >
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport/Terms"
+                  <router-link class="dropdown-item" to="/"
                     >Terms of Purchase and Delivery</router-link
                   >
                 </li>
@@ -164,12 +169,10 @@ const handleDropdownToggle = (dropdownId) => {
               </a>
               <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                 <li>
-                  <router-link class="dropdown-item" to="/account/login"
-                    >Login</router-link
-                  >
+                  <router-link class="dropdown-item" to="/">Login</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/account/create"
+                  <router-link class="dropdown-item" to="/"
                     >Create Account</router-link
                   >
                 </li>
@@ -213,7 +216,7 @@ const handleDropdownToggle = (dropdownId) => {
   padding-right: 5px;
 }
 
-.icon-large{
+.icon-large {
   font-size: 20px;
   margin-left: 15px;
 }

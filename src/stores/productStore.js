@@ -38,7 +38,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Brown",
             rating: 3,
-            salesPrice: 800,
+            onSale: true,
           },
           {
             id: uuidv4(),
@@ -71,7 +71,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Blue",
             rating: 4,
-            salesPrice: 2000,
+            onSale: true,
           },
           {
             id: 1111,
@@ -99,7 +99,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Light",
             rating: 4,
-            salesPrice: 1000,
+            onSale: true,
           },
         ],
       },
@@ -116,7 +116,7 @@ export const useProductStore = defineStore({
             rating: 2,
           },
           {
-            id: 627467264726746,
+            id: uuidv4(),
             modelName: "Wraparound",
             brand: "Tom Ford",
             price: 2500,
@@ -132,7 +132,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 5,
-            salesPrice: 2000,
+            onSale: true,
           },
           {
             id: uuidv4(),
@@ -174,7 +174,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Red",
             rating: 5,
-            salesPrice: 1200,
+            onSale: true,
           },
           {
             id: uuidv4(),
@@ -194,7 +194,7 @@ export const useProductStore = defineStore({
     getProductsOnSale() {
       return this.products
         .flatMap((category) => category.products)
-        .filter((product) => product.salesPrice);
+        .filter((product) => product.onSale);
     },
     // Uppdaterar priset på en produkt som är på rea
     updateProductSalesPrice(productId) {
@@ -223,7 +223,6 @@ export const useProductStore = defineStore({
     },
     // Hämtar produkten med ett specifikt id
     getProductById(productId) {
-      console.log("productId", productId, "funkar hit");
       return this.products
         .flatMap((category) => category.products)
         .find((product) => product.id === productId);

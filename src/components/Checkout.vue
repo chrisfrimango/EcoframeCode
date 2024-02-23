@@ -1,7 +1,7 @@
 <template>
   <div>
-    <p>Dina uppgifter:</p>
-
+    <h2>Dina uppgifter:</h2>
+    <br>
     <div class="input-container">
       <div role="group">
         <BFormInput
@@ -27,32 +27,63 @@
       </div>
     </div>
     <div class="button">
-      <BButton squared variant="success">Fortsätt</BButton>
+      <BButton squared variant="success" style="min-width: 200px;" @click="toggleContent">Fortsätt</BButton>
     </div>
-    <div class="options-container">
-      <p>Välj en leveransmetod:</p>
+    <div v-if="showContent">
+    <div class="deliveryyOptions-container">
+      <p>Leveransalternativ:</p>
       <div>
         <BFormRadio
-          v-for="option in options"
+          v-for="option in deliveryOptions"
           :key="option.value"
           v-model="selectedOption"
           :name="option.name"
           :value="option.value"
           :disabled="option.disabled"
         >
-          {{ option.text }}
-        </BFormRadio>
+          {{ option.text }} 
+          <br>
+          {{ option.description }}
+      </BFormRadio>
       </div>
     </div>
+    <div class="line"></div>
+    <div class="address-form">
+    <p>Adressuppgifter:</p>
+    <BFormInput v-model="email" placeholder="E-postadress" />
+    <BFormInput v-model="zipcode" placeholder="Postnummer" />
+    <BFormInput class="inline-input" placeholder="Förnamn" />
+    <BFormInput class="inline-input" placeholder="Efternamn" />
+    <BFormInput placeholder="Adress" />
+    <BFormInput placeholder="Ort" />
+    <BFormInput placeholder="Telefonnummer" />
+    </div>
+    <div class="line"></div>
+    <div class="paymentOptions-container">
+      <p>Betalningsalternativ:</p>
+      <BFormRadio
+        v-for="option in paymentOptions"
+        :key="option.value"
+        v-model="selectedOption"
+        :name="option.name"
+        :value="option.value"
+        :disabled="option.disabled"
+        >
+        {{ option.text }} 
+      </BFormRadio>
+      </div>
+    </div>
+    <div class="line"></div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 
+const showContent = ref(false);
+
 const email = ref('');
 const zipcode = ref('');
-
 const emailIsValid = computed(() => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email.value);
@@ -68,31 +99,58 @@ const onZipcodeInput = (event) => {
   zipcode.value = event.target.value.replace(/\D/g, '');
 };
 
-const options = [
-  { text: 'Postnord', value: 'A', name: 'delivery-option', disabled: false },
-  { text: 'Instabox', value: 'B', name: 'delivery-option', disabled: false },
+const deliveryOptions = [
+  { text: 'Paketskåp', value: 'A', name: 'delivery-option', description: 'Levereras till närmsta Instabox', disabled: false },
+  { text: 'Postombud', value: 'B', name: 'delivery-option', description:'Levereras till närmsta postombud', disabled: false },
   { text: 'Hämta i butik', value: 'C', name: 'delivery-option', disabled: false }
 ];
 
+  const paymentOptions = [
+  { text: 'Kortbetalning', value: 'X', name: 'payment-option', disabled: false },
+  { text: 'Swish', value: 'Y', name: 'payment-option', disabled: false },
+  { text: 'Faktura', value: 'Z', name: 'payment-option', disabled: false } 
+];
+
 const selectedOption = ref('');
+const toggleContent = () => {
+showContent.value = !showContent.value;
+}
 </script>
 
 <style scoped>
 .input-container {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
+
 .input-container > div {
   flex: 1;
-  padding-right: 50px;
-  padding-bottom: 30px;
+  padding-right: 20px;
 }
-.options-container {
-  padding-top: 20px;
-}
+
 .button {
-  margin-top: 20px;
-  margin-left: auto;
-  margin-right: 200px;
+  margin-bottom: 20px;
+}
+
+.address-form {
+  margin-bottom: 20px;
+}
+.inline-input {
+  display: inline-block;
+  width: calc(50%);
+}
+
+.button {
+  margin-top:20px;
+  text-align: right;
+}
+.line {
+  border-top: 1px solid #8a8787;
+  margin-top: 20px; 
+  margin-bottom: 20px; 
+}
+p {
+  text-align: center; 
 }
 </style>
