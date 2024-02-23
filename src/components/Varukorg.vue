@@ -45,7 +45,9 @@
 <script setup>
 import { computed } from 'vue';
 import { useProductStore } from '../stores/productStore';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
 const productStore = useProductStore();
 const cartItems = computed(() => productStore.getCartItems);
 const cartTotal = computed(() => productStore.cartTotal);
@@ -59,11 +61,11 @@ function removeFromCart(itemId) {
 }
 
 function continueShopping() {
-  // Implementera logiken för att fortsätta handla
+  router.push({ name: 'Home' });
 }
 
 function checkout() {
-  // Implementera logiken för att gå till kassan
+  router.push({ name: 'Checkout' });
 }
 </script>
 
@@ -71,7 +73,7 @@ function checkout() {
 .varukorg-container {
   width: 90%;
   margin: auto;
-  margin-bottom: 50px;
+  margin-bottom: 200px;
   text-align: center;
 }
 

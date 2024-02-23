@@ -4,7 +4,17 @@ import { v4 as uuidv4 } from "uuid";
 export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
-    cart: [],
+    cart:[],
+    // cart: [ {
+    //   id: uuidv4(),
+    //   modelName: "Avaitor",
+    //   brand: "Rayban",
+    //   price: 1200,
+    //   image: "https://picsum.photos/200/300",
+    //   color: "Black",
+    //   rating: 4,
+    //   quantity:1,
+    // },],
     discount: 10,
     productId: null,
     products: [
@@ -219,14 +229,21 @@ export const useProductStore = defineStore({
     },
 
     updateItemQuantity(itemId, amount) {
-      const item = this.cart.find((item) => item.id === itemId);
-      if (item) {
-        item.quantity += amount;
-        if (item.quantity <= 0) {
-          this.removeItemFromCart(itemId);
+      const itemIndex = this.cart.findIndex(item => item.id === itemId);
+      if (itemIndex !== -1) {
+        let newQuantity = this.cart[itemIndex].quantity + amount;
+        if (newQuantity < 0) {
+          newQuantity = 0;
         }
+        this.cart[itemIndex].quantity = newQuantity;
+
+        if (this.cart[itemIndex].quantity === 0) {
+
+        }
+        this.cart = [...this.cart];
       }
     },
+
     // Ta bort en produkt från varukorgen
     removeItemFromCart(itemId) {
       const index = this.cart.findIndex((item) => item.id === itemId);
@@ -242,10 +259,10 @@ export const useProductStore = defineStore({
     },
     // totala priset för varukorgen
     cartTotal: (state) => {
-      return state.cart.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      );
+      return state.cart.reduce((total, item) => {
+        const itemTotal = (item.price * item.quantity) || 0;
+        return total + itemTotal;
+      }, 0);
     },
   },
 });
