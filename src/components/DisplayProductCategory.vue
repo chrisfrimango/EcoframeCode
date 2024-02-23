@@ -39,12 +39,6 @@ export default {
   overflow: hidden;
 }
 
-.img{
-margin: 0;
-padding: 0;
-border: none;
-}
-
 .image-with-overlay img {
   width: 100%;
   height: auto;
