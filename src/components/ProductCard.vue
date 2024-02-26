@@ -1,11 +1,12 @@
 <script setup>
 import { computed, ref } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/productStore";
 const productStore = useProductStore();
 const route = useRoute();
+const router = useRouter();
+
 const productId = computed(() => route.params.productId);
-console.log(productId.value);
 const product = ref(productStore.getProductById(productId.value));
 
 const productPrice = computed(() => {
@@ -27,7 +28,7 @@ const productPrice = computed(() => {
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item"><a href="/Shop">Shop</a></li>
+              <li class="breadcrumb-item"></li>
               <li class="breadcrumb-item active" aria-current="page">
                 {{ product.modelName }}
               </li>
@@ -43,7 +44,10 @@ const productPrice = computed(() => {
           <h4 v-if="product.onSale" :class="{ 'old-price': product.onSale }">
             {{ product.price }} SEK
           </h4>
-          <h5 :style="{ color: product.color }">{{ product.color }}</h5>
+          <h5>
+            Color:
+            <span :style="{ color: product.color }">{{ product.color }}</span>
+          </h5>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus,
             quas deleniti quod vel magnam nostrum. Id commodi blanditiis porro
@@ -51,7 +55,11 @@ const productPrice = computed(() => {
             excepturi unde! Optio.
           </p>
         </BRow>
-        <BButton variant="primary">Add To Cart</BButton>
+        <BButton
+          @click.prevent="productStore.addToCart(product)"
+          variant="primary"
+          >Add To Cart</BButton
+        >
       </BCol>
     </BRow>
   </BContainer>
@@ -60,6 +68,10 @@ const productPrice = computed(() => {
 <style scoped>
 .sales-color {
   color: red;
+}
+
+span {
+  font-weight: bold;
 }
 
 .old-price {

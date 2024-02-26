@@ -4,7 +4,8 @@ import { v4 as uuidv4 } from "uuid";
 export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
-    cart:[],
+    cart: [],
+    checkoutCart: [],
     // cart: [ {
     //   id: uuidv4(),
     //   modelName: "Avaitor",
@@ -55,7 +56,7 @@ export const useProductStore = defineStore({
             brand: "Tom Ford",
             price: 5200,
             image: "https://picsum.photos/200/300",
-            color: "Light",
+            color: "Grey",
             rating: 4,
           },
         ],
@@ -97,7 +98,7 @@ export const useProductStore = defineStore({
             brand: "Versace",
             price: 1500,
             image: "https://picsum.photos/200/300",
-            color: "Light",
+            color: "Grey",
             rating: 4,
             onSale: true,
           },
@@ -140,7 +141,7 @@ export const useProductStore = defineStore({
             brand: "Tom Ford",
             price: 2000,
             image: "https://picsum.photos/200/300",
-            color: "Light",
+            color: "Yellow",
             rating: 1,
           },
         ],
@@ -228,8 +229,18 @@ export const useProductStore = defineStore({
         .find((product) => product.id === productId);
     },
 
+    // Lägger till en produkt i varukorgen
+    addToCart(product) {
+      const item = this.cart.find((item) => item.id === product.id);
+      if (item) {
+        item.quantity++;
+      } else {
+        this.cart.push({ ...product, quantity: 1 });
+      }
+    },
+
     updateItemQuantity(itemId, amount) {
-      const itemIndex = this.cart.findIndex(item => item.id === itemId);
+      const itemIndex = this.cart.findIndex((item) => item.id === itemId);
       if (itemIndex !== -1) {
         let newQuantity = this.cart[itemIndex].quantity + amount;
         if (newQuantity < 0) {
@@ -238,7 +249,6 @@ export const useProductStore = defineStore({
         this.cart[itemIndex].quantity = newQuantity;
 
         if (this.cart[itemIndex].quantity === 0) {
-
         }
         this.cart = [...this.cart];
       }
@@ -251,13 +261,28 @@ export const useProductStore = defineStore({
         this.cart.splice(index, 1);
       }
     },
+    // Töm varukorgen
+    clearCart() {
+      this.cart = [];
+    },
+
+    // skapa ordernummer
+    createOrderNumber() {
+      return Math.floor(Math.random() * 1000000);
+    },
+
+    // createOrder() {
+
+    //   this.checkoutCart = this.cart;
+    //   this.cart = [];
+    // },
 
     //sessionstorage för varukorg
     saveCartToSession() {
-      sessionStorage.setItem('cart', JSON.stringify(this.cart));
+      sessionStorage.setItem("cart", JSON.stringify(this.cart));
     },
     restoreCartFromSession() {
-      const cartFromSession = sessionStorage.getItem('cart');
+      const cartFromSession = sessionStorage.getItem("cart");
       if (cartFromSession) {
         this.cart = JSON.parse(cartFromSession);
       }
@@ -265,13 +290,19 @@ export const useProductStore = defineStore({
 
     //filter
     getFilteredProducts(category, colour, price, rating) {
-      let result = this.products.flatMap(category => category.products);
-      if (category) result = result.filter(product => product.category === category);
-      if (colour) result = result.filter(product => product.colour === colour);
-      if (price) result = result.filter(product => product.price >= price[0] && product.price <= price[1]);
-      if (rating) result = result.filter(product => product.rating === rating);
+      let result = this.products.flatMap((category) => category.products);
+      if (category)
+        result = result.filter((product) => product.category === category);
+      if (colour)
+        result = result.filter((product) => product.colour === colour);
+      if (price)
+        result = result.filter(
+          (product) => product.price >= price[0] && product.price <= price[1]
+        );
+      if (rating)
+        result = result.filter((product) => product.rating === rating);
       return result;
-    }
+    },
   },
 
   getters: {
@@ -286,9 +317,21 @@ export const useProductStore = defineStore({
     // totala priset för varukorgen
     cartTotal: (state) => {
       return state.cart.reduce((total, item) => {
-        const itemTotal = (item.price * item.quantity) || 0;
+        const itemTotal = item.price * item.quantity || 0;
         return total + itemTotal;
       }, 0);
+    },
+    // totala antalet produkter i varukorgen
+    cartQuantity: (state) => {
+      console.log("state:", state);
+      console.log("state.cart:", state.cart);
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
+    },
+    // totala antalet produkter i varukorgen
+    cartQuantity: (state) => {
+      console.log("state:", state);
+      console.log("state.cart:", state.cart);
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
     },
   },
 });
