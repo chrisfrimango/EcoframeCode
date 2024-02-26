@@ -197,8 +197,20 @@ const handleDropdownToggle = (dropdownId) => {
               ><i class="bi bi-heart icon-large"></i
             ></router-link>
             <router-link class="nav-link text-dark" to="/cart"
-              ><i class="bi bi-cart icon-large"></i
-            ></router-link>
+              ><i class="bi bi-cart icon-large position-relative"
+                ><h6>
+                  <BBadge
+                    v-if="productStore.cartQuantity > 0"
+                    variant="danger"
+                    pill
+                    text-indicator
+                  >
+                    {{ productStore.cartQuantity }}
+                    <span class="visually-hidden">unread messages</span>
+                  </BBadge>
+                </h6></i
+              ></router-link
+            >
           </div>
         </div>
       </div>

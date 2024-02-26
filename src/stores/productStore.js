@@ -5,6 +5,7 @@ export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
     cart: [],
+    checkoutCart: [],
     discount: 10,
     productId: null,
     products: [
@@ -45,7 +46,7 @@ export const useProductStore = defineStore({
             brand: "Tom Ford",
             price: 5200,
             image: "https://picsum.photos/200/300",
-            color: "Light",
+            color: "Grey",
             rating: 4,
           },
         ],
@@ -87,7 +88,7 @@ export const useProductStore = defineStore({
             brand: "Versace",
             price: 1500,
             image: "https://picsum.photos/200/300",
-            color: "Light",
+            color: "Grey",
             rating: 4,
             onSale: true,
           },
@@ -130,7 +131,7 @@ export const useProductStore = defineStore({
             brand: "Tom Ford",
             price: 2000,
             image: "https://picsum.photos/200/300",
-            color: "Light",
+            color: "Yellow",
             rating: 1,
           },
         ],
@@ -218,6 +219,16 @@ export const useProductStore = defineStore({
         .find((product) => product.id === productId);
     },
 
+    // Lägger till en produkt i varukorgen
+    addToCart(product) {
+      const item = this.cart.find((item) => item.id === product.id);
+      if (item) {
+        item.quantity++;
+      } else {
+        this.cart.push({ ...product, quantity: 1 });
+      }
+    },
+
     updateItemQuantity(itemId, amount) {
       const item = this.cart.find((item) => item.id === itemId);
       if (item) {
@@ -234,6 +245,21 @@ export const useProductStore = defineStore({
         this.cart.splice(index, 1);
       }
     },
+    // Töm varukorgen
+    clearCart() {
+      this.cart = [];
+    },
+
+    // skapa ordernummer
+    createOrderNumber() {
+      return Math.floor(Math.random() * 1000000);
+    },
+
+    // createOrder() {
+
+    //   this.checkoutCart = this.cart;
+    //   this.cart = [];
+    // },
   },
 
   getters: {
@@ -246,6 +272,12 @@ export const useProductStore = defineStore({
         (total, item) => total + item.price * item.quantity,
         0
       );
+    },
+    // totala antalet produkter i varukorgen
+    cartQuantity: (state) => {
+      console.log("state:", state);
+      console.log("state.cart:", state.cart);
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
     },
   },
 });
