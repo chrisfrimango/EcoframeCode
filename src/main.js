@@ -13,7 +13,15 @@ import router from "./router";
 
 const app = createApp(App);
 
-app.use(createPinia());
+const pinia = createPinia()
+pinia.use(({ store }) => {
+  if (store.$id === "EcommerceApp") {
+    store.restoreCartFromSession();
+  }
+})
+
+app.use(pinia);
+// app.use(createPinia());
 app.use(router);
 
 app.mount("#app");

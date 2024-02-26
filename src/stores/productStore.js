@@ -6,6 +6,16 @@ export const useProductStore = defineStore({
   state: () => ({
     cart: [],
     checkoutCart: [],
+    // cart: [ {
+    //   id: uuidv4(),
+    //   modelName: "Avaitor",
+    //   brand: "Rayban",
+    //   price: 1200,
+    //   image: "https://picsum.photos/200/300",
+    //   color: "Black",
+    //   rating: 4,
+    //   quantity:1,
+    // },],
     discount: 10,
     productId: null,
     products: [
@@ -230,14 +240,20 @@ export const useProductStore = defineStore({
     },
 
     updateItemQuantity(itemId, amount) {
-      const item = this.cart.find((item) => item.id === itemId);
-      if (item) {
-        item.quantity += amount;
-        if (item.quantity <= 0) {
-          this.removeItemFromCart(itemId);
+      const itemIndex = this.cart.findIndex((item) => item.id === itemId);
+      if (itemIndex !== -1) {
+        let newQuantity = this.cart[itemIndex].quantity + amount;
+        if (newQuantity < 0) {
+          newQuantity = 0;
         }
+        this.cart[itemIndex].quantity = newQuantity;
+
+        if (this.cart[itemIndex].quantity === 0) {
+        }
+        this.cart = [...this.cart];
       }
     },
+
     // Ta bort en produkt från varukorgen
     removeItemFromCart(itemId) {
       const index = this.cart.findIndex((item) => item.id === itemId);
@@ -260,18 +276,56 @@ export const useProductStore = defineStore({
     //   this.checkoutCart = this.cart;
     //   this.cart = [];
     // },
+
+    //sessionstorage för varukorg
+    saveCartToSession() {
+      sessionStorage.setItem("cart", JSON.stringify(this.cart));
+    },
+    restoreCartFromSession() {
+      const cartFromSession = sessionStorage.getItem("cart");
+      if (cartFromSession) {
+        this.cart = JSON.parse(cartFromSession);
+      }
+    },
+
+    //filter
+    getFilteredProducts(category, colour, price, rating) {
+      let result = this.products.flatMap((category) => category.products);
+      if (category)
+        result = result.filter((product) => product.category === category);
+      if (colour)
+        result = result.filter((product) => product.colour === colour);
+      if (price)
+        result = result.filter(
+          (product) => product.price >= price[0] && product.price <= price[1]
+        );
+      if (rating)
+        result = result.filter((product) => product.rating === rating);
+      return result;
+    },
   },
 
   getters: {
+    cartItemCount: (state) => {
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
+    },
+
     getCartItems: (state) => {
       return state.cart;
     },
+
     // totala priset för varukorgen
     cartTotal: (state) => {
-      return state.cart.reduce(
-        (total, item) => total + item.price * item.quantity,
-        0
-      );
+      return state.cart.reduce((total, item) => {
+        const itemTotal = item.price * item.quantity || 0;
+        return total + itemTotal;
+      }, 0);
+    },
+    // totala antalet produkter i varukorgen
+    cartQuantity: (state) => {
+      console.log("state:", state);
+      console.log("state.cart:", state.cart);
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
     },
     // totala antalet produkter i varukorgen
     cartQuantity: (state) => {
