@@ -30,6 +30,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 4,
+            description: "Embrace style with a conscience in our recycled plastic frames, stylishly repurposing waste materials to combat plastic pollution and elevate your look.",
           },
           {
             id: uuidv4(),
@@ -40,6 +41,7 @@ export const useProductStore = defineStore({
             color: "Brown",
             rating: 3,
             onSale: true,
+            description: "Crafted from sustainable bamboo, our eco-conscious eyewear not only reduces carbon footprint but also promotes reforestation efforts for a greener tomorrow.",
           },
           {
             id: uuidv4(),
@@ -49,6 +51,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 5,
+            description: "Our upcycled metal frames offer durability and style while minimizing environmental impact by repurposing materials, making a statement in sustainability",
           },
           {
             id: uuidv4(),
@@ -58,6 +61,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Grey",
             rating: 4,
+            description: "Experience eco-friendly elegance with our bio-based acetate frames, derived from renewable resources to provide chic alternatives to traditional plastics, embodying both style and sustainability.",
           },
         ],
       },
@@ -73,6 +77,7 @@ export const useProductStore = defineStore({
             color: "Blue",
             rating: 4,
             onSale: true,
+            description: "Fashion meets sustainability with our carbon-neutral sunglasses featuring plant-based lenses, contributing to a brighter future while making a bold statement.",
           },
           {
             id: 1111,
@@ -82,6 +87,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Red",
             rating: 3,
+            description: "Support ethical production practices and empower communities with our fair trade sunglasses, where style meets social responsibility.",
           },
           {
             id: uuidv4(),
@@ -91,6 +97,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Gold",
             rating: 5,
+            description: "Combat marine plastic pollution in style with our ocean-friendly sunglasses made from reclaimed fishing nets, turning waste into fashionable accessories.",
           },
           {
             id: uuidv4(),
@@ -101,6 +108,7 @@ export const useProductStore = defineStore({
             color: "Grey",
             rating: 4,
             onSale: true,
+            description: "From production to delivery, our zero-waste eyewear packaging uses recycled materials, ensuring sustainability every step of the way.",
           },
         ],
       },
@@ -115,6 +123,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 2,
+            description: "Harness renewable energy for innovative functionality with our solar-powered smart glasses, leading the way in eco-friendly eyewear.",
           },
           {
             id: uuidv4(),
@@ -124,6 +133,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Brown",
             rating: 3,
+            description: "Choose compostable eyewear crafted from biodegradable materials to reduce landfill waste without compromising on style.",
           },
           {
             id: uuidv4(),
@@ -134,6 +144,7 @@ export const useProductStore = defineStore({
             color: "Black",
             rating: 5,
             onSale: true,
+            description: "Experience compassion in fashion with our cruelty-free eyewear, crafted without animal-derived materials for a truly ethical choice.",
           },
           {
             id: uuidv4(),
@@ -143,6 +154,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Yellow",
             rating: 1,
+            description: "Offset emissions and contribute to climate action with our carbon-negative eyewear brands supporting reforestation projects for a sustainable future.",
           },
         ],
       },
@@ -157,6 +169,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Green",
             rating: 4,
+            description: "Less is more when it comes to sustainability; embrace minimalist designs with maximum environmental impact.",
           },
           {
             id: uuidv4(),
@@ -166,6 +179,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Yellow",
             rating: 3,
+            description: "Preserve precious resources with our water-saving production methods used in crafting eco-conscious eyewear, making sustainability a priority.",
           },
           {
             id: uuidv4(),
@@ -176,6 +190,7 @@ export const useProductStore = defineStore({
             color: "Red",
             rating: 5,
             onSale: true,
+            description: "For truly zero-waste fashion choices, opt for our packaging-free eyewear options, minimizing environmental impact without sacrificing style.",
           },
           {
             id: uuidv4(),
@@ -185,6 +200,7 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 1,
+            description: "Invest in environmental education and conservation initiatives with community-driven eyewear brands, making a positive impact beyond fashion.",
           },
         ],
       },
