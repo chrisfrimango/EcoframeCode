@@ -43,7 +43,7 @@ const productPrice = computed(() => {
           <h4 v-if="product.onSale" :class="{ 'old-price': product.onSale }">
             {{ product.price }} SEK
           </h4>
-          <h5>{{ product.color }}</h5>
+          <h5 :style="{ color: product.color }">{{ product.color }}</h5>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus,
             quas deleniti quod vel magnam nostrum. Id commodi blanditiis porro
