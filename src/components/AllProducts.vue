@@ -1,4 +1,5 @@
 <script setup>
+
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/productStore";
@@ -8,6 +9,7 @@ const productStore = useProductStore();
 const route = useRoute();
 const router = useRouter();
 const category = computed(() => route.params.category);
+
 const products = computed(() => productStore.getCategory(category.value));
 const goToProductPage = (productId) => {
   console.log(productId);
@@ -44,9 +46,6 @@ const goToProductPage = (productId) => {
         </BCard>
       </BCol>
     </BRow>
-    <!-- <BCol class="d-flex justify-content-center m-4">
-      <BButton to="/shop" variant="primary">See all</BButton>
-    </BCol> -->
   </BContainer>
 </template>
 

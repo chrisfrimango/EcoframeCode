@@ -1,5 +1,4 @@
 <template>
-
   <div class="container filter-wrapper">
     <button class="btn btn-light d-block d-md-none mb-3" @click="toggleShowFilters" style="width: 60%; margin: 0 auto; background-color: white;">
       {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
@@ -10,115 +9,134 @@
         <h2 class="text-primary">Filters</h2>
       </div>
 
-      <div class="row mb-4 product-cards">
-        <div class="col-12 col-md-6">
-          <router-link to="/shop/sunwear" class="card text-center">
-            <img src="@/assets/sunwear.png" alt="Sunwear" class="img-fluid">
-            <div class="card-body">
-              <p class="card-text">Sunwear</p>
-            </div>
-          </router-link>
-        </div>
-        <div class="col-12 col-md-6">
-          <router-link to="/shop/optical" class="card text-center">
-            <img src="@/assets/sunwear.png" alt="Optical" class="img-fluid">
-            <div class="card-body">
-              <p class="card-text">Optical</p>
-            </div>
-          </router-link>
+      <!-- Kategorival -->
+      <div v-if="isMobileView" class="mb-4">
+        <select class="form-select mb-4" v-model="selectedCategory">
+          <option value="" disabled selected>Select Category</option>
+          <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
+        </select>
+      </div>
+
+      <!-- Färgfilter -->
+      <div class="card mb-4">
+        <div class="card-header">Colour</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" v-for="colour in colours" :key="colour">
+            <input type="radio" class="me-2" v-model="selectedColour" :value="colour" :name="colour"> {{ colour }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Prisfilter -->
+      <div class="card mb-4">
+        <div class="card-header">Price</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" v-for="price in prices" :key="price">
+            <input type="radio" class="me-2" v-model="selectedPrice" :value="price" :name="price"> {{ price }}
+          </li>
+        </ul>
+      </div>
+
+      <!-- Betygsfilter -->
+      <div class="card mb-4">
+        <div class="card-header">Rating</div>
+        <div class="card-body">
+          <div v-for="rating in ratings" :key="rating" class="mb-2">
+            <input type="radio" class="me-2" v-model="selectedRating" :value="rating" :name="`rating-${rating}`">
+            <span v-for="star in 5" :key="`star-${rating}-${star}`" class="star" :class="{ 'text-warning': star <= rating, 'text-secondary': star > rating }">★</span>
+            {{ rating }}
+          </div>
         </div>
       </div>
 
-      <div class="additional-filters">
-        <div class="card mb-4">
-          <div class="card-header">Colour</div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedColours" value="Black">
-              Black
-            </li>
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedColours" value="Brown">
-              Brown
-            </li>
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedColours" value="Beige">
-              Light
-            </li>
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedColours" value="Beige">
-              Blue
-            </li>
-             <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedColours" value="Beige">
-              Yellow
-            </li>
-          </ul>
-        </div>
+      <!-- knappar -->
+      <div class="d-flex justify-content-between mb-4">
+        <button class="btn btn-secondary me-3" @click="clearFilters">Clear Filters</button>
+        <button class="btn btn-success" @click="applyFilters">Show Products</button>
+      </div>
+    </div>
 
-        <div class="card mb-4">
-          <div class="card-header">Price</div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedPrices" value="Under 1000 SEK">
-              Under 1000 SEK
-            </li>
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedPrices" value="1000 - 3000 SEK">
-              1000 - 3000 SEK
-            </li>
-            <li class="list-group-item d-flex align-items-center">
-              <input type="checkbox" class="me-2" v-model="selectedPrices" value="Over 3000 SEK">
-              Over 3000 SEK
-            </li>
-          </ul>
-        </div>
-
-        <div class="card">
-          <div class="card-header">Rating</div>
-          <div class="card-body">
-            <div v-for="rating in [5, 4, 3, 2, 1]" :key="rating" class="d-flex align-items-center mb-2">
-              <div class="flex-grow-1">
-                <span v-for="star in 5" :key="`star-${rating}-${star}`" class="star" :class="{ 'text-warning': star <= rating, 'text-secondary': star > rating }">★</span>
-              </div>
-              <div class="ms-2">{{ ratingCounts[5 - rating] }} reviews</div>
-            </div>
-          </div>
-        </div>
+    <!-- Antal matchande produkter -->
+    <div v-if="filtersApplied">
+      <div v-if="filteredProducts.length > 0">
+        <h3>Matching Products: ({{ filteredProducts.length }})</h3>
+      </div>
+      <div v-else>
+        <p>No matching products found.</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useRoute } from 'vue-router';
+import { watch } from 'vue';
+import { useProductStore } from '@/stores/productStore';
+
 export default {
   data() {
     return {
       showFilters: true,
       isMobileView: window.innerWidth < 768,
-      ratingCounts: [589, 461, 203, 50, 18],
-      selectedColours: [],
-      selectedPrices: [],
-      selectedRatings: [],
+      selectedCategory: '',
+      selectedColour: '',
+      selectedPrice: '',
+      selectedRating: 0,
+      showResults: true,
+      filtersApplied: false,
+
     };
   },
   computed: {
-    products() {
+    categories() {
       const store = useProductStore();
-      return store.products;
+      return store.getCategories();
+    },
+    colours() {
+      return ['Black', 'Brown', 'Light', 'Blue', 'Yellow'];
+    },
+    prices() {
+      return ['Under 1000 SEK', '1000 - 3000 SEK', 'Over 3000 SEK'];
+    },
+    ratings() {
+      return [5, 4, 3, 2, 1];
     },
     filteredProducts() {
-      return this.products.filter((product) => {
-        const colourMatch = this.selectedColours.length ? this.selectedColours.includes(product.color) : true;
-        const priceMatch = this.selectedPrices.length ? this.selectedPrices.some((range) => {
-          if (range === 'Under 1000 SEK') return product.price < 1000;
-          if (range === '1000 - 3000 SEK') return product.price >= 1000 && product.price <= 3000;
-          if (range === 'Over 3000 SEK') return product.price > 3000;
-          return false;
-        }) : true;
-        const ratingMatch = this.selectedRatings.length ? this.selectedRatings.includes(product.Rating) : true;
-        return colourMatch && priceMatch && ratingMatch;
-      });
+      const store = useProductStore();
+      let filtered = store.products.flatMap(category => category.products);
+
+      console.log("Initial products:", filtered);
+
+      if (this.selectedCategory) {
+        filtered = store.getCategory(this.selectedCategory);
+
+        console.log("After category filter:", filtered);
+      }
+
+      if (this.selectedColour) {
+        filtered = filtered.filter(product => product.colour === this.selectedColour);
+
+        console.log("After colour filter:", filtered);
+      }
+
+      if (this.selectedPrice) {
+        const priceRange = this.selectedPrice.match(/\d+/g);
+        if (priceRange) {
+          const minPrice = priceRange[0];
+          const maxPrice = priceRange[1] || Infinity;
+          filtered = filtered.filter(product => product.price >= minPrice && product.price <= maxPrice);
+
+          console.log("After price filter:", filtered);
+        }
+      }
+
+      if (this.selectedRating) {
+        filtered = filtered.filter(product => product.rating === this.selectedRating);
+
+        console.log("After rating filter:", filtered);
+      }
+
+      return filtered;
     },
   },
   methods: {
@@ -127,27 +145,49 @@ export default {
     },
     adjustView() {
       this.isMobileView = window.innerWidth < 768;
-    }
+    },
+    clearFilters() {
+      console.log("Clearing filters:", this.selectedCategory, this.selectedColour, this.selectedPrice, this.selectedRating);
+
+      this.selectedCategory = '';
+      this.selectedColour = '';
+      this.selectedPrice = '';
+      this.selectedRating = 0;
+       this.showResults = false;
+      this.filtersApplied = false;
+    },
+    applyFilters() {
+        console.log("Filters applied:", {
+        category: this.selectedCategory,
+        colour: this.selectedColour,
+        price: this.selectedPrice,
+        rating: this.selectedRating,
+      });
+      this.showResults = false;
+      this.filtersApplied = false;
+  }
   },
   mounted() {
+    const route = useRoute();
+
+    watch(() => route.params, (newValue, oldValue) => {
+      if (newValue.category !== oldValue.category) {
+        this.selectedCategory = newValue.category || '';
+
+        console.log("Route changed. New category:", this.selectedCategory);
+      }
+    }, { deep: true });
+
     window.addEventListener('resize', this.adjustView);
+    this.selectedCategory = route.params.category || '';
   },
-  beforeDestroy() {
+  beforeUnmount() {
     window.removeEventListener('resize', this.adjustView);
   },
-  watch: {
-    selectedColours() {
-      this.filteredProducts = this.computeFilteredProducts();
-    },
-    selectedPrices() {
-      this.filteredProducts = this.computeFilteredProducts();
-    },
-    selectedRatings() {
-      this.filteredProducts = this.computeFilteredProducts();
-    },
-  },
-};
+}
 </script>
+
+
 <style scoped>
 .card img {
   width: 100%;

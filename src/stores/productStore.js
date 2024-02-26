@@ -251,12 +251,38 @@ export const useProductStore = defineStore({
         this.cart.splice(index, 1);
       }
     },
+
+    //sessionstorage för varukorg
+    saveCartToSession() {
+      sessionStorage.setItem('cart', JSON.stringify(this.cart));
+    },
+    restoreCartFromSession() {
+      const cartFromSession = sessionStorage.getItem('cart');
+      if (cartFromSession) {
+        this.cart = JSON.parse(cartFromSession);
+      }
+    },
+
+    //filter
+    getFilteredProducts(category, colour, price, rating) {
+      let result = this.products.flatMap(category => category.products);
+      if (category) result = result.filter(product => product.category === category);
+      if (colour) result = result.filter(product => product.colour === colour);
+      if (price) result = result.filter(product => product.price >= price[0] && product.price <= price[1]);
+      if (rating) result = result.filter(product => product.rating === rating);
+      return result;
+    }
   },
 
   getters: {
+    cartItemCount: (state) => {
+      return state.cart.reduce((total, item) => total + item.quantity, 0);
+    },
+
     getCartItems: (state) => {
       return state.cart;
     },
+
     // totala priset för varukorgen
     cartTotal: (state) => {
       return state.cart.reduce((total, item) => {
