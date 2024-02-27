@@ -5,7 +5,11 @@ export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
     cart:[],
-    // cart: [ {
+    originalProducts: [],
+    filteredProducts: [],
+    discount: 10,
+    productId: null,
+    // cart:[ {
     //   id: uuidv4(),
     //   modelName: "Avaitor",
     //   brand: "Rayban",
@@ -15,8 +19,6 @@ export const useProductStore = defineStore({
     //   rating: 4,
     //   quantity:1,
     // },],
-    discount: 10,
-    productId: null,
     products: [
       {
         category: "Sunwear",
@@ -264,14 +266,33 @@ export const useProductStore = defineStore({
     },
 
     //filter
-    getFilteredProducts(category, colour, price, rating) {
-      let result = this.products.flatMap(category => category.products);
-      if (category) result = result.filter(product => product.category === category);
-      if (colour) result = result.filter(product => product.colour === colour);
-      if (price) result = result.filter(product => product.price >= price[0] && product.price <= price[1]);
-      if (rating) result = result.filter(product => product.rating === rating);
-      return result;
-    }
+    initializeOriginalProducts() {
+      this.originalProducts = this.products.flatMap(category => category.products);
+    },
+    applyFilters(filters) {
+      console.log('Applying filters with: ', filters);
+
+      if (!this.originalProducts || this.originalProducts.length === 0) {
+        console.error('No original products to filter from');
+        return;
+      }
+
+      this.filteredProducts = this.originalProducts.filter(product => {
+        const matchesCategory = filters.category ? product.category === filters.category : true;
+        const matchesBrand = filters.brands.length ? filters.brands.includes(product.brand) : true;
+        const matchesColor = filters.color ? product.color === filters.color : true;
+        const matchesPrice = filters.price ?
+        (product.price >= filters.price.min && product.price <= filters.price.max) : true;
+        const matchesRating = filters.rating ? product.rating >= filters.rating : true;
+
+        return matchesCategory && matchesBrand && matchesColor && matchesPrice && matchesRating;
+      });
+      console.log('Filtered products: ', this.filteredProducts);
+    },
+    clearFilters() {
+      this.filteredProducts = [...this.originalProducts];
+      this.filtersActive = false;
+    },
   },
 
   getters: {
