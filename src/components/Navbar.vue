@@ -1,7 +1,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { ref, onMounted, onUnmounted } from "vue";
-import { computed } from 'vue';
+import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 const router = useRouter();
 const productStore = useProductStore();
@@ -62,7 +62,10 @@ const handleDropdownToggle = (dropdownId) => {
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
               ><i class="bi bi-cart icon-large"></i
-            ><span v-if="cartItemCount > 0" class="cart-item-count">{{ cartItemCount }}</span></router-link>
+              ><span v-if="cartItemCount > 0" class="cart-item-count">{{
+                cartItemCount
+              }}</span></router-link
+            >
           </div>
         </div>
         <!-- Desktop View -->
@@ -184,8 +187,23 @@ const handleDropdownToggle = (dropdownId) => {
               ><i class="bi bi-heart icon-large"></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
-              ><i class="bi bi-cart icon-large"><span v-if="cartItemCount > 0" class="cart-item-count">{{ cartItemCount }}</span></i
-            ></router-link>
+              ><i class="bi bi-cart icon-large position-relative"
+                ><h6>
+                  <BBadge
+                    v-if="productStore.cartQuantity > 0"
+                    variant="danger"
+                    pill
+                    text-indicator
+                  >
+                    {{ productStore.cartQuantity }}
+                    <span class="visually-hidden">unread messages</span>
+                  </BBadge>
+                </h6>
+                <span v-if="cartItemCount > 0" class="cart-item-count">{{
+                  cartItemCount
+                }}</span></i
+              ></router-link
+            >
           </div>
         </div>
       </div>
@@ -265,7 +283,6 @@ const handleDropdownToggle = (dropdownId) => {
   padding: 2px 6px;
   font-size: 12px;
 }
-
 
 @media (max-width: 991px) {
   .container-fluid {
