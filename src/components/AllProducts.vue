@@ -1,5 +1,4 @@
 <script setup>
-
 import { computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/productStore";
@@ -11,6 +10,7 @@ const router = useRouter();
 const category = computed(() => route.params.category);
 
 const products = computed(() => productStore.getCategory(category.value));
+
 const goToProductPage = (productId) => {
   console.log(productId);
   router.push({ name: "ProductPage", params: { productId } });

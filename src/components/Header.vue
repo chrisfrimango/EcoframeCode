@@ -41,7 +41,11 @@ const showAccountModal = ref(false);
           text="Account"
         >
           <BDropdownItem>Login</BDropdownItem>
-          <BDropdownItem>Create account</BDropdownItem>
+          <BDropdownItem
+            ><router-link to="createaccount"
+              >Create account</router-link
+            ></BDropdownItem
+          >
         </BDropdown>
       </BCol>
     </BRow>

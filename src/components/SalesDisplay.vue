@@ -12,6 +12,7 @@ const props = defineProps({
           <h1 class="display-5 text-light">SPRING SALES</h1>
           <h4>{{ props.discountToDisplay }}% off on slected frames</h4>
           <p>To the end of April, only for members</p>
+          <BButton to="createaccount" variant="light">Become a member</BButton>
         </BCol>
       </BCol>
       <BCol sm="12" lg="6" class="no-padding">

@@ -4,6 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
+    accounts: [],
     cart: [],
     checkoutCart: [],
     // cart: [ {
@@ -188,12 +189,24 @@ export const useProductStore = defineStore({
           },
         ],
       },
+      {
+        category: "All Products",
+      },
     ],
   }),
   actions: {
+    //lägger till användar
+    createNewAccount(values) {
+      this.accounts.push(values);
+      console.log(this.accounts);
+
+      // this.saveToSession("accounts", this.accounts);
+    },
+
     // Hämtar produkter som är på rea
     getProductsOnSale() {
       return this.products
+        .filter((category) => category.category !== "All Products")
         .flatMap((category) => category.products)
         .filter((product) => product.onSale);
     },
@@ -217,9 +230,15 @@ export const useProductStore = defineStore({
 
     // Hämtar alla produkter i en kategori
     getCategory(findCategory) {
+      if (findCategory === "All Products") {
+        return this.products
+          .filter((category) => category.category !== "All Products")
+          .flatMap((category) => category.products);
+      }
       const category = this.products.find(
         (category) => category.category === findCategory
       );
+      //om kategorin är all products renderas products
       return category ? category.products : [];
     },
     // Hämtar produkten med ett specifikt id
@@ -277,16 +296,16 @@ export const useProductStore = defineStore({
     //   this.cart = [];
     // },
 
-    //sessionstorage för varukorg
-    saveCartToSession() {
-      sessionStorage.setItem("cart", JSON.stringify(this.cart));
-    },
-    restoreCartFromSession() {
-      const cartFromSession = sessionStorage.getItem("cart");
-      if (cartFromSession) {
-        this.cart = JSON.parse(cartFromSession);
-      }
-    },
+    // saveToSession(id, data) {
+    //   sessionStorage.setItem(id, JSON.stringify(data));
+    // },
+    // getDataFromSession(id) {
+    //   const dataFromSession = sessionStorage.getItem(id);
+    //   if (dataFromSession) {
+    //     const data = JSON.parse(dataFromSession);
+    //     return data;
+    //   }
+    // },
 
     //filter
     getFilteredProducts(category, colour, price, rating) {
@@ -321,16 +340,9 @@ export const useProductStore = defineStore({
         return total + itemTotal;
       }, 0);
     },
+
     // totala antalet produkter i varukorgen
     cartQuantity: (state) => {
-      console.log("state:", state);
-      console.log("state.cart:", state.cart);
-      return state.cart.reduce((total, item) => total + item.quantity, 0);
-    },
-    // totala antalet produkter i varukorgen
-    cartQuantity: (state) => {
-      console.log("state:", state);
-      console.log("state.cart:", state.cart);
       return state.cart.reduce((total, item) => total + item.quantity, 0);
     },
   },
