@@ -48,12 +48,7 @@ const productPrice = computed(() => {
             Color:
             <span :style="{ color: product.color }">{{ product.color }}</span>
           </h5>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Delectus,
-            quas deleniti quod vel magnam nostrum. Id commodi blanditiis porro
-            fugit, ab, fugiat necessitatibus similique, culpa asperiores veniam
-            excepturi unde! Optio.
-          </p>
+          <p>{{ product.description }}</p>
         </BRow>
         <BButton
           @click.prevent="productStore.addToCart(product)"

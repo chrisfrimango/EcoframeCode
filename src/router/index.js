@@ -6,7 +6,6 @@ import CustomerSupportView from "../views/CustomerSupportView.vue";
 import SalesView from "../views/SalesView.vue";
 import ProductPageView from "../views/ProductPageView.vue";
 import CheckoutView from "@/views/CheckoutView.vue";
-import MoreAdviceView from "@/views/MoreAdviceView.vue";
 import OrderConfirmationView from "@/views/OrderConfirmationView.vue";
 import CreateAccountView from "@/views/CreateAccountView.vue";
 import MyAccountView from "@/views/MyAccountView.vue";
@@ -58,11 +57,6 @@ const router = createRouter({
       path: "/orderconfirmation",
       name: "OrderConfirmation",
       component: OrderConfirmationView,
-    },
-    {
-      path: "/Advice",
-      name: "Advice",
-      component: MoreAdviceView,
     },
     {
       path: "/createaccount",

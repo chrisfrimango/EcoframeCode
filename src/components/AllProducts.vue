@@ -8,11 +8,15 @@ const productStore = useProductStore();
 const route = useRoute();
 const router = useRouter();
 const category = computed(() => route.params.category);
+const filteredProducts = computed(() => store.filteredProducts);
 
-const products = computed(() => productStore.getCategory(category.value));
+const products = computed(() => {
+  return productStore.filteredProducts.length > 0
+    ? productStore.filteredProducts
+    : productStore.getCategory(category.value);
+});
 
 const goToProductPage = (productId) => {
-  console.log(productId);
   router.push({ name: "ProductPage", params: { productId } });
 };
 </script>
@@ -21,7 +25,7 @@ const goToProductPage = (productId) => {
   <BContainer fluid>
     <h2 class="text-center my-4 text-primary">{{ category }}</h2>
     <BRow>
-      <BCol col="12" md="4" v-for="product in products" :key="product.id">
+      <BCol cols="6" md="4" v-for="product in products" :key="product.id">
         <BCard
           class="rounded-0"
           border-variant="light"

@@ -104,7 +104,7 @@ const handleDropdownToggle = (dropdownId) => {
               >
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/"
+              <router-link class="nav-item nav-link" to="/customersupport"
                 >Contact</router-link
               >
             </li>
@@ -278,8 +278,8 @@ const handleDropdownToggle = (dropdownId) => {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: lightgrey;
-  color: black;
+  background-color: red;
+  color: white;
   border-radius: 50%;
   padding: 2px 6px;
   font-size: 12px;

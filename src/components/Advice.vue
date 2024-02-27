@@ -75,3 +75,13 @@ img {
   }
 }
 </style>
+
+<script>
+export default {
+  props: {
+    imagePosition: String,
+    textContent: String,
+    heading: String,
+  },
+};
+</script>

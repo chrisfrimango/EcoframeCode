@@ -1,7 +1,7 @@
 <template>
   <div class="container filter-wrapper">
-    <button class="btn btn-light d-block d-md-none mb-3" @click="toggleShowFilters" style="width: 60%; margin: 0 auto; background-color: white;">
-      {{ showFilters ? 'Hide Filters' : 'Show Filters' }}
+    <button class="btn filter-btn" :class="  {'btn-light': !isMobileView, 'btn-dark': isMobileView}" @click="toggleShowFilters" :style="buttonStyle">
+      Filters
     </button>
 
     <div v-show="showFilters" class="filter-content px-2 py-3">
@@ -10,19 +10,31 @@
       </div>
 
       <!-- Kategorival -->
-      <div v-if="isMobileView" class="mb-4">
+      <div class="mb-4">
         <select class="form-select mb-4" v-model="selectedCategory">
           <option value="" disabled selected>Select Category</option>
           <option v-for="category in categories" :key="category" :value="category">{{ category }}</option>
         </select>
       </div>
 
+      <!-- Brand filter -->
+      <div class="card mb-4">
+        <div class="card-header">Brand</div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item" v-for="brand in brands" :key="brand">
+            <input type="radio" class="me-2" v-model="selectedBrands" :value="brand" :id="brand">
+            <label :for="brand">{{ brand }}</label>
+          </li>
+        </ul>
+      </div>
+
       <!-- Färgfilter -->
       <div class="card mb-4">
-        <div class="card-header">Colour</div>
+        <div class="card-header">Color</div>
         <ul class="list-group list-group-flush">
-          <li class="list-group-item" v-for="colour in colours" :key="colour">
-            <input type="radio" class="me-2" v-model="selectedColour" :value="colour" :name="colour"> {{ colour }}
+          <li class="list-group-item" v-for="color in colors" :key="color">
+            <input type="radio" class="me-2" v-model="selectedColor" :value="color" :id="color">
+            <label :for="color">{{ color }}</label>
           </li>
         </ul>
       </div>
@@ -51,7 +63,7 @@
 
       <!-- knappar -->
       <div class="d-flex justify-content-between mb-4">
-        <button class="btn btn-secondary me-3" @click="clearFilters">Clear Filters</button>
+        <button class="btn btn-secondary me-3" v-if="isAnyFilterActive" @click="clearFilters">Clear Filters</button>
         <button class="btn btn-success" @click="applyFilters">Show Products</button>
       </div>
     </div>
@@ -68,123 +80,77 @@
   </div>
 </template>
 
-<script>
-import { useRoute } from 'vue-router';
-import { watch } from 'vue';
-import { useProductStore } from '@/stores/productStore';
+<script setup>
+  import { ref, watchEffect, computed} from 'vue';
+  import { useProductStore } from '@/stores/productStore';
 
-export default {
-  data() {
-    return {
-      showFilters: true,
-      isMobileView: window.innerWidth < 768,
-      selectedCategory: '',
-      selectedColour: '',
-      selectedPrice: '',
-      selectedRating: 0,
-      showResults: true,
-      filtersApplied: false,
+  const store = useProductStore();
+  const isMobileView = ref(window.innerWidth < 768);
+  const showFilters = ref(!isMobileView.value);
+  const selectedCategory = ref('');
+  const selectedColor = ref('');
+  const selectedPrice = ref('');
+  const selectedRating = ref(0);
+  const selectedBrands = ref([]);
+  const filtersCleared = ref(false);
+  const isAnyFilterActive = computed(() => {
+    return selectedCategory.value !== '' ||
+           selectedColor.value !== '' ||
+           selectedPrice.value !== '' ||
+           selectedRating.value !== 0 ||
+           selectedBrands.value.length > 0;
+  });
 
+  const filteredProducts = computed(() => store.filteredProducts);
+  const filtersApplied = computed(() => filteredProducts.value.length > 0 && !filtersCleared.value);
+  const categories = computed(() => store.getCategories());
+  const colors = computed(() => ['Black', 'Brown', 'Light', 'Blue', 'Yellow']);
+  const brands = computed(() => ['Rayban', 'Oakley', 'Gucci', 'Prada', 'Tom Ford', 'Versace']);
+  const prices = computed(() => ['Under 1000 SEK', '1000 - 3000 SEK', 'Over 3000 SEK']);
+  const ratings = computed(() => [5, 4, 3, 2, 1]);
+
+  const applyFilters = () => {
+    const filters = {
+      category: selectedCategory.value,
+      brands: selectedBrands.value,
+      color: selectedColor.value,
+      price: selectedPrice.value,
+      rating: selectedRating.value,
     };
-  },
-  computed: {
-    categories() {
-      const store = useProductStore();
-      return store.getCategories();
-    },
-    colours() {
-      return ['Black', 'Brown', 'Light', 'Blue', 'Yellow'];
-    },
-    prices() {
-      return ['Under 1000 SEK', '1000 - 3000 SEK', 'Over 3000 SEK'];
-    },
-    ratings() {
-      return [5, 4, 3, 2, 1];
-    },
-    filteredProducts() {
-      const store = useProductStore();
-      let filtered = store.products.flatMap(category => category.products);
+    store.applyFilters(filters);
+    filtersCleared.value = false;
 
-      console.log("Initial products:", filtered);
+    console.log('Applying filters:', filters);
+  };
 
-      if (this.selectedCategory) {
-        filtered = store.getCategory(this.selectedCategory);
+  const clearFilters = () => {
+    const currentCategory = selectedCategory.value;
+    selectedCategory.value = '';
+    selectedColor.value = '';
+    selectedPrice.value = '';
+    selectedRating.value = 0;
+    selectedBrands.value = [];
+    filtersCleared.value = true;
 
-        console.log("After category filter:", filtered);
-      }
+    if (isMobileView.value) {
+      showFilters.value = false;
+    }
+  };
 
-      if (this.selectedColour) {
-        filtered = filtered.filter(product => product.colour === this.selectedColour);
+  const toggleShowFilters = () => {
+    showFilters.value = !showFilters.value;
+  };
 
-        console.log("After colour filter:", filtered);
-      }
-
-      if (this.selectedPrice) {
-        const priceRange = this.selectedPrice.match(/\d+/g);
-        if (priceRange) {
-          const minPrice = priceRange[0];
-          const maxPrice = priceRange[1] || Infinity;
-          filtered = filtered.filter(product => product.price >= minPrice && product.price <= maxPrice);
-
-          console.log("After price filter:", filtered);
-        }
-      }
-
-      if (this.selectedRating) {
-        filtered = filtered.filter(product => product.rating === this.selectedRating);
-
-        console.log("After rating filter:", filtered);
-      }
-
-      return filtered;
-    },
-  },
-  methods: {
-    toggleShowFilters() {
-      this.showFilters = !this.showFilters;
-    },
-    adjustView() {
-      this.isMobileView = window.innerWidth < 768;
-    },
-    clearFilters() {
-      console.log("Clearing filters:", this.selectedCategory, this.selectedColour, this.selectedPrice, this.selectedRating);
-
-      this.selectedCategory = '';
-      this.selectedColour = '';
-      this.selectedPrice = '';
-      this.selectedRating = 0;
-       this.showResults = false;
-      this.filtersApplied = false;
-    },
-    applyFilters() {
-        console.log("Filters applied:", {
-        category: this.selectedCategory,
-        colour: this.selectedColour,
-        price: this.selectedPrice,
-        rating: this.selectedRating,
-      });
-      this.showResults = false;
-      this.filtersApplied = false;
-  }
-  },
-  mounted() {
-    const route = useRoute();
-
-    watch(() => route.params, (newValue, oldValue) => {
-      if (newValue.category !== oldValue.category) {
-        this.selectedCategory = newValue.category || '';
-
-        console.log("Route changed. New category:", this.selectedCategory);
-      }
-    }, { deep: true });
-
-    window.addEventListener('resize', this.adjustView);
-    this.selectedCategory = route.params.category || '';
-  },
-  beforeUnmount() {
-    window.removeEventListener('resize', this.adjustView);
-  },
-}
+  watchEffect(() => {
+  const handleResize = () => {
+    isMobileView.value = window.innerWidth < 768;
+    showFilters.value = !isMobileView.value;
+  };
+  window.addEventListener('resize', handleResize);
+  return () => {
+    window.removeEventListener('resize', handleResize);
+  };
+});
 </script>
 
 
@@ -192,6 +158,16 @@ export default {
 .card img {
   width: 100%;
   height: 80px;
+}
+
+.filter-wrapper {
+  position: relative;
+}
+
+@media (min-width: 992px) {
+  .filter-btn {
+    display: none;
+  }
 }
 
 @media (max-width: 991px) {
@@ -202,10 +178,28 @@ export default {
   }
   .filter-wrapper {
     width: 60%;
-    margin: 0 auto;
+    margin: 10px;
+    padding: 0;
+  }
+ .filter-btn {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    position: static !important;
+    left: 10px !important;
+    top: 10px !important;
+    width: 100px !important;
+    min-width: 100px !important;
+    max-width: 100px !important;
+    height: 40px !important;
+    background-color: black !important;
+    color: white !important;
+    z-index: 100 !important;
+    border: none !important;
+    border-radius: 5px !important;
   }
   .btn {
-    width: 100%;
+    width: 150px;
   }
   .product-cards .card {
     margin-bottom: 15px;

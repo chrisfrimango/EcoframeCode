@@ -36,8 +36,8 @@
       <p>Your cart is empty.</p>
     </div>
     <div class="buttons mt-4 d-flex flex-column align-items-center">
-      <button class="btn btn-outline-dark mb-2" style="min-width: 200px;" @click="continueShopping">Continue shopping</button>
-      <button class="btn btn-success" style="min-width: 200px;" @click="checkout">Till Checkout</button>
+      <button class="btn btn-outline-dark mb-2" style="max-width: 150px;" @click="continueShopping">Continue shopping</button>
+      <button class="btn btn-success" style="max-width: 150px;" @click="checkout">Till Checkout</button>
     </div>
   </div>
 </template>
@@ -46,6 +46,7 @@
 import { computed } from 'vue';
 import { useProductStore } from '../stores/productStore';
 import { useRouter } from 'vue-router';
+
 
 const router = useRouter();
 const productStore = useProductStore();
@@ -61,7 +62,8 @@ function removeFromCart(itemId) {
 }
 
 function continueShopping() {
-  router.push({ name: 'Home' });
+  router.push({name: 'home'})
+  // router.push({ name: 'Shop', params: { category: category } });
 }
 
 function checkout() {
@@ -71,17 +73,16 @@ function checkout() {
 
 <style scoped>
 .varukorg-container {
-  width: 90%;
+  width: 100%;
   margin: auto;
   margin-bottom: 200px;
   text-align: center;
 }
 
-.header-row, .item-row, .total-price {
-  border: 1px solid #ccc;
+.header-row, .item-row{
+  border-bottom: 1px solid #D3D3D3;
   padding: 10px;
-  border-radius: 5px;
-  margin-bottom: 10px;
+  margin-bottom: 20px;
 }
 
 .img-fluid {
