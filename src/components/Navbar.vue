@@ -162,7 +162,7 @@ const handleDropdownToggle = (dropdownId) => {
                   <router-link class="dropdown-item" to="/">Login</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/"
+                  <router-link class="dropdown-item" to="createaccount"
                     >Create Account</router-link
                   >
                 </li>
@@ -199,10 +199,11 @@ const handleDropdownToggle = (dropdownId) => {
                     <span class="visually-hidden">unread messages</span>
                   </BBadge>
                 </h6>
-                <span v-if="cartItemCount > 0" class="cart-item-count">{{
+
+                <!-- <span v-if="cartItemCount > 0" class="cart-item-count">{{
                   cartItemCount
-                }}</span></i
-              ></router-link
+                }}</span> -->
+              </i></router-link
             >
           </div>
         </div>
