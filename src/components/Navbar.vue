@@ -1,9 +1,11 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { ref, onMounted, onUnmounted } from "vue";
+import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 const router = useRouter();
 const productStore = useProductStore();
+const cartItemCount = computed(() => productStore.cartItemCount);
 
 const searchQuery = ref("");
 const activeDropdown = ref(null);
@@ -58,9 +60,12 @@ const handleDropdownToggle = (dropdownId) => {
             <router-link class="nav-link text-dark me-2" to="/"
               ><i class="bi bi-heart icon-large"></i
             ></router-link>
-            <router-link class="nav-link text-dark" to="/cart"
+            <router-link class="nav-link text-dark position-relative" to="/cart"
               ><i class="bi bi-cart icon-large"></i
-            ></router-link>
+              ><span v-if="cartItemCount > 0" class="cart-item-count">{{
+                cartItemCount
+              }}</span></router-link
+            >
           </div>
         </div>
         <!-- Desktop View -->
@@ -91,21 +96,6 @@ const handleDropdownToggle = (dropdownId) => {
                     >{{ category }}</router-link
                   >
                 </li>
-                <!-- <li>
-                  <router-link class="dropdown-item" to="/shop/popular"
-                    >Popular</router-link
-                  >
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/shop/new-arrivals"
-                    >New Arrivals</router-link
-                  >
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/shop/kids"
-                    >Kids</router-link
-                  >
-                </li> -->
               </ul>
             </li>
             <li>
@@ -114,7 +104,7 @@ const handleDropdownToggle = (dropdownId) => {
               >
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/"
+              <router-link class="nav-item nav-link" to="/customersupport"
                 >Contact</router-link
               >
             </li>
@@ -172,7 +162,7 @@ const handleDropdownToggle = (dropdownId) => {
                   <router-link class="dropdown-item" to="/">Login</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/"
+                  <router-link class="dropdown-item" to="createaccount"
                     >Create Account</router-link
                   >
                 </li>
@@ -196,9 +186,25 @@ const handleDropdownToggle = (dropdownId) => {
             <router-link class="nav-link text-dark me-2" to="/"
               ><i class="bi bi-heart icon-large"></i
             ></router-link>
-            <router-link class="nav-link text-dark" to="/cart"
-              ><i class="bi bi-cart icon-large"></i
-            ></router-link>
+            <router-link class="nav-link text-dark position-relative" to="/cart"
+              ><i class="bi bi-cart icon-large position-relative"
+                ><h6>
+                  <BBadge
+                    v-if="productStore.cartQuantity > 0"
+                    variant="danger"
+                    pill
+                    text-indicator
+                  >
+                    {{ productStore.cartQuantity }}
+                    <span class="visually-hidden">unread messages</span>
+                  </BBadge>
+                </h6>
+
+                <!-- <span v-if="cartItemCount > 0" class="cart-item-count">{{
+                  cartItemCount
+                }}</span> -->
+              </i></router-link
+            >
           </div>
         </div>
       </div>
@@ -266,6 +272,17 @@ const handleDropdownToggle = (dropdownId) => {
 }
 .navbar-collapse .navbar-nav .nav-link {
   padding-left: 20px;
+}
+
+.cart-item-count {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: red;
+  color: white;
+  border-radius: 50%;
+  padding: 2px 6px;
+  font-size: 12px;
 }
 
 @media (max-width: 991px) {
