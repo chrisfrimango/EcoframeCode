@@ -104,7 +104,7 @@ const handleDropdownToggle = (dropdownId) => {
               >
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/"
+              <router-link class="nav-item nav-link" to="/customersupport"
                 >Contact</router-link
               >
             </li>
@@ -162,7 +162,7 @@ const handleDropdownToggle = (dropdownId) => {
                   <router-link class="dropdown-item" to="/">Login</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/"
+                  <router-link class="dropdown-item" to="createaccount"
                     >Create Account</router-link
                   >
                 </li>
@@ -199,10 +199,11 @@ const handleDropdownToggle = (dropdownId) => {
                     <span class="visually-hidden">unread messages</span>
                   </BBadge>
                 </h6>
-                <span v-if="cartItemCount > 0" class="cart-item-count">{{
+
+                <!-- <span v-if="cartItemCount > 0" class="cart-item-count">{{
                   cartItemCount
-                }}</span></i
-              ></router-link
+                }}</span> -->
+              </i></router-link
             >
           </div>
         </div>
@@ -277,8 +278,8 @@ const handleDropdownToggle = (dropdownId) => {
   position: absolute;
   top: -10px;
   right: -10px;
-  background-color: lightgrey;
-  color: black;
+  background-color: red;
+  color: white;
   border-radius: 50%;
   padding: 2px 6px;
   font-size: 12px;
