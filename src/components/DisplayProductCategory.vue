@@ -4,27 +4,34 @@
       <img src="@/assets/man-sunglasses.jpg" alt="Man with sunglasses">
       <div class="overlay">
         <h2 class="text">Sunwear</h2>
-        <input @click="onClick" type="button" class="button" value="Buy">
+        <input @click="navigateToShop('Sunwear')" type="button" class="button" value="Buy">
       </div>
     </div>
     <div class="image-with-overlay">
       <img src="@/assets/woman-glasses.jpg" alt="Woman with glasses">
       <div class="overlay">
         <h2 class="text">Optical </h2>
-        <input @click="onClick" type="button" class="button" value="Buy">
+        <input @click="navigateToShop('New')" type="button" class="button" value="Buy">
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { useRouter } from 'vue-router';
+
 export default {
-  methods: {
-    onClick() {
-      // Handle button click event
-    }
+  setup() {
+    const router = useRouter();
+
+    const navigateToShop = (category) => {
+      router.push({ name: 'Shop', params: { category: category }});
+    };
+
+    return { navigateToShop };
   }
 }
+
 </script>
 
 <style scoped>
