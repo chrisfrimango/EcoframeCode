@@ -101,7 +101,7 @@ const handleDropdownToggle = (dropdownId) => {
               </ul>
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/">About us</router-link>
+              <router-link class="nav-item nav-link" to="/about-us">About us</router-link>
             </li>
             <li>
               <router-link class="nav-item nav-link" to="/customersupport"
