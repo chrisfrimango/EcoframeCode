@@ -103,7 +103,12 @@
 
   const filteredProducts = computed(() => store.filteredProducts);
   const filtersApplied = computed(() => filteredProducts.value.length > 0 && !filtersCleared.value);
-  const categories = computed(() => store.getCategories());
+
+  const categories = computed(() => {
+  console.log('Categories:', store.getCategories());
+  return store.getCategories();
+});
+
   const colors = computed(() => ['Black', 'Brown', 'Light', 'Blue', 'Yellow']);
   const brands = computed(() => ['Rayban', 'Oakley', 'Gucci', 'Prada', 'Tom Ford', 'Versace']);
   const prices = computed(() => ['Under 1000 SEK', '1000 - 3000 SEK', 'Over 3000 SEK']);
@@ -121,6 +126,7 @@
     filtersCleared.value = false;
 
     console.log('Applying filters:', filters);
+    console.log('Filtered products:', store.filteredProducts);
   };
 
   const clearFilters = () => {
@@ -142,14 +148,17 @@
   };
 
   watchEffect(() => {
-  const handleResize = () => {
-    isMobileView.value = window.innerWidth < 768;
-    showFilters.value = !isMobileView.value;
-  };
-  window.addEventListener('resize', handleResize);
-  return () => {
-    window.removeEventListener('resize', handleResize);
-  };
+    console.log('Selected category:', selectedCategory.value);
+    console.log('Selected brands:', selectedBrands.value);
+
+    const handleResize = () => {
+      isMobileView.value = window.innerWidth < 991;
+      showFilters.value = !isMobileView.value;
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
 });
 </script>
 

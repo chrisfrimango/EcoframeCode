@@ -308,30 +308,19 @@ export const useProductStore = defineStore({
     saveCartToSession() {
       sessionStorage.setItem("cart", JSON.stringify(this.cart));
     },
-    applyFilters(filters) {
-      console.log('Applying filters with: ', filters);
-
-      if (!this.originalProducts || this.originalProducts.length === 0) {
-        console.error('No original products to filter from');
-        return;
+    // återställa varukorgen från sessionStorage
+    restoreCartFromSession() {
+      const cartFromSession = sessionStorage.getItem("cart");
+      if (cartFromSession) {
+        this.cart = JSON.parse(cartFromSession);
       }
-
-      this.filteredProducts = this.originalProducts.filter(product => {
-        const matchesCategory = filters.category ? product.category === filters.category : true;
-        const matchesBrand = filters.brands.length ? filters.brands.includes(product.brand) : true;
-        const matchesColor = filters.color ? product.color === filters.color : true;
-        const matchesPrice = filters.price ?
-        (product.price >= filters.price.min && product.price <= filters.price.max) : true;
-        const matchesRating = filters.rating ? product.rating >= filters.rating : true;
-
-        return matchesCategory && matchesBrand && matchesColor && matchesPrice && matchesRating;
-      });
-      console.log('Filtered products: ', this.filteredProducts);
     },
 
     //filter
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(category => category.products);
+
+      console.log(this.originalProducts);
     },
     applyFilters(filters) {
       console.log('Applying filters with: ', filters);
@@ -342,12 +331,28 @@ export const useProductStore = defineStore({
       }
 
       this.filteredProducts = this.originalProducts.filter(product => {
+        console.log("Filtering product:", product);
+
         const matchesCategory = filters.category ? product.category === filters.category : true;
+        console.log("Matches category:",
+        matchesCategory);
+
         const matchesBrand = filters.brands.length ? filters.brands.includes(product.brand) : true;
+        console.log("Matches brand:",
+        matchesBrand);
+
         const matchesColor = filters.color ? product.color === filters.color : true;
+        console.log("Matches color:",
+        matchesColor);
+
         const matchesPrice = filters.price ?
         (product.price >= filters.price.min && product.price <= filters.price.max) : true;
+        console.log("Matches Price:",
+        matchesPrice);
+
         const matchesRating = filters.rating ? product.rating >= filters.rating : true;
+        console.log("Matches rating:",
+        matchesRating);
 
         return matchesCategory && matchesBrand && matchesColor && matchesPrice && matchesRating;
       });
