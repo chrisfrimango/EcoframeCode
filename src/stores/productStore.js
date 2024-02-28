@@ -4,28 +4,15 @@ import { v4 as uuidv4 } from "uuid";
 export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
+    currentAccount: null,
+    loggedIn: false,
     accounts: [],
-<<<<<<< HEAD
-    cart:[],
+    cart: [],
     originalProducts: [],
     filteredProducts: [],
     discount: 10,
     productId: null,
-    // cart:[ {
-=======
-    cart: [],
     checkoutCart: [],
-    // cart: [ {
->>>>>>> f9c2a8c905dbe23b892067285c17f588884c026e
-    //   id: uuidv4(),
-    //   modelName: "Avaitor",
-    //   brand: "Rayban",
-    //   price: 1200,
-    //   image: "https://picsum.photos/200/300",
-    //   color: "Black",
-    //   rating: 4,
-    //   quantity:1,
-    // },],
     products: [
       {
         category: "Sunwear",
@@ -38,7 +25,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 4,
-            description: "Embrace style with a conscience in our recycled plastic frames, stylishly repurposing waste materials to combat plastic pollution and elevate your look.",
+            description:
+              "Embrace style with a conscience in our recycled plastic frames, stylishly repurposing waste materials to combat plastic pollution and elevate your look.",
           },
           {
             id: uuidv4(),
@@ -49,7 +37,8 @@ export const useProductStore = defineStore({
             color: "Brown",
             rating: 3,
             onSale: true,
-            description: "Crafted from sustainable bamboo, our eco-conscious eyewear not only reduces carbon footprint but also promotes reforestation efforts for a greener tomorrow.",
+            description:
+              "Crafted from sustainable bamboo, our eco-conscious eyewear not only reduces carbon footprint but also promotes reforestation efforts for a greener tomorrow.",
           },
           {
             id: uuidv4(),
@@ -59,7 +48,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 5,
-            description: "Our upcycled metal frames offer durability and style while minimizing environmental impact by repurposing materials, making a statement in sustainability",
+            description:
+              "Our upcycled metal frames offer durability and style while minimizing environmental impact by repurposing materials, making a statement in sustainability",
           },
           {
             id: uuidv4(),
@@ -69,7 +59,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Grey",
             rating: 4,
-            description: "Experience eco-friendly elegance with our bio-based acetate frames, derived from renewable resources to provide chic alternatives to traditional plastics, embodying both style and sustainability.",
+            description:
+              "Experience eco-friendly elegance with our bio-based acetate frames, derived from renewable resources to provide chic alternatives to traditional plastics, embodying both style and sustainability.",
           },
         ],
       },
@@ -85,7 +76,8 @@ export const useProductStore = defineStore({
             color: "Blue",
             rating: 4,
             onSale: true,
-            description: "Fashion meets sustainability with our carbon-neutral sunglasses featuring plant-based lenses, contributing to a brighter future while making a bold statement.",
+            description:
+              "Fashion meets sustainability with our carbon-neutral sunglasses featuring plant-based lenses, contributing to a brighter future while making a bold statement.",
           },
           {
             id: 1111,
@@ -95,7 +87,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Red",
             rating: 3,
-            description: "Support ethical production practices and empower communities with our fair trade sunglasses, where style meets social responsibility.",
+            description:
+              "Support ethical production practices and empower communities with our fair trade sunglasses, where style meets social responsibility.",
           },
           {
             id: uuidv4(),
@@ -105,7 +98,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Gold",
             rating: 5,
-            description: "Combat marine plastic pollution in style with our ocean-friendly sunglasses made from reclaimed fishing nets, turning waste into fashionable accessories.",
+            description:
+              "Combat marine plastic pollution in style with our ocean-friendly sunglasses made from reclaimed fishing nets, turning waste into fashionable accessories.",
           },
           {
             id: uuidv4(),
@@ -116,7 +110,8 @@ export const useProductStore = defineStore({
             color: "Grey",
             rating: 4,
             onSale: true,
-            description: "From production to delivery, our zero-waste eyewear packaging uses recycled materials, ensuring sustainability every step of the way.",
+            description:
+              "From production to delivery, our zero-waste eyewear packaging uses recycled materials, ensuring sustainability every step of the way.",
           },
         ],
       },
@@ -131,7 +126,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 2,
-            description: "Harness renewable energy for innovative functionality with our solar-powered smart glasses, leading the way in eco-friendly eyewear.",
+            description:
+              "Harness renewable energy for innovative functionality with our solar-powered smart glasses, leading the way in eco-friendly eyewear.",
           },
           {
             id: uuidv4(),
@@ -141,7 +137,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Brown",
             rating: 3,
-            description: "Choose compostable eyewear crafted from biodegradable materials to reduce landfill waste without compromising on style.",
+            description:
+              "Choose compostable eyewear crafted from biodegradable materials to reduce landfill waste without compromising on style.",
           },
           {
             id: uuidv4(),
@@ -152,7 +149,8 @@ export const useProductStore = defineStore({
             color: "Black",
             rating: 5,
             onSale: true,
-            description: "Experience compassion in fashion with our cruelty-free eyewear, crafted without animal-derived materials for a truly ethical choice.",
+            description:
+              "Experience compassion in fashion with our cruelty-free eyewear, crafted without animal-derived materials for a truly ethical choice.",
           },
           {
             id: uuidv4(),
@@ -162,7 +160,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Yellow",
             rating: 1,
-            description: "Offset emissions and contribute to climate action with our carbon-negative eyewear brands supporting reforestation projects for a sustainable future.",
+            description:
+              "Offset emissions and contribute to climate action with our carbon-negative eyewear brands supporting reforestation projects for a sustainable future.",
           },
         ],
       },
@@ -177,7 +176,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Green",
             rating: 4,
-            description: "Less is more when it comes to sustainability; embrace minimalist designs with maximum environmental impact.",
+            description:
+              "Less is more when it comes to sustainability; embrace minimalist designs with maximum environmental impact.",
           },
           {
             id: uuidv4(),
@@ -187,7 +187,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Yellow",
             rating: 3,
-            description: "Preserve precious resources with our water-saving production methods used in crafting eco-conscious eyewear, making sustainability a priority.",
+            description:
+              "Preserve precious resources with our water-saving production methods used in crafting eco-conscious eyewear, making sustainability a priority.",
           },
           {
             id: uuidv4(),
@@ -198,7 +199,8 @@ export const useProductStore = defineStore({
             color: "Red",
             rating: 5,
             onSale: true,
-            description: "For truly zero-waste fashion choices, opt for our packaging-free eyewear options, minimizing environmental impact without sacrificing style.",
+            description:
+              "For truly zero-waste fashion choices, opt for our packaging-free eyewear options, minimizing environmental impact without sacrificing style.",
           },
           {
             id: uuidv4(),
@@ -208,7 +210,8 @@ export const useProductStore = defineStore({
             image: "https://picsum.photos/200/300",
             color: "Black",
             rating: 1,
-            description: "Invest in environmental education and conservation initiatives with community-driven eyewear brands, making a positive impact beyond fashion.",
+            description:
+              "Invest in environmental education and conservation initiatives with community-driven eyewear brands, making a positive impact beyond fashion.",
           },
         ],
       },
@@ -223,7 +226,34 @@ export const useProductStore = defineStore({
       this.accounts.push(values);
       console.log(this.accounts);
 
-      // this.saveToSession("accounts", this.accounts);
+      this.saveToSession("accounts", this.accounts);
+    },
+
+    validateLogin(values) {
+      const accounts = this.getAccountsFromSession();
+      const user = accounts.find(
+        (account) =>
+          account.email === values.email && account.password === values.password
+      );
+      if (user) {
+        return user;
+      }
+      return false;
+    },
+
+    saveLoggedInToSession() {
+      sessionStorage.setItem("loggedIn", JSON.stringify(this.loggedIn));
+    },
+
+    getLoggedInFromSession() {
+      const loggedIn = sessionStorage.getItem("loggedIn");
+      return loggedIn ? JSON.parse(loggedIn) : false;
+    },
+
+    logout() {
+      this.loggedIn = false;
+      this.saveLoggedInToSession();
+      this.currentAccount = null;
     },
 
     // Hämtar produkter som är på rea
@@ -319,72 +349,121 @@ export const useProductStore = defineStore({
     //   this.cart = [];
     // },
 
-    // saveToSession(id, data) {
-    //   sessionStorage.setItem(id, JSON.stringify(data));
-    // },
-    // getDataFromSession(id) {
-    //   const dataFromSession = sessionStorage.getItem(id);
-    //   if (dataFromSession) {
-    //     const data = JSON.parse(dataFromSession);
-    //     return data;
-    //   }
-    // },
-
-    //filter
-<<<<<<< HEAD
-    initializeOriginalProducts() {
-      this.originalProducts = this.products.flatMap(category => category.products);
+    saveCurrentAccountToSession() {
+      sessionStorage.setItem(
+        "currentAccount",
+        JSON.stringify(this.currentAccount)
+      );
     },
-    applyFilters(filters) {
-      console.log('Applying filters with: ', filters);
+    getCurrentAccountFromSession() {
+      const currentAccount = sessionStorage.getItem("currentAccount");
+      return currentAccount ? JSON.parse(currentAccount) : [];
+    },
+    getAccountsFromSession() {
+      const accounts = sessionStorage.getItem("accounts");
+      return accounts ? JSON.parse(accounts) : [];
+    },
 
-      if (!this.originalProducts || this.originalProducts.length === 0) {
-        console.error('No original products to filter from');
-        return;
+    saveCartToSession() {
+      sessionStorage.setItem("cart", JSON.stringify(this.cart));
+    },
+    restoreCartFromSession() {
+      const cartFromSession = sessionStorage.getItem("cart");
+      if (cartFromSession) {
+        this.cart = JSON.parse(cartFromSession);
       }
-
-      this.filteredProducts = this.originalProducts.filter(product => {
-        const matchesCategory = filters.category ? product.category === filters.category : true;
-        const matchesBrand = filters.brands.length ? filters.brands.includes(product.brand) : true;
-        const matchesColor = filters.color ? product.color === filters.color : true;
-        const matchesPrice = filters.price ?
-        (product.price >= filters.price.min && product.price <= filters.price.max) : true;
-        const matchesRating = filters.rating ? product.rating >= filters.rating : true;
-
-        return matchesCategory && matchesBrand && matchesColor && matchesPrice && matchesRating;
-      });
-      console.log('Filtered products: ', this.filteredProducts);
     },
 
     //filter
-<<<<<<< HEAD
+
     initializeOriginalProducts() {
-      this.originalProducts = this.products.flatMap(category => category.products);
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
+      );
     },
     applyFilters(filters) {
-      console.log('Applying filters with: ', filters);
+      console.log("Applying filters with: ", filters);
 
       if (!this.originalProducts || this.originalProducts.length === 0) {
-        console.error('No original products to filter from');
+        console.error("No original products to filter from");
         return;
       }
 
-      this.filteredProducts = this.originalProducts.filter(product => {
-        const matchesCategory = filters.category ? product.category === filters.category : true;
-        const matchesBrand = filters.brands.length ? filters.brands.includes(product.brand) : true;
-        const matchesColor = filters.color ? product.color === filters.color : true;
-        const matchesPrice = filters.price ?
-        (product.price >= filters.price.min && product.price <= filters.price.max) : true;
-        const matchesRating = filters.rating ? product.rating >= filters.rating : true;
+      this.filteredProducts = this.originalProducts.filter((product) => {
+        const matchesCategory = filters.category
+          ? product.category === filters.category
+          : true;
+        const matchesBrand = filters.brands.length
+          ? filters.brands.includes(product.brand)
+          : true;
+        const matchesColor = filters.color
+          ? product.color === filters.color
+          : true;
+        const matchesPrice = filters.price
+          ? product.price >= filters.price.min &&
+            product.price <= filters.price.max
+          : true;
+        const matchesRating = filters.rating
+          ? product.rating >= filters.rating
+          : true;
 
-        return matchesCategory && matchesBrand && matchesColor && matchesPrice && matchesRating;
+        return (
+          matchesCategory &&
+          matchesBrand &&
+          matchesColor &&
+          matchesPrice &&
+          matchesRating
+        );
       });
-      console.log('Filtered products: ', this.filteredProducts);
+      console.log("Filtered products: ", this.filteredProducts);
+    },
+
+    //filte
+    initializeOriginalProducts() {
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
+      );
+    },
+    applyFilters(filters) {
+      console.log("Applying filters with: ", filters);
+
+      if (!this.originalProducts || this.originalProducts.length === 0) {
+        console.error("No original products to filter from");
+        return;
+      }
+
+      this.filteredProducts = this.originalProducts.filter((product) => {
+        const matchesCategory = filters.category
+          ? product.category === filters.category
+          : true;
+        const matchesBrand = filters.brands.length
+          ? filters.brands.includes(product.brand)
+          : true;
+        const matchesColor = filters.color
+          ? product.color === filters.color
+          : true;
+        const matchesPrice = filters.price
+          ? product.price >= filters.price.min &&
+            product.price <= filters.price.max
+          : true;
+        const matchesRating = filters.rating
+          ? product.rating >= filters.rating
+          : true;
+
+        return (
+          matchesCategory &&
+          matchesBrand &&
+          matchesColor &&
+          matchesPrice &&
+          matchesRating
+        );
+      });
+      console.log("Filtered products: ", this.filteredProducts);
     },
     clearFilters() {
       this.filteredProducts = [...this.originalProducts];
       this.filtersActive = false;
-=======
+    },
     getFilteredProducts(category, colour, price, rating) {
       let result = this.products.flatMap((category) => category.products);
       if (category)
@@ -398,7 +477,6 @@ export const useProductStore = defineStore({
       if (rating)
         result = result.filter((product) => product.rating === rating);
       return result;
->>>>>>> f9c2a8c905dbe23b892067285c17f588884c026e
     },
   },
 

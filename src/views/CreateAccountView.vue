@@ -7,6 +7,7 @@ import router from "@/router";
 const productStore = useProductStore();
 
 const accountCreated = ref(false);
+const existingAccount = ref(false);
 
 const schema = yup.object({
   email: yup.string().required().email().label("Email address"),
@@ -54,20 +55,35 @@ const goToLogin = () =>
   }, 5000);
 
 const onSubmit = handleSubmit((values) => {
-  productStore.createNewAccount(values);
-  resetForm();
-  accountCreated.value = accountCreated.value ? false : true;
-  goToLogin();
-  // save to session storage
+  const accounts = productStore.getAccountsFromSession();
+  const accountExists = accounts.find(
+    (account) =>
+      account.email === values.email && account.password === values.password
+  );
+
+  if (accountExists) {
+    console.log("account exists");
+    existingAccount.value = true;
+    console.log(accountExists);
+    return;
+  } else {
+    productStore.createNewAccount(values);
+    resetForm();
+    accountCreated.value = true;
+    goToLogin();
+  }
 });
 </script>
 
 <template>
-  <BCol class="m-5 p-4 bg-light" v-if="accountCreated === false">
+  <BCol
+    class="m-5 p-4 bg-light"
+    v-if="accountCreated === false && existingAccount === false"
+  >
     <h2 class="text-uppercase text-primary m-4">Sign up</h2>
-    <h3 class="text-uppercase text-primary m-4 text-wrap">
-      Become a ecoframe friend
-    </h3>
+    <h5 class="text-uppercase text-primary m-4 text-wrap">
+      Become a ecofriend!
+    </h5>
     <BForm @submit="onSubmit()" @reset="resetForm()">
       <BFormGroup
         id="input-group-1"
@@ -142,14 +158,20 @@ const onSubmit = handleSubmit((values) => {
     </BForm>
     <p class="text-center mt-4">
       Allready member?
-      <router-link class="text-info" to="/">login here</router-link>
+      <router-link class="text-info" to="/LoginPage">login here</router-link>
     </p>
   </BCol>
-  <BCol v-if="accountCreated" class="m-5 p-4 bg-light">
+  <BCol v-if="accountCreated === true" class="m-5 p-4 bg-light">
     <h2 class="text-uppercase text-primary m-4">Account created</h2>
     <p class="text-center mt-4">
       You can now login and start using ecoframe. You will be redirected to the
       login page in 5 seconds.
+    </p>
+  </BCol>
+  <BCol v-if="existingAccount === true" class="m-5 p-4 bg-light">
+    <h2 class="text-uppercase text-primary m-4">Account allready exist</h2>
+    <p class="text-center mt-4">
+      Go to the login page and login with your credentials.
     </p>
   </BCol>
 </template>
