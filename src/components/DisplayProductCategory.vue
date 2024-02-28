@@ -39,15 +39,9 @@ export default {
     };
 
     return { navigateToShop };
-  },
-};
-// export default {
-//   methods: {
-//     onClick() {
-//       // Handle button click event
-//     }
-//   }
-// }
+  }
+}
+
 </script>
 
 <style scoped>
@@ -60,12 +54,6 @@ export default {
   position: relative;
   flex: 1;
   overflow: hidden;
-}
-
-.img {
-  margin: 0;
-  padding: 0;
-  border: none;
 }
 
 .image-with-overlay img {
