@@ -2,6 +2,38 @@
   <div>
     <h2>Checkout</h2>
     <br>
+    <div class="summary-container"> 
+      <p>Summary:</p>
+    <div v-if="cartItems.length > 0">
+      <div class="row text-center mb-3 header-row">
+        <div class="col-4">Product</div>
+        <div class="col-2">Price</div>
+        <div class="col-2">Quantity</div>
+        <div class="col-3">Total amount</div>
+      </div>
+      <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
+        <div class="row align-items-center text-center item-row">
+          <div class="col-2">
+            <img src="../assets/sunwear.png" alt="Product Image" class="img-fluid" style="max-height: 100px;">
+          </div>
+          <div class="col-2">{{ item.modelName }}</div>
+          <div class="col-2">{{ item.price }} SEK</div>
+          <div class="col-2">{{ item.quantity }}</div>
+          <div class="col-3">{{ item.quantity * item.price }} SEK</div>
+        </div>
+      </div>
+
+      <!-- Display cart total -->
+      <div class="row text-center total-row">
+        <div class="col-7"></div>
+        <div class="col-2"><strong>Total</strong></div>
+        <div class="col-3"><strong>{{ cartTotal }} SEK</strong></div>
+      </div>
+     </div>
+     <div v-else>Your cart is empty</div>
+    </div>
+    <br>
+    <div v-if="!showSummary">
     <div class="input-container">
       <!-- Email input -->
       <div role="group">
@@ -87,13 +119,28 @@
         <BButton variant="primary" style="min-width: 200px;" @click="pay" :disabled="!isPaymentValid">Pay</BButton>
       </div>
     </div>
-    <div class="line"></div>
   </div>
+  <!-- Will only show up when the information is correct and payment initiated -->
+  <div v-else="showSummary">
+  <p> Summary:</p>
+  <div></div>
+  <BButton variant="primary" style="min-width: 200px;" @click="toOrderConformation">Continue</BButton>
+  </div>
+  </div>
+  <br>
 </template>
 
-<script setup lang="ts">
+<script setup>
 import { ref, computed, watch } from 'vue';
+import { useProductStore } from '../stores/productStore';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+const productStore = useProductStore();
+const cartItems = computed(() => productStore.getCartItems);
+const cartTotal = computed(() => productStore.cartTotal);
+
+const showSummary = ref(false);
 const showContent = ref(false);
 
 const email = ref('');
@@ -143,9 +190,14 @@ const paymentOptions = [
 const selectedDeliveryOption = ref('');
 const selectedPaymentOption = ref('');
 
+// Show all information needed
 const toggleContent = () => {
   showContent.value = !showContent.value;
 };
+// Show the complete summary without the inputs
+const toggleSummaryContent = () => {
+showSummary.value = !showSummary.value;
+}
 
 // Watch for changes in selected payment option to show/hide card payment input
 const showCardPaymentInput = ref(false);
@@ -154,12 +206,42 @@ watch(selectedPaymentOption, (newValue) => {
   showCardPaymentInput.value = newValue === 'X';
 });
 
-const pay = () => {
-console.log('Payment initiated');
-}
+function saveSummaryData() {
+  const summaryData = {
+    email: email.value,
+    zipcode: zipcode.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    address: address.value,
+    city: city.value,
+    phone: phone.value,
+    selectedDeliveryOption: selectedDeliveryOption.value,
+    selectedPaymentOption: selectedPaymentOption.value,
+  }
+  };
+
+  const pay = () => {
+  saveSummaryData();
+  toggleSummaryContent ();
+  };
+
+  const toOrderConformation = () => {
+  router.push({name: "OrderConfirmation"})
+  };
+
 </script>
 
 <style scoped>
+.summary-container{
+border:1px solid rgb(206, 206, 206);
+padding:15px;
+border-radius:5%;
+}
+
+.summary-container p {
+font-weight: bold;
+}
+
 .input-container {
   display: flex;
   justify-content: space-between;
@@ -171,17 +253,8 @@ console.log('Payment initiated');
   padding-right: 20px;
 }
 
-.button {
-  margin-bottom: 20px;
-}
-
 .address-form {
   margin-bottom: 20px;
-}
-
-.inline-input {
-  display: inline-block;
-  width: calc(50%);
 }
 
 .button {
@@ -195,7 +268,4 @@ console.log('Payment initiated');
   margin-bottom: 20px; 
 }
 
-p {
-  text-align: center; 
-}
 </style>

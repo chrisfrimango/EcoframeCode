@@ -5,18 +5,9 @@ export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
     accounts: [],
-<<<<<<< HEAD
-    cart:[],
-    originalProducts: [],
-    filteredProducts: [],
-    discount: 10,
-    productId: null,
-    // cart:[ {
-=======
     cart: [],
     checkoutCart: [],
     // cart: [ {
->>>>>>> f9c2a8c905dbe23b892067285c17f588884c026e
     //   id: uuidv4(),
     //   modelName: "Avaitor",
     //   brand: "Rayban",
@@ -331,7 +322,14 @@ export const useProductStore = defineStore({
     // },
 
     //filter
-<<<<<<< HEAD
+
+    restoreCartFromSession() {
+      const cartFromSession = sessionStorage.getItem("cart");
+      if (cartFromSession) {
+        this.cart = JSON.parse(cartFromSession);
+      }
+    },
+    
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(category => category.products);
     },
@@ -357,7 +355,6 @@ export const useProductStore = defineStore({
     },
 
     //filter
-<<<<<<< HEAD
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(category => category.products);
     },
@@ -384,7 +381,8 @@ export const useProductStore = defineStore({
     clearFilters() {
       this.filteredProducts = [...this.originalProducts];
       this.filtersActive = false;
-=======
+    },
+
     getFilteredProducts(category, colour, price, rating) {
       let result = this.products.flatMap((category) => category.products);
       if (category)
@@ -398,8 +396,7 @@ export const useProductStore = defineStore({
       if (rating)
         result = result.filter((product) => product.rating === rating);
       return result;
->>>>>>> f9c2a8c905dbe23b892067285c17f588884c026e
-    },
+    }
   },
 
   getters: {
