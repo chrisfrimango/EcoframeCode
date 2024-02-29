@@ -8,7 +8,6 @@ export const useProductStore = defineStore({
     loggedIn: false,
     accounts: [],
     cart: [],
-    favorites:  [],
     favorites: [],
     originalProducts: [],
     filteredProducts: [],
@@ -279,6 +278,7 @@ export const useProductStore = defineStore({
         this.favorites.push(product);
       }
     },
+
     isFavorite(productId) {
       return this.favorites.some((product) => product.id === productId);
     },
@@ -303,6 +303,7 @@ export const useProductStore = defineStore({
       }
       return null;
     },
+
     // Hämtar alla kategorier
     getCategories() {
       return this.products.map((category) => category.category);
@@ -321,6 +322,7 @@ export const useProductStore = defineStore({
       //om kategorin är all products renderas products
       return category ? category.products : [];
     },
+
     // Hämtar produkten med ett specifikt id
     getProductById(productId) {
       return this.products
@@ -382,14 +384,17 @@ export const useProductStore = defineStore({
         JSON.stringify(this.currentAccount)
       );
     },
+
     getCurrentAccountFromSession() {
       const currentAccount = sessionStorage.getItem("currentAccount");
       return currentAccount ? JSON.parse(currentAccount) : [];
     },
+
     getAccountsFromSession() {
       const accounts = sessionStorage.getItem("accounts");
       return accounts ? JSON.parse(accounts) : [];
     },
+
     checkIfAccountExist(email) {
       const accounts = this.getAccountsFromSession();
       const user = accounts.find((account) => account.email === email);
@@ -402,6 +407,7 @@ export const useProductStore = defineStore({
     saveCartToSession() {
       sessionStorage.setItem("cart", JSON.stringify(this.cart));
     },
+
     restoreCartFromSession() {
       const cartFromSession = sessionStorage.getItem("cart");
       if (cartFromSession) {
@@ -410,12 +416,12 @@ export const useProductStore = defineStore({
     },
 
     //filter
-
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(
         (category) => category.products
       );
     },
+
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
 
@@ -464,6 +470,7 @@ export const useProductStore = defineStore({
         (category) => category.products
       );
     },
+
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
 
@@ -501,24 +508,6 @@ export const useProductStore = defineStore({
           : true;
         console.log("Matches rating:", matchesRating);
 
-      this.filteredProducts = this.originalProducts.filter((product) => {
-        const matchesCategory = filters.category
-          ? product.category === filters.category
-          : true;
-        const matchesBrand = filters.brands.length
-          ? filters.brands.includes(product.brand)
-          : true;
-        const matchesColor = filters.color
-          ? product.color === filters.color
-          : true;
-        const matchesPrice = filters.price
-          ? product.price >= filters.price.min &&
-            product.price <= filters.price.max
-          : true;
-        const matchesRating = filters.rating
-          ? product.rating >= filters.rating
-          : true;
-
         return (
           matchesCategory &&
           matchesBrand &&
@@ -529,6 +518,7 @@ export const useProductStore = defineStore({
       });
       console.log("Filtered products: ", this.filteredProducts);
     },
+
     clearFilters() {
       this.filteredProducts = [...this.originalProducts];
       this.filtersActive = false;
