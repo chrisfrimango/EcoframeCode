@@ -18,6 +18,10 @@ const goToProductPage = (productId) => {
   router.push({ name: "ProductPage", params: { productId } });
 };
 
+const goToAllProductPage = (category) => {
+  router.push({ name: "Shop", params: { category } });
+};
+
 console.log(categoryToDisplay.value);
 </script>
 
@@ -56,7 +60,12 @@ console.log(categoryToDisplay.value);
       </BCol>
     </BRow>
     <BCol class="d-flex justify-content-center m-4">
-      <BButton to="/shop" variant="primary">See all</BButton>
+      <BButton
+        @click.prevent="goToAllProductPage(props.categoryToDisplay)"
+        to="/shop"
+        variant="primary"
+        >See all</BButton
+      >
     </BCol>
   </BContainer>
 </template>

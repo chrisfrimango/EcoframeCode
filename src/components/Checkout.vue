@@ -226,8 +226,9 @@ function saveSummaryData() {
   };
 
   const toOrderConformation = () => {
-  router.push({name: "OrderConfirmation"})
-  };
+  router.push({name: "OrderConfirmation"
+})
+  }
 
 </script>
 
