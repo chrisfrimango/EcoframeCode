@@ -50,61 +50,58 @@
     </div>
     <br />
     <div v-if="!showSummary">
-      <div class="input-container">
-        <!-- Email input -->
-        <div role="group">
-          <BFormInput
-            id="input-email"
-            v-model="email"
-            :state="emailIsValid ? true : false"
-            aria-describedby="input-email-help"
-            placeholder="Email address"
-            trim
-          />
-        </div>
-
-        <div role="group">
-          <!-- Zipcode input -->
-          <BFormInput
-            id="input-zipcode"
-            v-model="zipcode"
-            :state="zipcodeIsValid ? true : false"
-            aria-describedby="input-zipcode-help"
-            placeholder="Zipcode"
-            trim
-            @input="onZipcodeInput"
-          />
-        </div>
+      <div class="guestOrMember">
+        <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
       </div>
-      <div class="button">
-        <!-- Continue button with disabled attribute -->
-        <BButton
-          variant="success"
-          style="min-width: 200px"
-          @click="toggleContent"
-          :disabled="!isFormValid"
-          >Continue</BButton
-        >
+    <div class="input-container">
+      <!-- Email input -->
+      <div role="group">
+        <BFormInput
+          id="input-email"
+          v-model="email"
+          :state="emailIsValid ? true : false"
+          aria-describedby="input-email-help"
+          placeholder="Email address"
+          trim
+        />
+      </div>
+      <div role="group">
+        <!-- Zipcode input -->
+        <BFormInput
+          id="input-zipcode"
+          v-model="zipcode"
+          :state="zipcodeIsValid ? true : false"
+          aria-describedby="input-zipcode-help"
+          placeholder="Zipcode"
+          trim
+          @input="onZipcodeInput"
+        />
+      </div>
+    </div>
+    <div class="button">
+      <!-- Continue button with disabled attribute -->
+      <BButton variant="success" style="min-width: 200px;" @click="toggleContent" :disabled="!isFormValid">Continue</BButton>
+    </div>
+    <div v-if="showContent">
+      <!-- Delivery options -->
+      <div class="deliveryOptions-container">
+        <p>Delivery options:</p>
+        <div>
+          <BFormRadio
+            v-for="option in deliveryOptions"
+            :key="option.value"
+            v-model="selectedDeliveryOption"
+            :name="'delivery-option'"
+            :value="option.value"
+            :disabled="option.disabled"
+          >
+            {{ option.text }} 
+            <br>
+            {{ option.description }}
+          </BFormRadio>
+        </div>
       </div>
       <div v-if="showContent">
-        <!-- Delivery options -->
-        <div class="deliveryOptions-container">
-          <p>Delivery options:</p>
-          <div>
-            <BFormRadio
-              v-for="option in deliveryOptions"
-              :key="option.value"
-              v-model="selectedDeliveryOption"
-              :name="'delivery-option'"
-              :value="option.value"
-              :disabled="option.disabled"
-            >
-              {{ option.text }}
-              <br />
-              {{ option.description }}
-            </BFormRadio>
-          </div>
-        </div>
         <div class="line"></div>
         <!-- Shipping address -->
         <div class="address-form">
@@ -151,19 +148,25 @@
         </div>
       </div>
     </div>
+    </div>
     <!-- Will only show up when the information is correct and payment initiated -->
     <div v-else="showSummary">
       <p>Summary:</p>
-      <div></div>
+      <!-- Custom summary data -->
+      <p><strong>Name:</strong> {{ firstName }} {{ lastName }}</p>
+      <p><strong>Address:</strong> {{ address }}, {{ zipcode }}, {{ city }}</p>
+      <p><strong>Phone:</strong> {{ phone }}</p>
+      <p><strong>Email</strong> {{ email }}</p>
+      <p><strong>Delivery:</strong> {{ selectedDeliveryOptionText }}</p>
+      <p><strong>Payment:</strong> {{ selectedPaymentOptionText }}</p>
       <BButton
         variant="primary"
         style="min-width: 200px"
-        @click="toOrderConformation"
-        >Continue</BButton
+        @click="toOrderConfirmation"
+        >Confirm order</BButton
       >
     </div>
   </div>
-  <br />
 </template>
 
 <script setup>
@@ -174,7 +177,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const productStore = useProductStore();
 const cartItems = computed(() => productStore.getCartItems);
-const cartTotal = computed(() => productStore.cartTotal);
 
 const showSummary = ref(false);
 const showContent = ref(false);
@@ -197,7 +199,6 @@ const zipcodeIsValid = computed(() => {
   return zipcodeRegex.test(zipcode.value);
 });
 
-// Computed property to check if email and zipcode are valid
 const isFormValid = computed(() => {
   return emailIsValid.value && zipcodeIsValid.value;
 });
@@ -247,28 +248,42 @@ const paymentOptions = [
   { text: "Invoice", value: "Z", name: "payment-option", disabled: false },
 ];
 
-// Selected delivery and payment options
 const selectedDeliveryOption = ref("");
 const selectedPaymentOption = ref("");
 
-// Show all information needed
+const goToLogin = () => {
+  router.push({ name: "LoginPage" });
+}
+
 const toggleContent = () => {
   showContent.value = !showContent.value;
 };
-// Show the complete summary without the inputs
-const toggleSummaryContent = () => {
-  showSummary.value = !showSummary.value;
-};
 
-// Watch for changes in selected payment option to show/hide card payment input
 const showCardPaymentInput = ref(false);
 
 watch(selectedPaymentOption, (newValue) => {
   showCardPaymentInput.value = newValue === "X";
 });
 
-function saveSummaryData() {
-  const summaryData = {
+const summaryData = ref({});
+
+const selectedDeliveryOptionText = computed(() => {
+  const option = deliveryOptions.find(opt => opt.value === selectedDeliveryOption.value);
+  return option ? option.text : '';
+});
+
+const selectedPaymentOptionText = computed(() => {
+  const option = paymentOptions.find(opt => opt.value === selectedPaymentOption.value);
+  return option ? option.text : '';
+});
+
+const pay = () => {
+  summaryData.value = saveSummaryData();
+  showSummary.value = true;
+};
+
+const saveSummaryData = () => {
+  return {
     email: email.value,
     zipcode: zipcode.value,
     firstName: firstName.value,
@@ -276,17 +291,13 @@ function saveSummaryData() {
     address: address.value,
     city: city.value,
     phone: phone.value,
-    selectedDeliveryOption: selectedDeliveryOption.value,
-    selectedPaymentOption: selectedPaymentOption.value,
+    selectedDeliveryOption: selectedDeliveryOptionText.value,
+    selectedPaymentOption: selectedPaymentOptionText.value
   };
-}
-
-const pay = () => {
-  saveSummaryData();
-  toggleSummaryContent();
 };
 
-const toOrderConformation = () => {
+const toOrderConfirmation = () => {
+  productStore.clearCart(),
   router.push({ name: "OrderConfirmation" });
 };
 </script>
@@ -326,5 +337,11 @@ const toOrderConformation = () => {
   border-top: 1px solid #8a8787;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.toLogin {
+  color: blue; 
+  text-decoration: underline; 
+  cursor: pointer; 
 }
 </style>
