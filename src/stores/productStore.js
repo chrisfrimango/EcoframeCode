@@ -378,6 +378,14 @@ export const useProductStore = defineStore({
       const accounts = sessionStorage.getItem("accounts");
       return accounts ? JSON.parse(accounts) : [];
     },
+    checkIfAccountExist(email) {
+      const accounts = this.getAccountsFromSession();
+      const user = accounts.find((account) => account.email === email);
+      if (user) {
+        return true;
+      }
+      return false;
+    },
  
     saveCartToSession() {
       sessionStorage.setItem("cart", JSON.stringify(this.cart));
