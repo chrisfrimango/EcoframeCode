@@ -15,6 +15,19 @@ const productPrice = computed(() => {
   }
   return product.value.price;
 });
+
+// const breadcrumbs = computed(() => {
+//   const routes = route.matched;
+//     return routes.map(route => ({
+//       route: route.path
+//     }));
+//     return {
+//       breadcrumbs
+//     };
+// });
+// v-for="(crumb, index) in breadcrumbs" :key="index"
+
+
 </script>
 
 <template>
@@ -27,10 +40,14 @@ const productPrice = computed(() => {
         <BRow class="product-info breadcrumb">
           <nav aria-label="breadcrumb">
             <ol class="breadcrumb">
-              <li class="breadcrumb-item"><a href="/">Home</a></li>
-              <li class="breadcrumb-item"></li>
-              <li class="breadcrumb-item active" aria-current="page">
-                {{ product.modelName }}
+              <li class="breadcrumb-item">
+                <router-link :to="{ path: '/' }">Home</router-link>
+              </li>
+              <li class="breadcrumb-item">
+                <router-link :to="{ path: '/shop/All Products' }" >Shop</router-link>
+              </li>
+              <li class="breadcrumb-item active" aria-current="page" >
+                <router-link to="">{{ product.modelName }}</router-link>
               </li>
             </ol>
           </nav>
