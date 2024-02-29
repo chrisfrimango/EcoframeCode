@@ -537,6 +537,14 @@ export const useProductStore = defineStore({
         result = result.filter((product) => product.rating === rating);
       return result;
     },
+    cartTotal() {
+      return this.cart.reduce((total, item) => {
+        const salesPrice = this.updateProductSalesPrice(item.id);
+        const price = salesPrice ? salesPrice : item.price;
+        const itemTotal = price * item.quantity || 0;
+        return total + itemTotal;
+      }, 0);
+    },
   },
 
   getters: {
@@ -549,12 +557,14 @@ export const useProductStore = defineStore({
     },
 
     // totala priset för varukorgen
-    cartTotal: (state) => {
-      return state.cart.reduce((total, item) => {
-        const itemTotal = item.price * item.quantity || 0;
-        return total + itemTotal;
-      }, 0);
-    },
+    // cartTotal: (state) => {
+    //   return state.cart.reduce((total, item) => {
+    //     const salesPrice = this.updateProductSalesPrice(item.id);
+    //     const price = salesPrice ? salesPrice : item.price;
+    //     const itemTotal = price * item.quantity || 0;
+    //     return total + itemTotal;
+    //   }, 0);
+    // },
 
     // totala antalet produkter i varukorgen
     cartQuantity: (state) => {

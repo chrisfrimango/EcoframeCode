@@ -106,13 +106,18 @@ console.log(categoryToDisplay.value);
   </BContainer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .custom-font-style {
   font-weight: 200;
 }
 
 .custom {
   font-size: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 
 .sales-color {

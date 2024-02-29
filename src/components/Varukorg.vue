@@ -11,24 +11,54 @@
       <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
         <div class="row align-items-center text-center item-row">
           <div class="col-2">
-            <img src="../assets/sunwear.png" alt="Produktbild" class="img-fluid">
+            <img
+              src="../assets/sunwear.png"
+              alt="Produktbild"
+              class="img-fluid"
+            />
           </div>
           <div class="col-3">{{ item.modelName }}</div>
-          <div class="col-3">{{ item.price }} SEK</div>
-         <div class="col-2 ">
-          <button class="btn btn-secondary btn-sm" style="background-color: white; color: black;" @click="updateQuantity(item, -1)">-</button>
-          {{ item.quantity }}
-          <button class="btn btn-secondary btn-sm" style="background-color: white; color: black;" @click="updateQuantity(item, 1)">+</button>
-        </div>
-          <div class="col-2">{{ item.quantity * item.price }} SEK</div>
+          <div v-if="item.onSale" class="col-3 text-danger">
+            {{ productStore.updateProductSalesPrice(item.id) }} SEK
+          </div>
+          <div v-else class="col-3">{{ item.price }} SEK</div>
           <div class="col-2">
-            <a href="#" class="text-danger" @click.prevent="removeFromCart(item.id)">Remove</a>
+            <button
+              class="btn btn-secondary btn-sm"
+              style="background-color: white; color: black"
+              @click="updateQuantity(item, -1)"
+            >
+              -
+            </button>
+            {{ item.quantity }}
+            <button
+              class="btn btn-secondary btn-sm"
+              style="background-color: white; color: black"
+              @click="updateQuantity(item, 1)"
+            >
+              +
+            </button>
+          </div>
+          <div v-if="item.onSale" class="col-2">
+            {{ item.quantity * productStore.updateProductSalesPrice(item.id) }}
+            SEK
+          </div>
+          <div v-if="!item.onSale" class="col-2">
+            {{ item.quantity * item.price }} SEK
+          </div>
+          <div class="col-2">
+            <a
+              href="#"
+              class="text-danger"
+              @click.prevent="removeFromCart(item.id)"
+              >Remove</a
+            >
           </div>
         </div>
       </div>
       <div class="total-price row justify-content-end mt-4">
         <div class="col-6 col-md-4">
-          <strong>Totalt: {{ cartTotal }} SEK</strong>
+          <strong>Totalt: {{ productStore.cartTotal() }} SEK</strong>
         </div>
       </div>
     </div>
@@ -36,17 +66,28 @@
       <p>Your cart is empty.</p>
     </div>
     <div class="buttons mt-4 d-flex flex-column align-items-center">
-      <button class="btn btn-outline-dark mb-2" style="max-width: 150px;" @click="continueShopping">Continue shopping</button>
-      <button class="btn btn-success" style="max-width: 150px;" @click="checkout">Till Checkout</button>
+      <button
+        class="btn btn-outline-dark mb-2"
+        style="max-width: 150px"
+        @click="continueShopping"
+      >
+        Continue shopping
+      </button>
+      <button
+        class="btn btn-success"
+        style="max-width: 150px"
+        @click="checkout"
+      >
+        Till Checkout
+      </button>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from 'vue';
-import { useProductStore } from '../stores/productStore';
-import { useRouter } from 'vue-router';
-
+import { computed } from "vue";
+import { useProductStore } from "../stores/productStore";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const productStore = useProductStore();
@@ -64,12 +105,12 @@ function removeFromCart(itemId) {
 }
 
 function continueShopping() {
-  router.push({name: 'home'})
+  router.push({ name: "home" });
   // router.push({ name: 'Shop', params: { category: category } });
 }
 
 function checkout() {
-  router.push({ name: 'Checkout' });
+  router.push({ name: "Checkout" });
 }
 </script>
 
@@ -79,10 +120,12 @@ function checkout() {
   margin: auto;
   margin-bottom: 200px;
   text-align: center;
+  min-height: 40vh;
 }
 
-.header-row, .item-row{
-  border-bottom: 1px solid #D3D3D3;
+.header-row,
+.item-row {
+  border-bottom: 1px solid #d3d3d3;
   padding: 10px;
   margin-bottom: 20px;
 }
@@ -118,7 +161,8 @@ function checkout() {
     width: 90%;
     margin-bottom: 10px;
   }
-  .cart-item, .total-price {
+  .cart-item,
+  .total-price {
     margin: 10px;
   }
   .img-fluid {
@@ -130,5 +174,4 @@ function checkout() {
     margin-top: 0;
   }
 }
-
 </style>

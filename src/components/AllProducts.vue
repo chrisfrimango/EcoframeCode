@@ -83,7 +83,7 @@ const productPrice = (product) => {
   </BContainer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .sales-color {
   color: red;
 }
@@ -93,6 +93,11 @@ const productPrice = (product) => {
 
 .custom {
   font-size: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2);
+  }
 }
 
 .old-price {

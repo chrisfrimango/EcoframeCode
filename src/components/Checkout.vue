@@ -1,139 +1,175 @@
 <template>
   <div>
     <h2>Checkout</h2>
-    <br>
-    <div class="summary-container"> 
+    <br />
+    <div class="summary-container">
       <p>Summary:</p>
-    <div v-if="cartItems.length > 0">
-      <div class="row text-center mb-3 header-row">
-        <div class="col-4">Product</div>
-        <div class="col-2">Price</div>
-        <div class="col-2">Quantity</div>
-        <div class="col-3">Total amount</div>
-      </div>
-      <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
-        <div class="row align-items-center text-center item-row">
-          <div class="col-2">
-            <img src="../assets/sunwear.png" alt="Product Image" class="img-fluid" style="max-height: 100px;">
+      <div v-if="cartItems.length > 0">
+        <div class="row text-center mb-3 header-row">
+          <div class="col-4">Product</div>
+          <div class="col-2">Price</div>
+          <div class="col-2">Quantity</div>
+          <div class="col-3">Total amount</div>
+        </div>
+        <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
+          <div class="row align-items-center text-center item-row">
+            <div class="col-2">
+              <img
+                src="../assets/sunwear.png"
+                alt="Product Image"
+                class="img-fluid"
+                style="max-height: 100px"
+              />
+            </div>
+            <div class="col-2">{{ item.modelName }}</div>
+            <div v-if="item.onSale" class="col-2 text-danger">
+              {{ productStore.updateProductSalesPrice(item.id) }} SEK
+            </div>
+            <div v-else class="col-2">{{ item.price }} SEK</div>
+            <div class="col-2">{{ item.quantity }}</div>
+            <div v-if="item.onSale" class="col-3">
+              {{
+                item.quantity * productStore.updateProductSalesPrice(item.id)
+              }}
+              SEK
+            </div>
+            <div v-else class="col-3">{{ item.quantity * item.price }} SEK</div>
           </div>
-          <div class="col-2">{{ item.modelName }}</div>
-          <div class="col-2">{{ item.price }} SEK</div>
-          <div class="col-2">{{ item.quantity }}</div>
-          <div class="col-3">{{ item.quantity * item.price }} SEK</div>
+        </div>
+
+        <!-- Display cart total -->
+        <div class="row text-center total-row">
+          <div class="col-7"></div>
+          <div class="col-2"><strong>Total</strong></div>
+          <div class="col-3">
+            <strong>{{ productStore.cartTotal() }} SEK</strong>
+          </div>
         </div>
       </div>
-
-      <!-- Display cart total -->
-      <div class="row text-center total-row">
-        <div class="col-7"></div>
-        <div class="col-2"><strong>Total</strong></div>
-        <div class="col-3"><strong>{{ cartTotal }} SEK</strong></div>
-      </div>
-     </div>
-     <div v-else>Your cart is empty</div>
+      <div v-else>Your cart is empty</div>
     </div>
-    <br>
+    <br />
     <div v-if="!showSummary">
-    <div class="input-container">
-      <!-- Email input -->
-      <div role="group">
-        <BFormInput
-          id="input-email"
-          v-model="email"
-          :state="emailIsValid ? true : false"
-          aria-describedby="input-email-help"
-          placeholder="Email address"
-          trim
-        />
-      </div>
+      <div class="input-container">
+        <!-- Email input -->
+        <div role="group">
+          <BFormInput
+            id="input-email"
+            v-model="email"
+            :state="emailIsValid ? true : false"
+            aria-describedby="input-email-help"
+            placeholder="Email address"
+            trim
+          />
+        </div>
 
-      <div role="group">
-        <!-- Zipcode input -->
-        <BFormInput
-          id="input-zipcode"
-          v-model="zipcode"
-          :state="zipcodeIsValid ? true : false"
-          aria-describedby="input-zipcode-help"
-          placeholder="Zipcode"
-          trim
-          @input="onZipcodeInput"
-        />
-      </div>
-    </div>
-    <div class="button">
-      <!-- Continue button with disabled attribute -->
-      <BButton variant="success" style="min-width: 200px;" @click="toggleContent" :disabled="!isFormValid">Continue</BButton>
-    </div>
-    <div v-if="showContent">
-      <!-- Delivery options -->
-      <div class="deliveryOptions-container">
-        <p>Delivery options:</p>
-        <div>
-          <BFormRadio
-            v-for="option in deliveryOptions"
-            :key="option.value"
-            v-model="selectedDeliveryOption"
-            :name="'delivery-option'"
-            :value="option.value"
-            :disabled="option.disabled"
-          >
-            {{ option.text }} 
-            <br>
-            {{ option.description }}
-          </BFormRadio>
+        <div role="group">
+          <!-- Zipcode input -->
+          <BFormInput
+            id="input-zipcode"
+            v-model="zipcode"
+            :state="zipcodeIsValid ? true : false"
+            aria-describedby="input-zipcode-help"
+            placeholder="Zipcode"
+            trim
+            @input="onZipcodeInput"
+          />
         </div>
       </div>
-      <div class="line"></div>
-      <!-- Shipping address -->
-      <div class="address-form">
-        <p>Shipping address:</p>
-        <BFormInput v-model="firstName" placeholder="First name" />
-        <BFormInput v-model="lastName" placeholder="Last name" />
-        <BFormInput v-model="address" placeholder="Address" />
-        <BFormInput v-model="city" placeholder="City" />
-        <BFormInput v-model="phone" placeholder="Phone" />
-      </div>
-      <div class="line"></div>
-      <!-- Payment options -->
-      <div class="paymentOptions-container">
-        <p>Payment options:</p>
-        <div v-for="option in paymentOptions" :key="option.value">
-          <BFormRadio
-            v-model="selectedPaymentOption"
-            :name="'payment-option'"
-            :value="option.value"
-            :disabled="option.disabled"
-          >
-            {{ option.text }} 
-          </BFormRadio>
-        </div>
-      </div>
-      <!-- Card payment input -->
-      <div v-if="showCardPaymentInput && selectedPaymentOption === 'X'" class="card-payment-input">
-        <p>Card Information:</p>
-        <BFormInput placeholder="Card Number" />
-      </div>
-      <!-- Pay button -->
-      <div class="line"></div>
       <div class="button">
-        <BButton variant="primary" style="min-width: 200px;" @click="pay" :disabled="!isPaymentValid">Pay</BButton>
+        <!-- Continue button with disabled attribute -->
+        <BButton
+          variant="success"
+          style="min-width: 200px"
+          @click="toggleContent"
+          :disabled="!isFormValid"
+          >Continue</BButton
+        >
+      </div>
+      <div v-if="showContent">
+        <!-- Delivery options -->
+        <div class="deliveryOptions-container">
+          <p>Delivery options:</p>
+          <div>
+            <BFormRadio
+              v-for="option in deliveryOptions"
+              :key="option.value"
+              v-model="selectedDeliveryOption"
+              :name="'delivery-option'"
+              :value="option.value"
+              :disabled="option.disabled"
+            >
+              {{ option.text }}
+              <br />
+              {{ option.description }}
+            </BFormRadio>
+          </div>
+        </div>
+        <div class="line"></div>
+        <!-- Shipping address -->
+        <div class="address-form">
+          <p>Shipping address:</p>
+          <BFormInput v-model="firstName" placeholder="First name" />
+          <BFormInput v-model="lastName" placeholder="Last name" />
+          <BFormInput v-model="address" placeholder="Address" />
+          <BFormInput v-model="city" placeholder="City" />
+          <BFormInput v-model="phone" placeholder="Phone" />
+        </div>
+        <div class="line"></div>
+        <!-- Payment options -->
+        <div class="paymentOptions-container">
+          <p>Payment options:</p>
+          <div v-for="option in paymentOptions" :key="option.value">
+            <BFormRadio
+              v-model="selectedPaymentOption"
+              :name="'payment-option'"
+              :value="option.value"
+              :disabled="option.disabled"
+            >
+              {{ option.text }}
+            </BFormRadio>
+          </div>
+        </div>
+        <!-- Card payment input -->
+        <div
+          v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
+          class="card-payment-input"
+        >
+          <p>Card Information:</p>
+          <BFormInput placeholder="Card Number" />
+        </div>
+        <!-- Pay button -->
+        <div class="line"></div>
+        <div class="button">
+          <BButton
+            variant="primary"
+            style="min-width: 200px"
+            @click="pay"
+            :disabled="!isPaymentValid"
+            >Pay</BButton
+          >
+        </div>
       </div>
     </div>
+    <!-- Will only show up when the information is correct and payment initiated -->
+    <div v-else="showSummary">
+      <p>Summary:</p>
+      <div></div>
+      <BButton
+        variant="primary"
+        style="min-width: 200px"
+        @click="toOrderConformation"
+        >Continue</BButton
+      >
+    </div>
   </div>
-  <!-- Will only show up when the information is correct and payment initiated -->
-  <div v-else="showSummary">
-  <p> Summary:</p>
-  <div></div>
-  <BButton variant="primary" style="min-width: 200px;" @click="toOrderConformation">Continue</BButton>
-  </div>
-  </div>
-  <br>
+  <br />
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue';
-import { useProductStore } from '../stores/productStore';
-import { useRouter } from 'vue-router';
+import { ref, computed, watch } from "vue";
+import { useProductStore } from "../stores/productStore";
+import { useRouter } from "vue-router";
 
 const router = useRouter();
 const productStore = useProductStore();
@@ -143,13 +179,13 @@ const cartTotal = computed(() => productStore.cartTotal);
 const showSummary = ref(false);
 const showContent = ref(false);
 
-const email = ref('');
-const zipcode = ref('');
-const firstName = ref('');
-const lastName = ref('');
-const address = ref('');
-const city = ref('');
-const phone = ref('');
+const email = ref("");
+const zipcode = ref("");
+const firstName = ref("");
+const lastName = ref("");
+const address = ref("");
+const city = ref("");
+const phone = ref("");
 
 const emailIsValid = computed(() => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -167,28 +203,53 @@ const isFormValid = computed(() => {
 });
 
 const isPaymentValid = computed(() => {
-  return isFormValid.value && firstName.value !== '' && lastName.value !== '' && address.value !== '' && city.value !== '' && phone.value !== '' && selectedPaymentOption.value !== '';
+  return (
+    isFormValid.value &&
+    firstName.value !== "" &&
+    lastName.value !== "" &&
+    address.value !== "" &&
+    city.value !== "" &&
+    phone.value !== "" &&
+    selectedPaymentOption.value !== ""
+  );
 });
 
 const onZipcodeInput = (event) => {
-  zipcode.value = event.target.value.replace(/\D/g, '');
+  zipcode.value = event.target.value.replace(/\D/g, "");
 };
 
 const deliveryOptions = [
-  { text: 'Box shipping', value: 'A', name: 'delivery-option', description: 'Delivers to closest Instabox', disabled: false },
-  { text: 'Post office', value: 'B', name: 'delivery-option', description:'Delivers to closest post office', disabled: false },
-  { text: 'Collect at store', value: 'C', name: 'delivery-option', disabled: false }
+  {
+    text: "Box shipping",
+    value: "A",
+    name: "delivery-option",
+    description: "Delivers to closest Instabox",
+    disabled: false,
+  },
+  {
+    text: "Post office",
+    value: "B",
+    name: "delivery-option",
+    description: "Delivers to closest post office",
+    disabled: false,
+  },
+  {
+    text: "Collect at store",
+    value: "C",
+    name: "delivery-option",
+    disabled: false,
+  },
 ];
 
 const paymentOptions = [
-  { text: 'Cardpayment', value: 'X', name: 'payment-option', disabled: false },
-  { text: 'Swish', value: 'Y', name: 'payment-option', disabled: false },
-  { text: 'Invoice', value: 'Z', name: 'payment-option', disabled: false } 
+  { text: "Cardpayment", value: "X", name: "payment-option", disabled: false },
+  { text: "Swish", value: "Y", name: "payment-option", disabled: false },
+  { text: "Invoice", value: "Z", name: "payment-option", disabled: false },
 ];
 
 // Selected delivery and payment options
-const selectedDeliveryOption = ref('');
-const selectedPaymentOption = ref('');
+const selectedDeliveryOption = ref("");
+const selectedPaymentOption = ref("");
 
 // Show all information needed
 const toggleContent = () => {
@@ -196,14 +257,14 @@ const toggleContent = () => {
 };
 // Show the complete summary without the inputs
 const toggleSummaryContent = () => {
-showSummary.value = !showSummary.value;
-}
+  showSummary.value = !showSummary.value;
+};
 
 // Watch for changes in selected payment option to show/hide card payment input
 const showCardPaymentInput = ref(false);
 
 watch(selectedPaymentOption, (newValue) => {
-  showCardPaymentInput.value = newValue === 'X';
+  showCardPaymentInput.value = newValue === "X";
 });
 
 function saveSummaryData() {
@@ -217,30 +278,28 @@ function saveSummaryData() {
     phone: phone.value,
     selectedDeliveryOption: selectedDeliveryOption.value,
     selectedPaymentOption: selectedPaymentOption.value,
-  }
   };
+}
 
-  const pay = () => {
+const pay = () => {
   saveSummaryData();
-  toggleSummaryContent ();
-  };
+  toggleSummaryContent();
+};
 
-  const toOrderConformation = () => {
-  router.push({name: "OrderConfirmation"
-})
-  }
-
+const toOrderConformation = () => {
+  router.push({ name: "OrderConfirmation" });
+};
 </script>
 
 <style scoped>
-.summary-container{
-border:1px solid rgb(206, 206, 206);
-padding:15px;
-border-radius:5%;
+.summary-container {
+  border: 1px solid rgb(206, 206, 206);
+  padding: 15px;
+  border-radius: 5%;
 }
 
 .summary-container p {
-font-weight: bold;
+  font-weight: bold;
 }
 
 .input-container {
@@ -259,14 +318,13 @@ font-weight: bold;
 }
 
 .button {
-  margin-top:20px;
+  margin-top: 20px;
   text-align: right;
 }
 
 .line {
   border-top: 1px solid #8a8787;
-  margin-top: 20px; 
-  margin-bottom: 20px; 
+  margin-top: 20px;
+  margin-bottom: 20px;
 }
-
 </style>
