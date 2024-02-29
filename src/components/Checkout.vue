@@ -34,6 +34,9 @@
     </div>
     <br>
     <div v-if="!showSummary">
+      <div class="guestOrMember">
+        <p>Are you a member? <span @click="goToLogin" class="toLogin" @mouseover="increaseSize" @mouseout="resetSize" >Login</span> or continue as guest</p>
+      </div>
     <div class="input-container">
       <!-- Email input -->
       <div role="group">
@@ -46,7 +49,6 @@
           trim
         />
       </div>
-
       <div role="group">
         <!-- Zipcode input -->
         <BFormInput
@@ -124,7 +126,7 @@
   <div v-else="showSummary">
   <p> Summary:</p>
   <div></div>
-  <BButton variant="primary" style="min-width: 200px;" @click="toOrderConformation">Continue</BButton>
+  <BButton variant="primary" style="min-width: 200px;" @click="toOrderConformation">Confirm order</BButton>
   </div>
   </div>
   <br>
@@ -190,6 +192,10 @@ const paymentOptions = [
 const selectedDeliveryOption = ref('');
 const selectedPaymentOption = ref('');
 
+// Clickevent if the login is clicked
+const goToLogin = () => {
+router.push({name:"LoginPage"})
+}
 // Show all information needed
 const toggleContent = () => {
   showContent.value = !showContent.value;
@@ -226,6 +232,7 @@ function saveSummaryData() {
   };
 
   const toOrderConformation = () => {
+    productStore.clearCart (),
   router.push({name: "OrderConfirmation"
 })
   }
@@ -267,6 +274,11 @@ font-weight: bold;
   border-top: 1px solid #8a8787;
   margin-top: 20px; 
   margin-bottom: 20px; 
+}
+.toLogin{
+  color: blue; 
+  text-decoration: underline; 
+  cursor: pointer; 
 }
 
 </style>
