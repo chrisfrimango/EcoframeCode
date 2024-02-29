@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 import { v4 as uuidv4 } from "uuid";
- 
+
 export const useProductStore = defineStore({
   id: "EcommerceApp",
   state: () => ({
@@ -226,10 +226,10 @@ export const useProductStore = defineStore({
     createNewAccount(values) {
       this.accounts.push(values);
       console.log(this.accounts);
- 
+
       this.saveToSession("accounts", this.accounts);
     },
- 
+
     validateLogin(values) {
       const accounts = this.getAccountsFromSession();
       const user = accounts.find(
@@ -241,25 +241,36 @@ export const useProductStore = defineStore({
       }
       return false;
     },
- 
+
+    // checkIfAccountExist(email) {
+    //   const accounts = this.getAccountsFromSession();
+    //   const user = accounts.find((account) => account.email === email);
+    //   if (user) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
+
     saveLoggedInToSession() {
       sessionStorage.setItem("loggedIn", JSON.stringify(this.loggedIn));
     },
- 
+
     getLoggedInFromSession() {
       const loggedIn = sessionStorage.getItem("loggedIn");
       this.loggedIn = loggedIn ? JSON.parse(loggedIn) : false;
       return this.loggedIn;
     },
- 
+
     logout() {
       this.loggedIn = false;
       this.saveLoggedInToSession();
       this.currentAccount = null;
     },
- 
+
     toggleFavorite(productId) {
-      const index = this.favorites.indexOf(productId);
+      const index = this.favorites.findIndex(
+        (product) => product.id === productId
+      );
       if (index !== -1) {
         this.favorites.splice(index, 1);
       } else {
@@ -267,10 +278,11 @@ export const useProductStore = defineStore({
         this.favorites.push(product);
       }
     },
+
     isFavorite(productId) {
-      return this.favorites.includes(productId);
+      return this.favorites.some((product) => product.id === productId);
     },
- 
+
     // Hämtar produkter som är på rea
     getProductsOnSale() {
       return this.products
@@ -283,7 +295,7 @@ export const useProductStore = defineStore({
       const product = this.getProductsOnSale().find(
         (product) => product.id === productId
       );
- 
+
       if (product) {
         const newPrice = product.price - (product.price * this.discount) / 100;
         product.salesPrice = newPrice;
@@ -291,11 +303,12 @@ export const useProductStore = defineStore({
       }
       return null;
     },
+
     // Hämtar alla kategorier
     getCategories() {
       return this.products.map((category) => category.category);
     },
- 
+
     // Hämtar alla produkter i en kategori
     getCategory(findCategory) {
       if (findCategory === "All Products") {
@@ -309,13 +322,14 @@ export const useProductStore = defineStore({
       //om kategorin är all products renderas products
       return category ? category.products : [];
     },
+
     // Hämtar produkten med ett specifikt id
     getProductById(productId) {
       return this.products
         .flatMap((category) => category.products)
         .find((product) => product.id === productId);
     },
- 
+
     // Lägger till en produkt i varukorgen
     addToCart(product) {
       const item = this.cart.find((item) => item.id === product.id);
@@ -325,7 +339,7 @@ export const useProductStore = defineStore({
         this.cart.push({ ...product, quantity: 1 });
       }
     },
- 
+
     updateItemQuantity(itemId, amount) {
       const itemIndex = this.cart.findIndex((item) => item.id === itemId);
       if (itemIndex !== -1) {
@@ -334,13 +348,13 @@ export const useProductStore = defineStore({
           newQuantity = 0;
         }
         this.cart[itemIndex].quantity = newQuantity;
- 
+
         if (this.cart[itemIndex].quantity === 0) {
         }
         this.cart = [...this.cart];
       }
     },
- 
+
     // Ta bort en produkt från varukorgen
     removeItemFromCart(itemId) {
       const index = this.cart.findIndex((item) => item.id === itemId);
@@ -352,32 +366,35 @@ export const useProductStore = defineStore({
     clearCart() {
       this.cart = [];
     },
- 
+
     // skapa ordernummer
     createOrderNumber() {
       return Math.floor(Math.random() * 1000000);
     },
- 
+
     // createOrder() {
- 
+
     //   this.checkoutCart = this.cart;
     //   this.cart = [];
     // },
- 
+
     saveCurrentAccountToSession() {
       sessionStorage.setItem(
         "currentAccount",
         JSON.stringify(this.currentAccount)
       );
     },
+
     getCurrentAccountFromSession() {
       const currentAccount = sessionStorage.getItem("currentAccount");
       return currentAccount ? JSON.parse(currentAccount) : [];
     },
+
     getAccountsFromSession() {
       const accounts = sessionStorage.getItem("accounts");
       return accounts ? JSON.parse(accounts) : [];
     },
+
     checkIfAccountExist(email) {
       const accounts = this.getAccountsFromSession();
       const user = accounts.find((account) => account.email === email);
@@ -386,32 +403,33 @@ export const useProductStore = defineStore({
       }
       return false;
     },
- 
+
     saveCartToSession() {
       sessionStorage.setItem("cart", JSON.stringify(this.cart));
     },
+
     restoreCartFromSession() {
       const cartFromSession = sessionStorage.getItem("cart");
       if (cartFromSession) {
         this.cart = JSON.parse(cartFromSession);
       }
     },
- 
+
     //filter
- 
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(
         (category) => category.products
       );
     },
+
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
- 
+
       if (!this.originalProducts || this.originalProducts.length === 0) {
         console.error("No original products to filter from");
         return;
       }
- 
+
       this.filteredProducts = this.originalProducts.filter((product) => {
         const matchesCategory = filters.category
           ? product.category === filters.category
@@ -429,7 +447,7 @@ export const useProductStore = defineStore({
         const matchesRating = filters.rating
           ? product.rating >= filters.rating
           : true;
- 
+
         return (
           matchesCategory &&
           matchesBrand &&
@@ -440,39 +458,56 @@ export const useProductStore = defineStore({
       });
       console.log("Filtered products: ", this.filteredProducts);
     },
- 
+
     //filte
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(
         (category) => category.products
       );
+
+      console.log(this.originalProducts);
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
+      );
     },
+
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
- 
+
       if (!this.originalProducts || this.originalProducts.length === 0) {
         console.error("No original products to filter from");
         return;
       }
- 
+
       this.filteredProducts = this.originalProducts.filter((product) => {
+        console.log("Filtering product:", product);
+
         const matchesCategory = filters.category
           ? product.category === filters.category
           : true;
+        console.log("Matches category:", matchesCategory);
+
         const matchesBrand = filters.brands.length
           ? filters.brands.includes(product.brand)
           : true;
+        console.log("Matches brand:", matchesBrand);
+
         const matchesColor = filters.color
           ? product.color === filters.color
           : true;
+        console.log("Matches color:", matchesColor);
+
         const matchesPrice = filters.price
           ? product.price >= filters.price.min &&
             product.price <= filters.price.max
           : true;
+        console.log("Matches Price:", matchesPrice);
+
         const matchesRating = filters.rating
           ? product.rating >= filters.rating
           : true;
- 
+        console.log("Matches rating:", matchesRating);
+
         return (
           matchesCategory &&
           matchesBrand &&
@@ -483,6 +518,7 @@ export const useProductStore = defineStore({
       });
       console.log("Filtered products: ", this.filteredProducts);
     },
+
     clearFilters() {
       this.filteredProducts = [...this.originalProducts];
       this.filtersActive = false;
@@ -501,28 +537,38 @@ export const useProductStore = defineStore({
         result = result.filter((product) => product.rating === rating);
       return result;
     },
+    cartTotal() {
+      return this.cart.reduce((total, item) => {
+        const salesPrice = this.updateProductSalesPrice(item.id);
+        const price = salesPrice ? salesPrice : item.price;
+        const itemTotal = price * item.quantity || 0;
+        return total + itemTotal;
+      }, 0);
+    },
   },
- 
+
   getters: {
     cartItemCount: (state) => {
       return state.cart.reduce((total, item) => total + item.quantity, 0);
     },
- 
+
     getCartItems: (state) => {
       return state.cart;
     },
- 
+
     // totala priset för varukorgen
-    cartTotal: (state) => {
-      return state.cart.reduce((total, item) => {
-        const itemTotal = item.price * item.quantity || 0;
-        return total + itemTotal;
-      }, 0);
-    },
- 
+    // cartTotal: (state) => {
+    //   return state.cart.reduce((total, item) => {
+    //     const salesPrice = this.updateProductSalesPrice(item.id);
+    //     const price = salesPrice ? salesPrice : item.price;
+    //     const itemTotal = price * item.quantity || 0;
+    //     return total + itemTotal;
+    //   }, 0);
+    // },
+
     // totala antalet produkter i varukorgen
     cartQuantity: (state) => {
       return state.cart.reduce((total, item) => total + item.quantity, 0);
     },
   },
-})
+});
