@@ -8,6 +8,7 @@ export const useProductStore = defineStore({
     loggedIn: false,
     accounts: [],
     cart: [],
+    favorites:  [],
     favorites: [],
     originalProducts: [],
     filteredProducts: [],
@@ -389,6 +390,14 @@ export const useProductStore = defineStore({
       const accounts = sessionStorage.getItem("accounts");
       return accounts ? JSON.parse(accounts) : [];
     },
+    checkIfAccountExist(email) {
+      const accounts = this.getAccountsFromSession();
+      const user = accounts.find((account) => account.email === email);
+      if (user) {
+        return true;
+      }
+      return false;
+    },
 
     saveCartToSession() {
       sessionStorage.setItem("cart", JSON.stringify(this.cart));
@@ -445,13 +454,15 @@ export const useProductStore = defineStore({
     },
 
     //filte
-    //filter
     initializeOriginalProducts() {
       this.originalProducts = this.products.flatMap(
         (category) => category.products
       );
 
       console.log(this.originalProducts);
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
+      );
     },
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
@@ -489,6 +500,25 @@ export const useProductStore = defineStore({
           ? product.rating >= filters.rating
           : true;
         console.log("Matches rating:", matchesRating);
+
+      this.filteredProducts = this.originalProducts.filter((product) => {
+        const matchesCategory = filters.category
+          ? product.category === filters.category
+          : true;
+        const matchesBrand = filters.brands.length
+          ? filters.brands.includes(product.brand)
+          : true;
+        const matchesColor = filters.color
+          ? product.color === filters.color
+          : true;
+        const matchesPrice = filters.price
+          ? product.price >= filters.price.min &&
+            product.price <= filters.price.max
+          : true;
+        const matchesRating = filters.rating
+          ? product.rating >= filters.rating
+          : true;
+
         return (
           matchesCategory &&
           matchesBrand &&

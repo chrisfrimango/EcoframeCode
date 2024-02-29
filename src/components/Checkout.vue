@@ -1,7 +1,39 @@
 <template>
   <div>
-    <h2>Dina uppgifter:</h2>
-    <br />
+    <h2>Checkout</h2>
+    <br>
+    <div class="summary-container"> 
+      <p>Summary:</p>
+    <div v-if="cartItems.length > 0">
+      <div class="row text-center mb-3 header-row">
+        <div class="col-4">Product</div>
+        <div class="col-2">Price</div>
+        <div class="col-2">Quantity</div>
+        <div class="col-3">Total amount</div>
+      </div>
+      <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
+        <div class="row align-items-center text-center item-row">
+          <div class="col-2">
+            <img src="../assets/sunwear.png" alt="Product Image" class="img-fluid" style="max-height: 100px;">
+          </div>
+          <div class="col-2">{{ item.modelName }}</div>
+          <div class="col-2">{{ item.price }} SEK</div>
+          <div class="col-2">{{ item.quantity }}</div>
+          <div class="col-3">{{ item.quantity * item.price }} SEK</div>
+        </div>
+      </div>
+
+      <!-- Display cart total -->
+      <div class="row text-center total-row">
+        <div class="col-7"></div>
+        <div class="col-2"><strong>Total</strong></div>
+        <div class="col-3"><strong>{{ cartTotal }} SEK</strong></div>
+      </div>
+     </div>
+     <div v-else>Your cart is empty</div>
+    </div>
+    <br>
+    <div v-if="!showSummary">
     <div class="input-container">
       <!-- Email input -->
       <div role="group">
@@ -29,69 +61,96 @@
       </div>
     </div>
     <div class="button">
-      <BButton
-        squared
-        variant="success"
-        style="min-width: 200px"
-        @click="toggleContent"
-        >Fortsätt</BButton
-      >
+      <!-- Continue button with disabled attribute -->
+      <BButton variant="success" style="min-width: 200px;" @click="toggleContent" :disabled="!isFormValid">Continue</BButton>
     </div>
     <div v-if="showContent">
-      <div class="deliveryyOptions-container">
-        <p>Leveransalternativ:</p>
+      <!-- Delivery options -->
+      <div class="deliveryOptions-container">
+        <p>Delivery options:</p>
         <div>
           <BFormRadio
             v-for="option in deliveryOptions"
             :key="option.value"
-            v-model="selectedOption"
-            :name="option.name"
+            v-model="selectedDeliveryOption"
+            :name="'delivery-option'"
             :value="option.value"
             :disabled="option.disabled"
           >
-            {{ option.text }}
-            <br />
+            {{ option.text }} 
+            <br>
             {{ option.description }}
           </BFormRadio>
         </div>
       </div>
       <div class="line"></div>
+      <!-- Shipping address -->
       <div class="address-form">
-        <p>Adressuppgifter:</p>
-        <BFormInput v-model="email" placeholder="E-postadress" />
-        <BFormInput v-model="zipcode" placeholder="Postnummer" />
-        <BFormInput class="inline-input" placeholder="Förnamn" />
-        <BFormInput class="inline-input" placeholder="Efternamn" />
-        <BFormInput placeholder="Adress" />
-        <BFormInput placeholder="Ort" />
-        <BFormInput placeholder="Telefonnummer" />
+        <p>Shipping address:</p>
+        <BFormInput v-model="firstName" placeholder="First name" />
+        <BFormInput v-model="lastName" placeholder="Last name" />
+        <BFormInput v-model="address" placeholder="Address" />
+        <BFormInput v-model="city" placeholder="City" />
+        <BFormInput v-model="phone" placeholder="Phone" />
       </div>
       <div class="line"></div>
+      <!-- Payment options -->
       <div class="paymentOptions-container">
-        <p>Betalningsalternativ:</p>
-        <BFormRadio
-          v-for="option in paymentOptions"
-          :key="option.value"
-          v-model="selectedOption"
-          :name="option.name"
-          :value="option.value"
-          :disabled="option.disabled"
-        >
-          {{ option.text }}
-        </BFormRadio>
+        <p>Payment options:</p>
+        <div v-for="option in paymentOptions" :key="option.value">
+          <BFormRadio
+            v-model="selectedPaymentOption"
+            :name="'payment-option'"
+            :value="option.value"
+            :disabled="option.disabled"
+          >
+            {{ option.text }} 
+          </BFormRadio>
+        </div>
+      </div>
+      <!-- Card payment input -->
+      <div v-if="showCardPaymentInput && selectedPaymentOption === 'X'" class="card-payment-input">
+        <p>Card Information:</p>
+        <BFormInput placeholder="Card Number" />
+      </div>
+      <!-- Pay button -->
+      <div class="line"></div>
+      <div class="button">
+        <BButton variant="primary" style="min-width: 200px;" @click="pay" :disabled="!isPaymentValid">Pay</BButton>
       </div>
     </div>
-    <div class="line"></div>
   </div>
+  <!-- Will only show up when the information is correct and payment initiated -->
+  <div v-else="showSummary">
+  <p> Summary:</p>
+  <div></div>
+  <BButton variant="primary" style="min-width: 200px;" @click="toOrderConformation">Continue</BButton>
+  </div>
+  </div>
+  <br>
 </template>
 
-<script setup lang="ts">
-import { ref, computed } from "vue";
+<script setup>
+import { ref, computed, watch } from 'vue';
+import { useProductStore } from '../stores/productStore';
+import { useRouter } from 'vue-router';
 
+const router = useRouter();
+const productStore = useProductStore();
+const cartItems = computed(() => productStore.getCartItems);
+const cartTotal = computed(() => productStore.cartTotal);
+
+const showSummary = ref(false);
 const showContent = ref(false);
 
-const email = ref("");
-const zipcode = ref("");
+const email = ref('');
+const zipcode = ref('');
+const firstName = ref('');
+const lastName = ref('');
+const address = ref('');
+const city = ref('');
+const phone = ref('');
+
 const emailIsValid = computed(() => {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return emailRegex.test(email.value);
@@ -108,63 +167,82 @@ const isFormValid = computed(() => {
 });
 
 const isPaymentValid = computed(() => {
-  return (
-    isFormValid.value &&
-    firstName.value !== "" &&
-    lastName.value !== "" &&
-    address.value !== "" &&
-    city.value !== "" &&
-    phone.value !== "" &&
-    selectedPaymentOption.value !== ""
-  );
+  return isFormValid.value && firstName.value !== '' && lastName.value !== '' && address.value !== '' && city.value !== '' && phone.value !== '' && selectedPaymentOption.value !== '';
 });
 
 const onZipcodeInput = (event) => {
-  // Gör att endast siffror är godkända för postnummer
-  zipcode.value = event.target.value.replace(/\D/g, "");
+  zipcode.value = event.target.value.replace(/\D/g, '');
 };
 
 const deliveryOptions = [
-  {
-    text: "Paketskåp",
-    value: "A",
-    name: "delivery-option",
-    description: "Levereras till närmsta Instabox",
-    disabled: false,
-  },
-  {
-    text: "Postombud",
-    value: "B",
-    name: "delivery-option",
-    description: "Levereras till närmsta postombud",
-    disabled: false,
-  },
-  {
-    text: "Hämta i butik",
-    value: "C",
-    name: "delivery-option",
-    disabled: false,
-  },
+  { text: 'Box shipping', value: 'A', name: 'delivery-option', description: 'Delivers to closest Instabox', disabled: false },
+  { text: 'Post office', value: 'B', name: 'delivery-option', description:'Delivers to closest post office', disabled: false },
+  { text: 'Collect at store', value: 'C', name: 'delivery-option', disabled: false }
 ];
 
 const paymentOptions = [
-  {
-    text: "Kortbetalning",
-    value: "X",
-    name: "payment-option",
-    disabled: false,
-  },
-  { text: "Swish", value: "Y", name: "payment-option", disabled: false },
-  { text: "Faktura", value: "Z", name: "payment-option", disabled: false },
+  { text: 'Cardpayment', value: 'X', name: 'payment-option', disabled: false },
+  { text: 'Swish', value: 'Y', name: 'payment-option', disabled: false },
+  { text: 'Invoice', value: 'Z', name: 'payment-option', disabled: false } 
 ];
 
-const selectedOption = ref("");
+// Selected delivery and payment options
+const selectedDeliveryOption = ref('');
+const selectedPaymentOption = ref('');
+
+// Show all information needed
 const toggleContent = () => {
   showContent.value = !showContent.value;
 };
+// Show the complete summary without the inputs
+const toggleSummaryContent = () => {
+showSummary.value = !showSummary.value;
+}
+
+// Watch for changes in selected payment option to show/hide card payment input
+const showCardPaymentInput = ref(false);
+
+watch(selectedPaymentOption, (newValue) => {
+  showCardPaymentInput.value = newValue === 'X';
+});
+
+function saveSummaryData() {
+  const summaryData = {
+    email: email.value,
+    zipcode: zipcode.value,
+    firstName: firstName.value,
+    lastName: lastName.value,
+    address: address.value,
+    city: city.value,
+    phone: phone.value,
+    selectedDeliveryOption: selectedDeliveryOption.value,
+    selectedPaymentOption: selectedPaymentOption.value,
+  }
+  };
+
+  const pay = () => {
+  saveSummaryData();
+  toggleSummaryContent ();
+  };
+
+  const toOrderConformation = () => {
+  router.push({name: "OrderConfirmation"
+})
+  }
+
 </script>
 
 <style scoped>
+.summary-container{
+border:1px solid rgb(206, 206, 206);
+padding:15px;
+border-radius:5%;
+}
+
+.summary-container p {
+font-weight: bold;
+}
+
 .input-container {
   display: flex;
   justify-content: space-between;
@@ -176,31 +254,19 @@ const toggleContent = () => {
   padding-right: 20px;
 }
 
-.button {
-  margin-bottom: 20px;
-}
-
 .address-form {
   margin-bottom: 20px;
 }
 
-.inline-input {
-  display: inline-block;
-  width: calc(50%);
-}
-
 .button {
-  margin-top: 20px;
+  margin-top:20px;
   text-align: right;
 }
 
 .line {
   border-top: 1px solid #8a8787;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 20px; 
+  margin-bottom: 20px; 
 }
 
-p {
-  text-align: center;
-}
 </style>
