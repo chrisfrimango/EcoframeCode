@@ -227,7 +227,7 @@ export const useProductStore = defineStore({
       this.accounts.push(values);
       console.log(this.accounts);
 
-      this.saveToSession("accounts", this.accounts);
+      this.saveAccountToSession();
     },
 
     validateLogin(values) {
@@ -388,6 +388,10 @@ export const useProductStore = defineStore({
     getCurrentAccountFromSession() {
       const currentAccount = sessionStorage.getItem("currentAccount");
       return currentAccount ? JSON.parse(currentAccount) : [];
+    },
+
+    saveAccountToSession() {
+      sessionStorage.setItem("accounts", JSON.stringify(this.accounts));
     },
 
     getAccountsFromSession() {
