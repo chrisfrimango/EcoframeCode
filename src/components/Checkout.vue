@@ -152,12 +152,18 @@
     <!-- Will only show up when the information is correct and payment initiated -->
     <div v-else="showSummary">
       <p>Summary:</p>
-      <div></div>
+      <!-- Custom summary data -->
+      <p><strong>Name:</strong> {{ firstName }} {{ lastName }}</p>
+      <p><strong>Address:</strong> {{ address }}, {{ zipcode }}, {{ city }}</p>
+      <p><strong>Phone:</strong> {{ phone }}</p>
+      <p><strong>Email</strong> {{ email }}</p>
+      <p><strong>Delivery:</strong> {{ selectedDeliveryOptionText }}</p>
+      <p><strong>Payment:</strong> {{ selectedPaymentOptionText }}</p>
       <BButton
         variant="primary"
         style="min-width: 200px"
-        @click="toOrderConformation"
-        >Continue</BButton
+        @click="toOrderConfirmation"
+        >Confirm order</BButton
       >
     </div>
   </div>
@@ -171,7 +177,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const productStore = useProductStore();
 const cartItems = computed(() => productStore.getCartItems);
-const cartTotal = computed(() => productStore.cartTotal);
 
 const showSummary = ref(false);
 const showContent = ref(false);
@@ -194,7 +199,6 @@ const zipcodeIsValid = computed(() => {
   return zipcodeRegex.test(zipcode.value);
 });
 
-// Computed property to check if email and zipcode are valid
 const isFormValid = computed(() => {
   return emailIsValid.value && zipcodeIsValid.value;
 });
@@ -244,32 +248,42 @@ const paymentOptions = [
   { text: "Invoice", value: "Z", name: "payment-option", disabled: false },
 ];
 
-// Selected delivery and payment options
 const selectedDeliveryOption = ref("");
 const selectedPaymentOption = ref("");
 
-// Clickevent if the login is clicked
 const goToLogin = () => {
-router.push({name:"LoginPage"})
+  router.push({ name: "LoginPage" });
 }
-// Show all information needed
+
 const toggleContent = () => {
   showContent.value = !showContent.value;
 };
-// Show the complete summary without the inputs
-const toggleSummaryContent = () => {
-  showSummary.value = !showSummary.value;
-};
 
-// Watch for changes in selected payment option to show/hide card payment input
 const showCardPaymentInput = ref(false);
 
 watch(selectedPaymentOption, (newValue) => {
   showCardPaymentInput.value = newValue === "X";
 });
 
-function saveSummaryData() {
-  const summaryData = {
+const summaryData = ref({});
+
+const selectedDeliveryOptionText = computed(() => {
+  const option = deliveryOptions.find(opt => opt.value === selectedDeliveryOption.value);
+  return option ? option.text : '';
+});
+
+const selectedPaymentOptionText = computed(() => {
+  const option = paymentOptions.find(opt => opt.value === selectedPaymentOption.value);
+  return option ? option.text : '';
+});
+
+const pay = () => {
+  summaryData.value = saveSummaryData();
+  showSummary.value = true;
+};
+
+const saveSummaryData = () => {
+  return {
     email: email.value,
     zipcode: zipcode.value,
     firstName: firstName.value,
@@ -277,20 +291,14 @@ function saveSummaryData() {
     address: address.value,
     city: city.value,
     phone: phone.value,
-    selectedDeliveryOption: selectedDeliveryOption.value,
-    selectedPaymentOption: selectedPaymentOption.value,
+    selectedDeliveryOption: selectedDeliveryOptionText.value,
+    selectedPaymentOption: selectedPaymentOptionText.value
   };
-}
+};
 
-const pay = () => {
-  saveSummaryData();
-  toggleSummaryContent ();
-  };
-
-const toOrderConformation = () => {
-  productStore.clearCart (),
-  router.push({name: "OrderConfirmation"
-})
+const toOrderConfirmation = () => {
+  productStore.clearCart(),
+  router.push({ name: "OrderConfirmation" });
 };
 </script>
 
@@ -330,10 +338,10 @@ const toOrderConformation = () => {
   margin-top: 20px;
   margin-bottom: 20px;
 }
-.toLogin{
+
+.toLogin {
   color: blue; 
   text-decoration: underline; 
   cursor: pointer; 
 }
-
 </style>
