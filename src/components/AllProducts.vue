@@ -8,11 +8,11 @@ const productStore = useProductStore();
 const route = useRoute();
 const router = useRouter();
 const category = computed(() => route.params.category);
-const filteredProducts = computed(() => store.filteredProducts);
+const filteredProducts = computed(() => productStore.filteredProducts);
 
 const products = computed(() => {
-  return productStore.filteredProducts.length > 0
-    ? productStore.filteredProducts
+  return filteredProducts.value.length > 0
+    ? filteredProducts.value
     : productStore.getCategory(category.value);
 });
 

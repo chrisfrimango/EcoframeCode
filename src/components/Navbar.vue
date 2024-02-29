@@ -61,7 +61,12 @@ const checkFavorite = computed(() => {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="d-flex">
-            <router-link class="nav-link text-dark me-2" to="/"
+            <router-link
+              class="nav-link text-dark me-1 d-block d-lg-none"
+              to="/MyAccount"
+              ><i class="bi bi-person icon-large"></i
+            ></router-link>
+            <router-link class="nav-link text-dark me-1" to="/"
               ><i class="bi bi-heart icon-large"></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
@@ -103,7 +108,7 @@ const checkFavorite = computed(() => {
               </ul>
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/"
+              <router-link class="nav-item nav-link" to="/about-us"
                 >About us</router-link
               >
             </li>
@@ -187,7 +192,12 @@ const checkFavorite = computed(() => {
             />
           </form>
           <div class="d-none d-lg-flex align-items-center">
-            <router-link class="nav-link text-dark me-2" to="/favoritelist"
+            <router-link
+              class="nav-link text-dark me-1 d-block d-lg-none"
+              to="/MyAccount"
+              ><i class="bi bi-person icon-large"></i
+            ></router-link>
+            <router-link class="nav-link text-dark me-1" to="/favoritelist"
               ><i
                 class="bi bi-heart icon-large"
                 :class="checkFavorite ? 'text-danger' : 'text-secondary'"
@@ -206,10 +216,6 @@ const checkFavorite = computed(() => {
                     <span class="visually-hidden">unread messages</span>
                   </BBadge>
                 </h6>
-
-                <!-- <span v-if="cartItemCount > 0" class="cart-item-count">{{
-                  cartItemCount
-                }}</span> -->
               </i></router-link
             >
           </div>

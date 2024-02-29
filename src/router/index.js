@@ -11,6 +11,7 @@ import CreateAccountView from "@/views/CreateAccountView.vue";
 import MyAccountView from "@/views/MyAccountView.vue";
 import LoginPageView from "@/views/LoginPageView.vue";
 import FavoriteListView from "@/views/FavoriteListView.vue";
+import AboutUsView from "@/views/AboutUsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -41,7 +42,7 @@ const router = createRouter({
       component: ShopView,
     },
     {
-      path: "/shop/:category",
+      path: "/shop/:category?",
       name: "Shop",
       component: ShopView,
     },
@@ -79,6 +80,11 @@ const router = createRouter({
       path: "/favoritelist",
       name: "FavoriteList",
       component: FavoriteListView,
+    },
+    {
+      path: "/about-us",
+      name: "AboutUs",
+      component: AboutUsView,
     },
   ],
 });
