@@ -55,10 +55,12 @@ const cartTotal = computed(() => productStore.cartTotal);
 
 function updateQuantity(item, amount) {
   productStore.updateItemQuantity(item.id, amount);
+  productStore.saveCartToSession();
 }
 
 function removeFromCart(itemId) {
   productStore.removeItemFromCart(itemId);
+  productStore.saveCartToSession();
 }
 
 function continueShopping() {

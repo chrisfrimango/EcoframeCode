@@ -1,7 +1,21 @@
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useProductStore } from "../stores/productStore";
+const productStore = useProductStore();
 const showHelpModal = ref(false);
 const showAccountModal = ref(false);
+
+const toggleLogin = computed(() => {
+  const checkLoggedIn = productStore.getLoggedInFromSession();
+  console.log(checkLoggedIn);
+  return checkLoggedIn ? "Log out" : "Login";
+});
+
+// const logout = () => {
+//   productStore.loggedIn = false;
+//   productStore.saveLoggedInToSession();
+//   productStore.currentAccount = null;
+// };
 </script>
 
 <template>
@@ -34,16 +48,32 @@ const showAccountModal = ref(false);
         </BDropdown>
 
         <BDropdown
-          variant="link"
+          :variant="
+            !productStore.loggedIn ? 'outline-primary' : 'outline-success'
+          "
           @click="showAccountModal = !showAccountModal"
           v-model="showAccountModal"
           offset="10"
           text="Account"
         >
-          <BDropdownItem>Login</BDropdownItem>
-          <BDropdownItem
-            ><router-link to="createaccount"
+          <BDropdownItem v-if="productStore.loggedIn"
+            ><router-link to="/" @click="productStore.logout">{{
+              toggleLogin
+            }}</router-link></BDropdownItem
+          >
+          <BDropdownItem v-else
+            ><router-link to="/loginpage">{{
+              toggleLogin
+            }}</router-link></BDropdownItem
+          >
+          <BDropdownItem v-if="!productStore.loggedIn"
+            ><router-link class="text-primary" to="createaccount"
               >Create account</router-link
+            ></BDropdownItem
+          >
+          <BDropdownItem v-if="productStore.loggedIn"
+            ><router-link class="text-primary" to="myaccount"
+              >My account</router-link
             ></BDropdownItem
           >
         </BDropdown>

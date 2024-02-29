@@ -8,11 +8,11 @@ const productStore = useProductStore();
 const route = useRoute();
 const router = useRouter();
 const category = computed(() => route.params.category);
-const filteredProducts = computed(() => store.filteredProducts);
+const filteredProducts = computed(() => productStore.filteredProducts);
 
 const products = computed(() => {
-  return productStore.filteredProducts.length > 0
-    ? productStore.filteredProducts
+  return filteredProducts.value.length > 0
+    ? filteredProducts.value
     : productStore.getCategory(category.value);
 });
 
@@ -41,12 +41,10 @@ const goToProductPage = (productId) => {
           >
           <BCardText> {{ product.price }} SEK </BCardText>
           <router-link
-            @click.prevent="goToProductPage(product.id)"
-            to="/product/:id"
+            :to="{ name: 'ProductPage', params: { productId: product.id } }"
             class="text-primary"
             style="text-decoration: underline"
-            >See Details</router-link
-          >
+          >See Details</router-link>
         </BCard>
       </BCol>
     </BRow>

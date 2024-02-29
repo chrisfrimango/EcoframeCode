@@ -9,6 +9,8 @@ import CheckoutView from "@/views/CheckoutView.vue";
 import OrderConfirmationView from "@/views/OrderConfirmationView.vue";
 import CreateAccountView from "@/views/CreateAccountView.vue";
 import MyAccountView from "@/views/MyAccountView.vue";
+import LoginPage from "@/views/LoginPageView.vue";
+import AboutUsView from '@/views/AboutUsView.vue';
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -33,13 +35,13 @@ const router = createRouter({
       name: "Sales",
       component: SalesView,
     },
-    // {
-    //   path: "/shop",
-    //   name: "Shop",
-    //   component: ShopView,
-    // },
     {
-      path: "/shop/:category",
+      path: "/shop",
+      name: "Shop",
+      component: ShopView,
+    },
+    {
+      path: "/shop/:category?",
       name: "Shop",
       component: ShopView,
     },
@@ -64,10 +66,20 @@ const router = createRouter({
       component: CreateAccountView,
     },
     {
+      path: "/loginpage",
+      name: "LoginPage",
+      component: LoginPage,
+    },
+    {
       path: "/myaccount",
       name: "MyAccount",
       component: MyAccountView,
     },
+    {
+      path: '/about-us',
+      name: 'AboutUs',
+      component: AboutUsView
+    }
   ],
 });
 
