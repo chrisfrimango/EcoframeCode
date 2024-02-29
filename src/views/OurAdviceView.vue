@@ -30,13 +30,13 @@ const fullTextContentRight = ref(
     :text-content="textContentLeft"
     :heading="headingLeft"
     :full-text-content="fullTextContentLeft"
-  />
+/>
   <Advice
     image-position="right"
     :text-content="textContentRight"
     :heading="headingRight"
     :full-text-content="fullTextContentRight"
-  />
+/>
 </template>
 
 <style scoped>
