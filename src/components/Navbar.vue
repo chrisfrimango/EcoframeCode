@@ -37,6 +37,10 @@ const handleDropdownToggle = (dropdownId) => {
   }
   activeDropdown.value = dropdownId;
 };
+
+const checkFavorite = computed(() => {
+  return productStore.favorites.length > 0;
+});
 </script>
 
 <template>
@@ -57,7 +61,9 @@ const handleDropdownToggle = (dropdownId) => {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="d-flex">
-            <router-link class="nav-link text-dark me-1 d-block d-lg-none" to="/MyAccount"
+            <router-link
+              class="nav-link text-dark me-1 d-block d-lg-none"
+              to="/MyAccount"
               ><i class="bi bi-person icon-large"></i
             ></router-link>
             <router-link class="nav-link text-dark me-1" to="/"
@@ -96,16 +102,20 @@ const handleDropdownToggle = (dropdownId) => {
                     @click.prevent="goToAllProductPage(category)"
                     class="dropdown-item"
                     to="/shop"
-                    >{{ category }}</router-link>
+                    >{{ category }}</router-link
+                  >
                 </li>
               </ul>
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/about-us">About us</router-link>
+              <router-link class="nav-item nav-link" to="/about-us"
+                >About us</router-link
+              >
             </li>
             <li>
               <router-link class="nav-item nav-link" to="/customersupport"
-                >Contact</router-link>
+                >Contact</router-link
+              >
             </li>
 
             <li class="nav-item dropdown" v-if="windowWidth < 992">
@@ -116,10 +126,16 @@ const handleDropdownToggle = (dropdownId) => {
                 role="button"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
-                @click.native.prevent="handleDropdownToggle('customerSupportDropdown')">
+                @click.native.prevent="
+                  handleDropdownToggle('customerSupportDropdown')
+                "
+              >
                 Customer Support
               </a>
-              <ul class="dropdown-menu" aria-labelledby="customerSupportDropdown">
+              <ul
+                class="dropdown-menu"
+                aria-labelledby="customerSupportDropdown"
+              >
                 <li>
                   <router-link class="dropdown-item" to="/">FAQs</router-link>
                 </li>
@@ -176,11 +192,16 @@ const handleDropdownToggle = (dropdownId) => {
             />
           </form>
           <div class="d-none d-lg-flex align-items-center">
-            <router-link class="nav-link text-dark me-1 d-block d-lg-none"  to="/MyAccount"
-              ><i class="bi bi-person icon-large" ></i
+            <router-link
+              class="nav-link text-dark me-1 d-block d-lg-none"
+              to="/MyAccount"
+              ><i class="bi bi-person icon-large"></i
             ></router-link>
-            <router-link class="nav-link text-dark me-1" to="/"
-              ><i class="bi bi-heart icon-large" ></i
+            <router-link class="nav-link text-dark me-1" to="/favoritelist"
+              ><i
+                class="bi bi-heart icon-large"
+                :class="checkFavorite ? 'text-danger' : 'text-secondary'"
+              ></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
               ><i class="bi bi-cart icon-large position-relative"
@@ -195,7 +216,8 @@ const handleDropdownToggle = (dropdownId) => {
                     <span class="visually-hidden">unread messages</span>
                   </BBadge>
                 </h6>
-              </i></router-link>
+              </i></router-link
+            >
           </div>
         </div>
       </div>

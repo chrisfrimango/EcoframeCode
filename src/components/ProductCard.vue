@@ -16,18 +16,6 @@ const productPrice = computed(() => {
   return product.value.price;
 });
 
-// const breadcrumbs = computed(() => {
-//   const routes = route.matched;
-//     return routes.map(route => ({
-//       route: route.path
-//     }));
-//     return {
-//       breadcrumbs
-//     };
-// });
-// v-for="(crumb, index) in breadcrumbs" :key="index"
-
-
 </script>
 
 <template>

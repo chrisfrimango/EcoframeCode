@@ -6,16 +6,9 @@ const showHelpModal = ref(false);
 const showAccountModal = ref(false);
 
 const toggleLogin = computed(() => {
-  const checkLoggedIn = productStore.getLoggedInFromSession();
-  console.log(checkLoggedIn);
-  return checkLoggedIn ? "Log out" : "Login";
+  productStore.getLoggedInFromSession();
+  return productStore.loggedIn ? "Log out" : "Login";
 });
-
-// const logout = () => {
-//   productStore.loggedIn = false;
-//   productStore.saveLoggedInToSession();
-//   productStore.currentAccount = null;
-// };
 </script>
 
 <template>
@@ -95,16 +88,12 @@ span {
   font-weight: 200;
 }
 
-/* Skapa en scss för att ändra färg på link  */
-
-/* Stil för din router-link */
 .router-link-custom {
-  text-decoration: none; /* Tar bort understrykningen */
+  text-decoration: none;
 }
 
 .router-link-custom h2,
 .router-link-custom span {
-  /* Dina stilar för att behålla utseendet på din h2 och span inuti router-link */
-  color: #000; /* Exempel på textfärg */
+  color: #000;
 }
 </style>
