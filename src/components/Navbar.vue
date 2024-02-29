@@ -37,6 +37,10 @@ const handleDropdownToggle = (dropdownId) => {
   }
   activeDropdown.value = dropdownId;
 };
+
+const checkFavorite = computed(() => {
+  return productStore.favorites.length > 0;
+});
 </script>
 
 <template>
@@ -183,8 +187,11 @@ const handleDropdownToggle = (dropdownId) => {
             />
           </form>
           <div class="d-none d-lg-flex align-items-center">
-            <router-link class="nav-link text-dark me-2" to="/"
-              ><i class="bi bi-heart icon-large"></i
+            <router-link class="nav-link text-dark me-2" to="/favoritelist"
+              ><i
+                class="bi bi-heart icon-large"
+                :class="checkFavorite ? 'text-danger' : 'text-secondary'"
+              ></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
               ><i class="bi bi-cart icon-large position-relative"

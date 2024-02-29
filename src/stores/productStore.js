@@ -8,6 +8,7 @@ export const useProductStore = defineStore({
     loggedIn: false,
     accounts: [],
     cart: [],
+    favorites: [],
     originalProducts: [],
     filteredProducts: [],
     discount: 10,
@@ -241,19 +242,44 @@ export const useProductStore = defineStore({
       return false;
     },
 
+    // checkIfAccountExist(email) {
+    //   const accounts = this.getAccountsFromSession();
+    //   const user = accounts.find((account) => account.email === email);
+    //   if (user) {
+    //     return true;
+    //   }
+    //   return false;
+    // },
+
     saveLoggedInToSession() {
       sessionStorage.setItem("loggedIn", JSON.stringify(this.loggedIn));
     },
 
     getLoggedInFromSession() {
       const loggedIn = sessionStorage.getItem("loggedIn");
-      return loggedIn ? JSON.parse(loggedIn) : false;
+      this.loggedIn = loggedIn ? JSON.parse(loggedIn) : false;
+      return this.loggedIn;
     },
 
     logout() {
       this.loggedIn = false;
       this.saveLoggedInToSession();
       this.currentAccount = null;
+    },
+
+    toggleFavorite(productId) {
+      const index = this.favorites.findIndex(
+        (product) => product.id === productId
+      );
+      if (index !== -1) {
+        this.favorites.splice(index, 1);
+      } else {
+        const product = this.getProductById(productId);
+        this.favorites.push(product);
+      }
+    },
+    isFavorite(productId) {
+      return this.favorites.some((product) => product.id === productId);
     },
 
     // Hämtar produkter som är på rea

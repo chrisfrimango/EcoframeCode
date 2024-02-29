@@ -12,6 +12,14 @@ const goToProductPage = (productId) => {
   console.log(productId);
   router.push({ name: "ProductPage", params: { productId } });
 };
+
+const toggleFavorite = (productId) => {
+  productStore.toggleFavorite(productId);
+};
+
+const isFavorite = (productId) => {
+  return productStore.isFavorite(productId);
+};
 </script>
 
 <template>
@@ -39,7 +47,8 @@ const goToProductPage = (productId) => {
           <BCardText class="custom-font-style">
             {{ product.price }} SEK
           </BCardText>
-          <BCol class="d-flex gap-5">
+          <BCardText>Color: {{ product.color }}</BCardText>
+          <BCol class="d-flex justify-content-between">
             <router-link
               @click.prevent="goToProductPage(product.id)"
               to="/product/:id"
@@ -47,7 +56,11 @@ const goToProductPage = (productId) => {
               style="text-decoration: underline"
               >See Details</router-link
             >
-            <BCardText>Color: {{ product.color }}</BCardText>
+            <i
+              @click.prevent="toggleFavorite(product.id)"
+              class="bi bi-heart icon-large custom"
+              :class="isFavorite(product.id) ? 'text-danger' : 'text-secondary'"
+            ></i>
           </BCol>
         </BCard>
       </BCol>
@@ -65,5 +78,9 @@ const goToProductPage = (productId) => {
 .onsale-color {
   color: #de3d4c;
   font-weight: 600;
+}
+
+.custom {
+  font-size: 1.3rem;
 }
 </style>

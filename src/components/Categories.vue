@@ -22,6 +22,21 @@ const goToAllProductPage = (category) => {
   router.push({ name: "Shop", params: { category } });
 };
 
+const toggleFavorite = (productId) => {
+  productStore.toggleFavorite(productId);
+};
+
+const isFavorite = (productId) => {
+  return productStore.isFavorite(productId);
+};
+
+const productPrice = (product) => {
+  if (product.value && product.onSale) {
+    return productStore.updateProductSalesPrice(product.id);
+  }
+  return product.price;
+};
+
 console.log(categoryToDisplay.value);
 </script>
 
@@ -36,7 +51,7 @@ console.log(categoryToDisplay.value);
         :key="category.id"
       >
         <BCard
-          class="rounded-0"
+          class="rounded-0 position-relative"
           border-variant="light"
           :title="category.modelName"
           img-src="/src/assets/sunwear.png"
@@ -48,14 +63,35 @@ console.log(categoryToDisplay.value);
           <BCardText class="mb-1 custom-font-style">
             {{ category.brand }}</BCardText
           >
-          <BCardText> {{ category.price }} SEK </BCardText>
-          <router-link
-            @click.prevent="goToProductPage(category.id)"
-            to="/product/:id"
-            class="text-primary"
-            style="text-decoration: underline"
-            >See Details</router-link
+          <BCardText
+            v-if="categoryToDisplay"
+            :class="{ 'sales-color': category.onSale }"
           >
+            {{ productPrice(category) }} SEK
+          </BCardText>
+          <BCardText
+            v-if="category.onSale"
+            :class="{ 'old-price': category.onSale }"
+          >
+            {{ category.price }} SEK
+          </BCardText>
+          <BCol class="d-flex justify-content-between">
+            <router-link
+              @click.prevent="goToProductPage(category.id)"
+              to="/product/:id"
+              class="text-primary"
+              style="text-decoration: underline"
+              >See Details</router-link
+            >
+
+            <i
+              @click.prevent="toggleFavorite(category.id)"
+              class="bi bi-heart icon-large custom"
+              :class="
+                isFavorite(category.id) ? 'text-danger' : 'text-secondary'
+              "
+            ></i>
+          </BCol>
         </BCard>
       </BCol>
     </BRow>
@@ -73,5 +109,18 @@ console.log(categoryToDisplay.value);
 <style scoped>
 .custom-font-style {
   font-weight: 200;
+}
+
+.custom {
+  font-size: 1.3rem;
+}
+
+.sales-color {
+  color: red;
+}
+
+.old-price {
+  text-decoration: line-through;
+  font-weight: 300;
 }
 </style>
