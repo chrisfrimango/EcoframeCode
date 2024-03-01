@@ -394,19 +394,16 @@ export const useProductStore = defineStore({
         return;
       }
 
-      // Modifiera filtreringen för kategori
-      // Antag att alla produkter ska inkluderas om 'filters.category' är "All Products" eller undefined
+      // filtreringen för kategori
       let filteredProducts = filters.category && filters.category !== "All Products" ?
         this.originalProducts.filter(product => product.category === filters.category) :
         this.originalProducts;
-
-      // Använd ytterligare filter på den redan filtrerade produktsamlingen
-      filteredProducts = filteredProducts.filter(product => {
+        filteredProducts = filteredProducts.filter(product => {
         const matchesBrand = !filters.brands || filters.brands.includes(product.brand);
         const matchesColor = !filters.color || product.color === filters.color;
         let matchesPrice = true;
         if (filters.price) {
-          // Hantera specialfall för pris, exempelvis "Under 1000" och "Över 3000"
+          // pris"Under 1000" och "Över 3000"
           if (filters.price.includes('Under')) {
             const maxPrice = parseInt(filters.price.replace('Under ', ''), 10);
             matchesPrice = product.price < maxPrice;
