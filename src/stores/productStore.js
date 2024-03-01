@@ -312,7 +312,7 @@ export const useProductStore = defineStore({
 
     // Hämtar alla produkter i en kategori
     getCategory(findCategory) {
-      if (!findCategory ||findCategory === "All Products") {
+      if (findCategory === "All Products") {
         return this.products
           .filter((category) => category.category !== "All Products")
           .flatMap((category) => category.products);
@@ -421,6 +421,7 @@ export const useProductStore = defineStore({
         this.cart = JSON.parse(cartFromSession);
       }
     },
+
     
     saveCartItems() {
       const savedCartItems = JSON.parse(JSON.stringify(this.cart));
@@ -435,16 +436,11 @@ export const useProductStore = defineStore({
 
     //filter
     initializeOriginalProducts() {
-      console.log("Products before initialization:", this.products);
-      this.originalProducts = this.products.flatMap(category =>
-        category.products ? category.products.map(product => ({
-          ...product,
-          category: category.category
-        })) : []
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
       );
-      console.log("Initialized originalProducts:", this.originalProducts);
-    }
-    ,
+    },
+
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
 
@@ -453,61 +449,121 @@ export const useProductStore = defineStore({
         return;
       }
 
-      // filtreringen för kategori
-      let filteredProducts = filters.category && filters.category !== "All Products" ?
-        this.originalProducts.filter(product => product.category === filters.category) :
-        this.originalProducts;
-        filteredProducts = filteredProducts.filter(product => {
-        const matchesBrand = !filters.brands || filters.brands.includes(product.brand);
-        const matchesColor = !filters.color || product.color === filters.color;
-        let matchesPrice = true;
-        if (filters.price) {
-          // pris"Under 1000" och "Över 3000"
-          if (filters.price.includes('Under')) {
-            const maxPrice = parseInt(filters.price.replace('Under ', ''), 10);
-            matchesPrice = product.price < maxPrice;
-          } else if (filters.price.includes('Over')) {
-            const minPrice = parseInt(filters.price.replace('Over ', ''), 10);
-            matchesPrice = product.price > minPrice;
-          } else {
-            const [minPrice, maxPrice] = filters.price.split('-').map(price => parseInt(price.trim(), 10));
-            matchesPrice = product.price >= minPrice && product.price <= maxPrice;
-          }
-        }
-        const matchesRating = !filters.rating || product.rating >= filters.rating;
+      this.filteredProducts = this.originalProducts.filter((product) => {
+        const matchesCategory = filters.category
+          ? product.category === filters.category
+          : true;
+        const matchesBrand = filters.brands.length
+          ? filters.brands.includes(product.brand)
+          : true;
+        const matchesColor = filters.color
+          ? product.color === filters.color
+          : true;
+        const matchesPrice = filters.price
+          ? product.price >= filters.price.min &&
+            product.price <= filters.price.max
+          : true;
+        const matchesRating = filters.rating
+          ? product.rating >= filters.rating
+          : true;
 
-        return matchesBrand && matchesColor && matchesPrice && matchesRating;
+        return (
+          matchesCategory &&
+          matchesBrand &&
+          matchesColor &&
+          matchesPrice &&
+          matchesRating
+        );
       });
-
-      this.filteredProducts = filteredProducts;
-
-      if (this.filteredProducts.length === 0) {
-        console.error("No matching products found after applying filters.");
-      } else {
-        console.log("Filtered products after applying all filters: ", this.filteredProducts);
-      }
+      console.log("Filtered products: ", this.filteredProducts);
     },
 
+    //filte
+    initializeOriginalProducts() {
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
+      );
+
+      console.log(this.originalProducts);
+      this.originalProducts = this.products.flatMap(
+        (category) => category.products
+      );
+    },
+
+    applyFilters(filters) {
+      console.log("Applying filters with: ", filters);
+
+      if (!this.originalProducts || this.originalProducts.length === 0) {
+        console.error("No original products to filter from");
+        return;
+      }
+
+      this.filteredProducts = this.originalProducts.filter((product) => {
+        console.log("Filtering product:", product);
+
+        const matchesCategory = filters.category
+          ? product.category === filters.category
+          : true;
+        console.log("Matches category:", matchesCategory);
+
+        const matchesBrand = filters.brands.length
+          ? filters.brands.includes(product.brand)
+          : true;
+        console.log("Matches brand:", matchesBrand);
+
+        const matchesColor = filters.color
+          ? product.color === filters.color
+          : true;
+        console.log("Matches color:", matchesColor);
+
+        const matchesPrice = filters.price
+          ? product.price >= filters.price.min &&
+            product.price <= filters.price.max
+          : true;
+        console.log("Matches Price:", matchesPrice);
+
+        const matchesRating = filters.rating
+          ? product.rating >= filters.rating
+          : true;
+        console.log("Matches rating:", matchesRating);
+
+        return (
+          matchesCategory &&
+          matchesBrand &&
+          matchesColor &&
+          matchesPrice &&
+          matchesRating
+        );
+      });
+      console.log("Filtered products: ", this.filteredProducts);
+    },
 
     clearFilters() {
       this.filteredProducts = [...this.originalProducts];
       this.filtersActive = false;
     },
-
-    // getFilteredProducts(category, colour, price, rating) {
-    //   let result = this.products.flatMap((category) => category.products);
-    //   if (category)
-    //     result = result.filter((product) => product.category === category);
-    //   if (colour)
-    //     result = result.filter((product) => product.colour === colour);
-    //   if (price)
-    //     result = result.filter(
-    //       (product) => product.price >= price[0] && product.price <= price[1]
-    //     );
-    //   if (rating)
-    //     result = result.filter((product) => product.rating === rating);
-    //   return result;
-    // },
+    getFilteredProducts(category, colour, price, rating) {
+      let result = this.products.flatMap((category) => category.products);
+      if (category)
+        result = result.filter((product) => product.category === category);
+      if (colour)
+        result = result.filter((product) => product.colour === colour);
+      if (price)
+        result = result.filter(
+          (product) => product.price >= price[0] && product.price <= price[1]
+        );
+      if (rating)
+        result = result.filter((product) => product.rating === rating);
+      return result;
+    },
+    cartTotal() {
+      return this.cart.reduce((total, item) => {
+        const salesPrice = this.updateProductSalesPrice(item.id);
+        const price = salesPrice ? salesPrice : item.price;
+        const itemTotal = price * item.quantity || 0;
+        return total + itemTotal;
+      }, 0);
+    },
   },
 
   getters: {
