@@ -222,6 +222,7 @@ export const useProductStore = defineStore({
     ],
   }),
   actions: {
+
     //lägger till användar
     createNewAccount(values) {
       this.accounts.push(values);
@@ -367,6 +368,8 @@ export const useProductStore = defineStore({
       this.cart = [];
     },
 
+    
+
     // skapa ordernummer
     createOrderNumber() {
       return Math.floor(Math.random() * 1000000);
@@ -417,6 +420,17 @@ export const useProductStore = defineStore({
       if (cartFromSession) {
         this.cart = JSON.parse(cartFromSession);
       }
+    },
+    
+    saveCartItems() {
+      const savedCartItems = JSON.parse(JSON.stringify(this.cart));
+      this.savedCartItems = savedCartItems;
+      sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems)); 
+    },
+  
+    getSavedCartItemsFromSession() {
+      const savedCartItems = sessionStorage.getItem("savedCartItems");
+      this.savedCartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
     },
 
     //filter
