@@ -473,8 +473,6 @@ export const useProductStore = defineStore({
         console.log("Filtered products after applying all filters: ", this.filteredProducts);
       }
     },
-
-
     clearFilters() {
       this.filteredProducts = [...this.originalProducts];
       this.filtersActive = false;
