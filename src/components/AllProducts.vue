@@ -19,6 +19,21 @@ const products = computed(() => {
 const goToProductPage = (productId) => {
   router.push({ name: "ProductPage", params: { productId } });
 };
+
+const toggleFavorite = (productId) => {
+  productStore.toggleFavorite(productId);
+};
+
+const isFavorite = (productId) => {
+  return productStore.isFavorite(productId);
+};
+
+const productPrice = (product) => {
+  if (product.value && product.onSale) {
+    return productStore.updateProductSalesPrice(product.id);
+  }
+  return product.price;
+};
 </script>
 
 <template>
@@ -39,20 +54,54 @@ const goToProductPage = (productId) => {
           <BCardText class="mb-1 custom-font-style">
             {{ product.brand }}</BCardText
           >
-          <BCardText> {{ product.price }} SEK </BCardText>
-          <router-link
-            :to="{ name: 'ProductPage', params: { productId: product.id } }"
-            class="text-primary"
-            style="text-decoration: underline"
-          >See Details</router-link>
+          <BCardText v-if="products" :class="{ 'sales-color': product.onSale }">
+            {{ productPrice(product) }} SEK
+          </BCardText>
+          <BCardText
+            v-if="product.onSale"
+            :class="{ 'old-price': product.onSale }"
+          >
+            {{ product.price }} SEK
+          </BCardText>
+          <BCol class="d-flex justify-content-between">
+            <router-link
+              @click.prevent="goToProductPage(product.id)"
+              to="/product/:id"
+              class="text-primary"
+              style="text-decoration: underline"
+              >See Details</router-link
+            >
+            <i
+              @click.prevent="toggleFavorite(product.id)"
+              class="bi bi-heart icon-large custom"
+              :class="isFavorite(product.id) ? 'text-danger' : 'text-secondary'"
+            ></i>
+          </BCol>
         </BCard>
       </BCol>
     </BRow>
   </BContainer>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
+.sales-color {
+  color: red;
+}
 .custom-font-style {
   font-weight: 200;
+}
+
+.custom {
+  font-size: 1.3rem;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.2);
+  }
+}
+
+.old-price {
+  text-decoration: line-through;
+  font-weight: 300;
 }
 </style>

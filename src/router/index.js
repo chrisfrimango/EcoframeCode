@@ -9,8 +9,9 @@ import CheckoutView from "@/views/CheckoutView.vue";
 import OrderConfirmationView from "@/views/OrderConfirmationView.vue";
 import CreateAccountView from "@/views/CreateAccountView.vue";
 import MyAccountView from "@/views/MyAccountView.vue";
-import LoginPage from "@/views/LoginPageView.vue";
-import AboutUsView from '@/views/AboutUsView.vue';
+import LoginPageView from "@/views/LoginPageView.vue";
+import FavoriteListView from "@/views/FavoriteListView.vue";
+import AboutUsView from "@/views/AboutUsView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -68,7 +69,7 @@ const router = createRouter({
     {
       path: "/loginpage",
       name: "LoginPage",
-      component: LoginPage,
+      component: LoginPageView,
     },
     {
       path: "/myaccount",
@@ -76,10 +77,15 @@ const router = createRouter({
       component: MyAccountView,
     },
     {
-      path: '/about-us',
-      name: 'AboutUs',
-      component: AboutUsView
-    }
+      path: "/favoritelist",
+      name: "FavoriteList",
+      component: FavoriteListView,
+    },
+    {
+      path: "/about-us",
+      name: "AboutUs",
+      component: AboutUsView,
+    },
   ],
 });
 
