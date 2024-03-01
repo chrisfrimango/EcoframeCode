@@ -50,7 +50,7 @@
     </div>
     <br />
     <div v-if="!showSummary">
-      <div class="guestOrMember">
+      <div v-if="!productStore.loggedIn" class="guestOrMember">
         <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
       </div>
     <div class="input-container">
@@ -297,6 +297,7 @@ const saveSummaryData = () => {
 };
 
 const toOrderConfirmation = () => {
+  productStore.saveCartItems(),
   productStore.clearCart(),
   router.push({ name: "OrderConfirmation" });
 };
