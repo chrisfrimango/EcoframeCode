@@ -1,6 +1,37 @@
-<script setup>
+<script>
 import FAQ from "@/components/FAQ.vue";
 import { BCol } from "bootstrap-vue-next";
+
+export default {
+  data() {
+    return {
+      privacyPolicy: '',
+      termsAndConditions: '',
+    };
+  },
+  mounted() {
+    fetch('src/assets/privacy-policy.txt')
+      .then(response => response.text())
+      .then(text => {
+        this.privacyPolicy = text;
+      })
+      .catch(error => {
+        console.error('Error fetching privacy policy:', error);
+      });
+    fetch('src/assets/terms-and-conditions.txt')
+      .then(response => response.text())
+      .then(text => {
+        this.termsAndConditions = text;
+      })
+      .catch(error => {
+        console.error('Error fetching terms and conditions:', error);
+      });
+
+
+  }
+};
+
+
 </script>
 
 <template>
@@ -49,7 +80,21 @@ import { BCol } from "bootstrap-vue-next";
         </BRow>
       </BCol>
     </BRow>
+    <BRow>
+      <BCol sm="12" lg="6" class="format-text">
+        <h2 class="text-center">Privacy Policy</h2>
+        <p v-if="privacyPolicy"> {{ privacyPolicy }} </p>
+      </BCol>
+      <BCol sm="12" lg="6" class="format-text">
+        <h2 class="text-center">Terms & Conditions</h2>
+        <p v-if="termsAndConditions"> {{ termsAndConditions }} </p>
+      </BCol>
+    </BRow>
   </BContainer>
 </template>
 
-<style scoped></style>
+<style scoped>
+.format-text {
+  white-space: pre-line;
+}
+</style>
