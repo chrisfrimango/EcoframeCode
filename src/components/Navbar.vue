@@ -30,6 +30,21 @@ const goToAllProductPage = (category) => {
   router.push({ name: "Shop", params: { category } });
 };
 
+
+//search
+const search = () => {
+  const searchLower = searchQuery.value.toLowerCase();
+  const matchedCategory = categories.value.find(category => category.toLowerCase() === searchLower);
+
+  if (matchedCategory) {
+    router.push({ name: 'Shop', params: { category: matchedCategory } });
+  } else {
+    router.push({ name: 'AllProducts', query: { search: searchLower } });
+  }
+}
+
+
+
 const handleDropdownToggle = (dropdownId) => {
   if (activeDropdown.value && activeDropdown.value !== dropdownId) {
     let prevDropdown = document.getElementById(activeDropdown.value);
@@ -186,7 +201,7 @@ const checkFavorite = computed(() => {
             <input
               class="form-control me-2"
               type="search"
-              placeholder="Search"
+              placeholder="Search category"
               aria-label="Search"
               v-model="searchQuery"
               @keyup.enter="search"

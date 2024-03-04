@@ -493,6 +493,18 @@ export const useProductStore = defineStore({
         return total + itemTotal;
       }, 0);
     },
+
+    //search
+    filterProducts(searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      this.filteredProducts = this.products.flatMap(category =>
+        category.products.filter(product =>
+          product.brand.toLowerCase().includes(searchLower) ||
+          product.modelName.toLowerCase().includes(searchLower)
+        )
+      );
+      console.log("Filtered products:", this.filteredProducts);
+    }
   },
 
   getters: {
