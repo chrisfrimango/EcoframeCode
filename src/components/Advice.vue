@@ -14,44 +14,38 @@ const buttonclicked = ref(false);
 <template>
   <BContainer fluid>
     <BRow id="order-container">
-      <BCol
-        sm="12"
-        lg="6"
-        class="no-padding"
-        v-if="imagePosition === 'left' && buttonclicked === false"
-      >
+      <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'left'">
         <img src="../assets/eye-check.png" alt="Image" />
       </BCol>
-      <BCol
-        sm="12"
-        lg="6"
-        class="no-padding"
-        id="text-content"
-        v-if="buttonclicked === false"
-      >
+      <BCol sm="12" lg="6" class="no-padding" id="text-content">
         <div id="text-box">
           <h2>{{ heading }}</h2>
           <p>
             {{ textContent }}
           </p>
-          <BButton @click="buttonclicked = true">Read more</BButton>
+          <p v-if="buttonclicked === true">
+            {{ fullTextContent }}
+          </p>
+          <BButton
+            class="pt-2"
+            v-if="buttonclicked === true"
+            @click="buttonclicked = false"
+            >Close</BButton
+          >
+          <BButton v-if="buttonclicked === false" @click="buttonclicked = true"
+            >Read more</BButton
+          >
         </div>
       </BCol>
-      <BCol
-        sm="12"
-        lg="6"
-        class="no-padding"
-        v-if="imagePosition === 'right' && buttonclicked === false"
-      >
+      <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'right'">
         <img src="../assets/eye-close-up.png" alt="Image" />
       </BCol>
-      <BCol class="m-5 p-5" v-if="buttonclicked === true">
+      <!-- <BCol class="m-5 p-5" v-if="buttonclicked === true">
         <h2 class="p-2">{{ heading }}</h2>
         <p class="p-2">
           {{ fullTextContent }}
-        </p>
-        <BButton class="pt-2" @click="buttonclicked = false">Close</BButton>
-      </BCol>
+        </p> -->
+      <!-- </BCol> -->
     </BRow>
   </BContainer>
 </template>
