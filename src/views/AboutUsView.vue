@@ -1,16 +1,13 @@
 <template>
-  <div>
-    <AboutUs />
-  </div>
+  <AboutUs />
 </template>
 
 <script>
-import AboutUs from '@/components/AboutUs.vue';
+import AboutUs from "@/components/AboutUs.vue";
 
 export default {
   components: {
-    AboutUs
-  }
-}
+    AboutUs,
+  },
+};
 </script>
-
