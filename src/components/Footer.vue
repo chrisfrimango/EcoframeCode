@@ -4,8 +4,8 @@
       <BCol sm="12" md="6" cols="6">
         <h2>ECO<b>FRAME</b></h2>
         <ul class="footer-list">
-          <li><a href="">About us</a></li>
-          <li><a href="">Contact</a></li>
+          <li><a href="/about-us">About us</a></li>
+          <li><RouterLink to="/customersupport">Contact</RouterLink></li>
         </ul>
         <div class="btn-group btn-group-lg" role="group" aria-label="Large button group">
           <button type="button" class="btn btn-outline-light"><i class="bi bi-facebook"></i></button>
@@ -17,12 +17,11 @@
       <BCol sm="12" md="3">
         <h3>Info</h3>
         <ul class="footer-list">
-          <li><a href="">Delivery</a></li>
-          <li><a href="">Warrenty</a></li>
-          <li><a href="">Support</a></li>
-          <li><a href="">Sitemap</a></li>
-          <li><a href="">Privacy Policy</a></li>
-          <li><a href="">Terms & Conditions</a></li>
+          <li><RouterLink to="/customersupport">Delivery</RouterLink></li>
+          <li><RouterLink to="/customersupport">Warrenty</RouterLink></li>
+          <li><RouterLink to="/customersupport">Support</RouterLink></li>
+          <li><RouterLink to="/customersupport">Privacy Policy</RouterLink></li>
+          <li><RouterLink to="/customersupport">Terms & Conditions</RouterLink></li>
         </ul>
 
       </BCol>

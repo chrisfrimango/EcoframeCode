@@ -81,7 +81,7 @@
 </template>
 
 <script setup>
-  import { ref, watchEffect, computed} from 'vue';
+  import { ref, watch, computed} from 'vue';
   import { useProductStore } from '@/stores/productStore';
 
   const store = useProductStore();
@@ -105,28 +105,30 @@
   const filtersApplied = computed(() => filteredProducts.value.length > 0 && !filtersCleared.value);
 
   const categories = computed(() => {
-  console.log('Categories:', store.getCategories());
-  return store.getCategories();
-});
-
-  const colors = computed(() => ['Black', 'Brown', 'Light', 'Blue', 'Yellow']);
+    console.log('Categories:', store.getCategories());
+    return store.getCategories();
+  });
+  const colors = computed(() => ['Black', 'Brown', 'Light', 'Blue', 'Yellow', 'Red','Gold','Grey']);
   const brands = computed(() => ['Rayban', 'Oakley', 'Gucci', 'Prada', 'Tom Ford', 'Versace']);
   const prices = computed(() => ['Under 1000 SEK', '1000 - 3000 SEK', 'Over 3000 SEK']);
   const ratings = computed(() => [5, 4, 3, 2, 1]);
 
   const applyFilters = () => {
     const filters = {
-      category: selectedCategory.value,
+      category: selectedCategory.value || "All Products",
       brands: selectedBrands.value,
       color: selectedColor.value,
       price: selectedPrice.value,
       rating: selectedRating.value,
     };
     store.applyFilters(filters);
-    filtersCleared.value = false;
 
-    console.log('Applying filters:', filters);
-    console.log('Filtered products:', store.filteredProducts);
+    if (store.filteredProducts.length === 0) {
+    alert("No matching products found.");
+    } else {
+      console.log("Filtered products: ", store.filteredProducts);
+    }
+    filtersCleared.value = false;
   };
 
   const clearFilters = () => {
@@ -134,32 +136,32 @@
     selectedCategory.value = '';
     selectedColor.value = '';
     selectedPrice.value = '';
-    selectedRating.value = 0;
+    selectedRating.value = '';
     selectedBrands.value = [];
     filtersCleared.value = true;
 
     if (isMobileView.value) {
       showFilters.value = false;
     }
+    // Laddar om sidan
+    window.location.reload();
   };
 
   const toggleShowFilters = () => {
     showFilters.value = !showFilters.value;
   };
 
-  watchEffect(() => {
-    console.log('Selected category:', selectedCategory.value);
-    console.log('Selected brands:', selectedBrands.value);
-
-    const handleResize = () => {
-      isMobileView.value = window.innerWidth < 991;
-      showFilters.value = !isMobileView.value;
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+  // watch(selectedCategory, (newValue) => {
+  // if (newValue === 'All Products' || newValue === '') {
+  //   store.filteredProducts = store.getCategory(newValue);
+  // } else {
+  //   store.filteredProducts = store.getCategory(newValue);
+  // }
+  // });
+  watch(() => store.selectedCategory, (newVal) => {
+  store.applyFilters({ category: newVal });
 });
+
 </script>
 
 

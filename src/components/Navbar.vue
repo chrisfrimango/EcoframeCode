@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted} from "vue";
 import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 const router = useRouter();
@@ -10,6 +10,7 @@ const cartItemCount = computed(() => productStore.cartItemCount);
 const searchQuery = ref("");
 const activeDropdown = ref(null);
 const windowWidth = ref(window.innerWidth);
+
 
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth;
