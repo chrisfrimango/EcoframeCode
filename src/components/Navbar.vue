@@ -11,14 +11,15 @@ const windowWidth = ref(window.innerWidth);
 
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth;
-const isMobileView = computed(() => windowWidth.value < 992);
-const navbarToggler = ref(null);
-const navbarCollapse = ref(null);
+  const isMobileView = computed(() => windowWidth.value < 992);
+  const navbarToggler = ref(null);
+  const navbarCollapse = ref(null);
+};
 
 const closeNavbar = () => {
-  if (isMobileView.value && navbarCollapse.value?.classList.contains('show')) {
-    const event = new Event('click');
-    const navbarToggler = document.querySelector('.navbar-toggler');
+  if (isMobileView.value && navbarCollapse.value?.classList.contains("show")) {
+    const event = new Event("click");
+    const navbarToggler = document.querySelector(".navbar-toggler");
     if (navbarToggler) {
       navbarToggler.dispatchEvent(event);
     }
@@ -26,7 +27,11 @@ const closeNavbar = () => {
 };
 
 const handleOutsideClick = (event) => {
-  if (!navbarCollapse.value.contains(event.target) && !navbarToggler.value.contains(event.target) && isMobileView.value) {
+  if (
+    !navbarCollapse.value.contains(event.target) &&
+    !navbarToggler.value.contains(event.target) &&
+    isMobileView.value
+  ) {
     closeNavbar();
   }
 };
