@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="checkout-container">
     <h2>Checkout</h2>
     <br />
     <div class="summary-container">
@@ -50,7 +50,7 @@
     </div>
     <br />
     <div v-if="!showSummary">
-      <div v-if="!productStore.loggedIn" class="guestOrMember">
+      <div v-if="!productStore.loggedIn">
         <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
       </div>
     <div class="input-container">
@@ -85,7 +85,7 @@
     <div v-if="showContent">
       <!-- Delivery options -->
       <div class="deliveryOptions-container">
-        <p>Delivery options:</p>
+        <p><strong>Delivery options:</strong></p>
         <div>
           <BFormRadio
             v-for="option in deliveryOptions"
@@ -97,7 +97,8 @@
           >
             {{ option.text }} 
             <br>
-            {{ option.description }}
+            <div> {{ option.description }} </div>
+            <div class="line"></div>
           </BFormRadio>
         </div>
       </div>
@@ -105,7 +106,7 @@
         <div class="line"></div>
         <!-- Shipping address -->
         <div class="address-form">
-          <p>Shipping address:</p>
+          <p><strong>Shipping address:</strong></p>
           <BFormInput v-model="firstName" placeholder="First name" />
           <BFormInput v-model="lastName" placeholder="Last name" />
           <BFormInput v-model="address" placeholder="Address" />
@@ -115,7 +116,7 @@
         <div class="line"></div>
         <!-- Payment options -->
         <div class="paymentOptions-container">
-          <p>Payment options:</p>
+          <p><strong>Payment options:</strong></p>
           <div v-for="option in paymentOptions" :key="option.value">
             <BFormRadio
               v-model="selectedPaymentOption"
@@ -124,6 +125,7 @@
               :disabled="option.disabled"
             >
               {{ option.text }}
+              <div class="line"></div>
             </BFormRadio>
           </div>
         </div>
@@ -132,7 +134,7 @@
           v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
           class="card-payment-input"
         >
-          <p>Card Information:</p>
+          <p><strong>Card Information:</strong></p>
           <BFormInput placeholder="Card Number" />
         </div>
         <!-- Pay button -->
@@ -151,14 +153,13 @@
     </div>
     <!-- Will only show up when the information is correct and payment initiated -->
     <div v-else="showSummary">
-      <p>Summary:</p>
+      <p><strong>Your information:</strong></p>
       <!-- Custom summary data -->
-      <p><strong>Name:</strong> {{ firstName }} {{ lastName }}</p>
-      <p><strong>Address:</strong> {{ address }}, {{ zipcode }}, {{ city }}</p>
-      <p><strong>Phone:</strong> {{ phone }}</p>
-      <p><strong>Email</strong> {{ email }}</p>
-      <p><strong>Delivery:</strong> {{ selectedDeliveryOptionText }}</p>
-      <p><strong>Payment:</strong> {{ selectedPaymentOptionText }}</p>
+      <p><strong> {{ firstName }} {{ lastName }} </strong></p>
+      <p> {{ address }}, {{ zipcode }}, {{ city }}</p>
+      <p>{{ email }}, {{ phone }}</p>
+      <p><strong>Delivery:</strong> {{ selectedDeliveryOptionText }}, 
+        <strong>Payment</strong> {{ selectedPaymentOptionText }}</p>
       <BButton
         variant="primary"
         style="min-width: 200px"
@@ -283,7 +284,15 @@ const pay = () => {
 };
 
 const saveSummaryData = () => {
+  const orderNumber = productStore.createOrderNumber(); // Accessing createOrderNumber from productStore
+  const cartItemsData = cartItems.value.map(item => ({
+    productName: item.modelName,
+    quantity: item.quantity,
+    totalAmount: item.quantity * (item.onSale ? productStore.updateProductSalesPrice(item.id) : item.price)
+  }));
+
   return {
+    orderNumber: orderNumber,
     email: email.value,
     zipcode: zipcode.value,
     firstName: firstName.value,
@@ -292,22 +301,67 @@ const saveSummaryData = () => {
     city: city.value,
     phone: phone.value,
     selectedDeliveryOption: selectedDeliveryOptionText.value,
-    selectedPaymentOption: selectedPaymentOptionText.value
+    selectedPaymentOption: selectedPaymentOptionText.value,
+    cartItems: cartItemsData
   };
 };
 
 const toOrderConfirmation = () => {
-  productStore.saveCartItems(),
-  productStore.clearCart(),
-  router.push({ name: "OrderConfirmation" });
+  const summaryData = saveSummaryData(); // Get the summary data
+
+  // Check if the user is logged in
+  if (productStore.loggedIn) {
+    // If logged in, save order information to the current account
+    const currentAccount = productStore.getCurrentAccountFromSession(); // Get current account data from session
+
+    // Ensure that currentAccount is a valid object
+    if (currentAccount && typeof currentAccount === 'object') {
+      // Ensure that the 'orders' array exists or initialize it if missing
+      if (!Array.isArray(currentAccount.orders)) {
+        currentAccount.orders = [];
+      }
+
+      const orderData = {
+        orderNumber: summaryData.orderNumber,
+        cartItems: summaryData.cartItems
+      };
+      currentAccount.orders.push(orderData); // Add order data to current account
+
+      // Store updated current account to session storage
+      sessionStorage.setItem("currentAccount", JSON.stringify(currentAccount));
+      productStore.clearCart();
+
+      router.push({ name: "OrderConfirmation" });
+    } 
+  } else {
+    // If not logged in, just clear the cart and push to OrderConfirmation
+    productStore.clearCart();
+    router.push({ name: "OrderConfirmation" });
+  }
+
 };
+
+
+
+
+//const toOrderConfirmation = () => {
+  //skriv ett if statment om man är inloggad så ska en grej göras, annars ska det bara pusha 
+  //savesummaryData ska sparas och pushas till currentaccount objektet  
+  //dessa 
+  //else statment som gör endast det nedanför 
+ // productStore.clearCart(), //i clear cart måste den ränsa carten i session storige
+  //router.push({ name: "OrderConfirmation" });
+//};
 </script>
 
 <style scoped>
+.checkout-container {
+  width: 100vh;
+  margin: auto;
+  margin-bottom: 200px;
+}
 .summary-container {
-  border: 1px solid rgb(206, 206, 206);
   padding: 15px;
-  border-radius: 5%;
 }
 
 .summary-container p {
@@ -335,7 +389,7 @@ const toOrderConfirmation = () => {
 }
 
 .line {
-  border-top: 1px solid #8a8787;
+  border-top: 1px solid #d3d3d3;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -345,4 +399,44 @@ const toOrderConfirmation = () => {
   text-decoration: underline; 
   cursor: pointer; 
 }
+
+.header-row,
+.item-row {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+h2 {
+text-align: center;
+}
+
+@media (max-width: 768px) {
+    .checkout-container {
+      width: 90%
+    }
+
+    .summary-container {
+      padding: 5px;
+    }
+
+    .input-container > div {
+      padding: 5px;
+    }
+
+    .button {
+      margin-top: 5px;
+    }
+
+    .line {
+      margin: 10px 0;
+    }
+
+    .header-row,
+    .item-row {
+      padding: 10px;
+      margin-bottom: 5px;
+    }
+}
+
 </style>

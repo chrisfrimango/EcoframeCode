@@ -25,14 +25,16 @@ const savedCartItems = productStore.savedCartItems;
         <BCol>
           <h4>Orders</h4>
           <p>Order 1</p>
-          <div v-if="savedCartItems.length > 0">
+          <div v-for="(order, index) in currentAccount.orders" :key="index">
+            <h5>Order {{ order.orderNumber }}</h5>
+            <div v-if="order.cartItems.length > 0">
             <div class="row text-center mb-3 header-row">
               <div class="col-4">Product</div>
               <div class="col-2">Price</div>
               <div class="col-2">Quantity</div>
               <div class="col-3">Total amount</div>
             </div>
-            <div class="cart-item mb-3" v-for="item in savedCartItems" :key="item.id">
+            <div class="cart-item mb-3" v-for="(item, idx) in order.cartItems" :key="idx">
               <div class="row align-items-center text-center item-row">
                 <div class="col-2">
                   <img
@@ -54,6 +56,7 @@ const savedCartItems = productStore.savedCartItems;
                 <div v-else class="col-3">{{ item.quantity * item.price }} SEK</div>
               </div>
             </div>
+          </div>
           </div>
           <p>Order 2</p>
         </BCol>
