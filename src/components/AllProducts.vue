@@ -47,26 +47,35 @@ const productPrice = (product) => {
         <BCard
           class="rounded-0"
           border-variant="light"
-          :title="product.modelName"
-          :img-src="sunwearImage"
-          img-alt="Image"
           img-top
           tag="product"
           style="max-width: 20rem"
         >
-          <BCardText class="mb-1 custom-font-style">
+          <router-link
+            @click.prevent="goToProductPage(product.id)"
+            to="/product/:id"
+          >
+            <img
+              :src="'/src/assets/sunwear.png'"
+              class="card-img-top"
+              :alt="category.modelName"
+            >
+          </router-link>
+          <BCardTitle class="card-items-padding card-first-item">{{ category.modelName }}</BCardTitle>
+          <BCardText class="mb-1 custom-font-style card-items-padding">
             {{ product.brand }}</BCardText
           >
-          <BCardText v-if="products" :class="{ 'sales-color': product.onSale }">
+          <BCardText v-if="products" :class="{ 'sales-color': product.onSale }" class="card-items-padding">
             {{ productPrice(product) }} SEK
           </BCardText>
           <BCardText
             v-if="product.onSale"
             :class="{ 'old-price': product.onSale }"
+            class="card-items-padding"
           >
             {{ product.price }} SEK
           </BCardText>
-          <BCol class="d-flex justify-content-between">
+          <BCol class="d-flex justify-content-between card-items-padding card-bottom-item">
             <router-link
               @click.prevent="goToProductPage(product.id)"
               to="/product/:id"
@@ -106,5 +115,23 @@ const productPrice = (product) => {
 .old-price {
   text-decoration: line-through;
   font-weight: 300;
+}
+
+.card {
+  --bs-card-spacer-y: 0;
+  --bs-card-spacer-x: 0;
+}
+
+.card-items-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card-first-item {
+  padding-top: 1rem;
+}
+
+.card-bottom-item {
+  padding-bottom: 1rem;
 }
 </style>
