@@ -413,7 +413,7 @@ export const useProductStore = defineStore({
 
     getCurrentAccountFromSession() {
       const currentAccount = sessionStorage.getItem("currentAccount");
-      return currentAccount ? JSON.parse(currentAccount) : [];
+      return currentAccount ? JSON.parse(currentAccount) : {};
     },
 
     saveAccountToSession() {

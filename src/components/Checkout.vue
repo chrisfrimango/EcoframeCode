@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="checkout-container">
     <h2>Checkout</h2>
     <br />
     <div class="summary-container">
@@ -56,6 +56,8 @@
           <span @click="goToLogin" class="toLogin">Login</span> or continue as
           guest
         </p>
+      <div v-if="!productStore.loggedIn">
+        <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
       </div>
       <div class="input-container">
         <!-- Email input -->
@@ -161,14 +163,17 @@
     </div>
     <!-- Will only show up when the information is correct and payment initiated -->
     <div v-else="showSummary">
-      <p>Summary:</p>
+      <p><strong>Your information:</strong></p>
       <!-- Custom summary data -->
-      <p><strong>Name:</strong> {{ firstName }} {{ lastName }}</p>
-      <p><strong>Address:</strong> {{ address }}, {{ zipcode }}, {{ city }}</p>
-      <p><strong>Phone:</strong> {{ phone }}</p>
-      <p><strong>Email</strong> {{ email }}</p>
-      <p><strong>Delivery:</strong> {{ selectedDeliveryOptionText }}</p>
-      <p><strong>Payment:</strong> {{ selectedPaymentOptionText }}</p>
+      <p>
+        <strong> {{ firstName }} {{ lastName }} </strong>
+      </p>
+      <p>{{ address }}, {{ zipcode }}, {{ city }}</p>
+      <p>{{ email }}, {{ phone }}</p>
+      <p>
+        <strong>Delivery:</strong> {{ selectedDeliveryOptionText }},
+        <strong>Payment</strong> {{ selectedPaymentOptionText }}
+      </p>
       <BButton
         variant="primary"
         style="min-width: 200px"
@@ -297,7 +302,19 @@ const pay = () => {
 };
 
 const saveSummaryData = () => {
+  const orderNumber = productStore.createOrderNumber(); // Accessing createOrderNumber from productStore
+  const cartItemsData = cartItems.value.map((item) => ({
+    productName: item.modelName,
+    quantity: item.quantity,
+    totalAmount:
+      item.quantity *
+      (item.onSale
+        ? productStore.updateProductSalesPrice(item.id)
+        : item.price),
+  }));
+
   return {
+    orderNumber: orderNumber,
     email: email.value,
     zipcode: zipcode.value,
     firstName: firstName.value,
@@ -307,30 +324,24 @@ const saveSummaryData = () => {
     phone: phone.value,
     selectedDeliveryOption: selectedDeliveryOptionText.value,
     selectedPaymentOption: selectedPaymentOptionText.value,
-    // ordernummer
-    // produktnamn
-    // antal
-    // pris
   };
 };
 
 const toOrderConfirmation = () => {
-  if (!loggedIn) {
-    productStore.clearCart(), router.push({ name: "OrderConfirmation" });
-  } else {
-    // const orders = [];
-    // productStore.currentAccount.orders.push(summaryData.value);
-    // saveCurrentAccountToSession();
-    productStore.clearCart(), router.push({ name: "OrderConfirmation" });
-  }
+  productStore.saveCartItems(),
+    productStore.clearCart(),
+    router.push({ name: "OrderConfirmation" });
 };
 </script>
 
 <style scoped>
+.checkout-container {
+  width: 100vh;
+  margin: auto;
+  margin-bottom: 200px;
+}
 .summary-container {
-  border: 1px solid rgb(206, 206, 206);
   padding: 15px;
-  border-radius: 5%;
 }
 
 .summary-container p {
@@ -358,7 +369,7 @@ const toOrderConfirmation = () => {
 }
 
 .line {
-  border-top: 1px solid #8a8787;
+  border-top: 1px solid #d3d3d3;
   margin-top: 20px;
   margin-bottom: 20px;
 }
@@ -367,5 +378,44 @@ const toOrderConfirmation = () => {
   color: blue;
   text-decoration: underline;
   cursor: pointer;
+}
+
+.header-row,
+.item-row {
+  border-bottom: 1px solid #d3d3d3;
+  padding: 10px;
+  margin-bottom: 20px;
+}
+
+h2 {
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .checkout-container {
+    width: 90%;
+  }
+
+  .summary-container {
+    padding: 5px;
+  }
+
+  .input-container > div {
+    padding: 5px;
+  }
+
+  .button {
+    margin-top: 5px;
+  }
+
+  .line {
+    margin: 10px 0;
+  }
+
+  .header-row,
+  .item-row {
+    padding: 10px;
+    margin-bottom: 5px;
+  }
 }
 </style>

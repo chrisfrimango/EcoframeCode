@@ -26,14 +26,15 @@ const savedCartItems = productStore.savedCartItems;
       <BCol md="6" class="border">
         <BCol>
           <h4>Orders</h4>
-          <BRow v-if="savedCartItems.length > 0">
-            <BRow class="row text-center mb-3 header-row">
-              <BCol class="col-4">Product</BCol>
-              <BCol class="col-2">Price</BCol>
-              <BCol class="col-2">Quantity</BCol>
-              <BCol class="col-3">Total amount</BCol>
-            </BRow>
-            <BRow
+          <p>Order 1</p>
+          <div v-if="savedCartItems.length > 0">
+            <div class="row text-center mb-3 header-row">
+              <div class="col-4">Product</div>
+              <div class="col-2">Price</div>
+              <div class="col-2">Quantity</div>
+              <div class="col-3">Total amount</div>
+            </div>
+            <div
               class="cart-item mb-3"
               v-for="item in savedCartItems"
               :key="item.id"
@@ -63,9 +64,13 @@ const savedCartItems = productStore.savedCartItems;
                 <div v-else class="col-3">
                   {{ item.quantity * item.price }} SEK
                 </div>
+                <div v-else class="col-3">
+                  {{ item.quantity * item.price }} SEK
+                </div>
               </div>
-            </BRow>
-          </BRow>
+            </div>
+          </div>
+          <p>Order 2</p>
         </BCol>
       </BCol>
     </BRow>
