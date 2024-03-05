@@ -19,7 +19,7 @@ const productPrice = computed(() => {
 </script>
 
 <template>
-  <BContainer class="mt-5 mb-5" fluid>
+  <BContainer class="mt-5 mb-5 container" fluid>
     <BRow>
       <BCol sm="12" md="6" class="columns">
         <img src="../assets/sunwear.png" alt="Image" />
@@ -62,5 +62,9 @@ span {
 .old-price {
   text-decoration: line-through;
   font-weight: 300;
+}
+
+.container {
+  min-height: 100vh;
 }
 </style>
