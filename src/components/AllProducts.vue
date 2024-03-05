@@ -34,14 +34,6 @@ const productPrice = (product) => {
   }
   return product.price;
 };
-
-//search
-watch(() => route.query.search, (newSearchTerm) => {
-    if (newSearchTerm) {
-      productStore.filterProducts(newSearchTerm);
-    } else{
-    }
-}, { immediate: true });
 </script>
 
 <template>

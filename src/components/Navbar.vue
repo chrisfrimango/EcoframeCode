@@ -1,57 +1,55 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted, onUnmounted} from "vue";
-import { computed } from "vue";
+import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useProductStore } from "../stores/productStore";
+
 const router = useRouter();
 const productStore = useProductStore();
 const cartItemCount = computed(() => productStore.cartItemCount);
-
-const searchQuery = ref("");
-const activeDropdown = ref(null);
 const windowWidth = ref(window.innerWidth);
+const isMobileView = computed(() => windowWidth.value < 992);
+const navbarToggler = ref(null);
+const navbarCollapse = ref(null);
 
+const closeNavbar = () => {
+  if (isMobileView.value && navbarCollapse.value?.classList.contains('show')) {
+    const event = new Event('click');
+    const navbarToggler = document.querySelector('.navbar-toggler');
+    if (navbarToggler) {
+      navbarToggler.dispatchEvent(event);
+    }
+  }
+};
 
-const updateWindowWidth = () => {
-  windowWidth.value = window.innerWidth;
+const handleOutsideClick = (event) => {
+  if (!navbarCollapse.value.contains(event.target) && !navbarToggler.value.contains(event.target) && isMobileView.value) {
+    closeNavbar();
+  }
 };
 
 onMounted(() => {
-  window.addEventListener("resize", updateWindowWidth);
+  navbarToggler.value = document.querySelector('.navbar-toggler');
+  navbarCollapse.value = document.getElementById('navbarNav');
+  document.addEventListener('click', handleOutsideClick);
+  window.addEventListener('resize', () => {
+    windowWidth.value = window.innerWidth;
+  });
 });
 
 onUnmounted(() => {
-  window.removeEventListener("resize", updateWindowWidth);
+  document.removeEventListener('click', handleOutsideClick);
+  window.removeEventListener('resize', () => {
+    windowWidth.value = window.innerWidth;
+  });
 });
 
 const categories = ref(productStore.getCategories());
-
 const goToAllProductPage = (category) => {
-  router.push({ name: "Shop", params: { category } });
-};
-
-
-//search
-const search = () => {
-  const searchLower = searchQuery.value.toLowerCase();
-  const matchedCategory = categories.value.find(category => category.toLowerCase() === searchLower);
-
-  if (matchedCategory) {
-    router.push({ name: 'Shop', params: { category: matchedCategory } });
-  } else {
-    router.push({ name: 'AllProducts', query: { search: searchLower } });
-  }
-}
-
-
-
-const handleDropdownToggle = (dropdownId) => {
-  if (activeDropdown.value && activeDropdown.value !== dropdownId) {
-    let prevDropdown = document.getElementById(activeDropdown.value);
-    let bsDropdown = new bootstrap.Dropdown(prevDropdown);
-    bsDropdown.hide();
-  }
-  activeDropdown.value = dropdownId;
+  router.push({ name: "Shop", params: { category } }).then(() => {
+    if (isMobileView.value && navbarCollapse.value.classList.contains('show')) {
+      navbarToggler.value.click();
+    }
+  });
 };
 
 const checkFavorite = computed(() => {
@@ -76,7 +74,7 @@ const checkFavorite = computed(() => {
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="d-flex">
+          <div class="d-flex" >
             <router-link
               class="nav-link text-dark me-1 d-block d-lg-none"
               to="/MyAccount"
@@ -97,9 +95,8 @@ const checkFavorite = computed(() => {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li>
-              <router-link class="nav-item nav-link" to="/">Home</router-link>
+              <router-link class="nav-item nav-link" to="/" @click="closeNavbar">Home</router-link>
             </li>
-
             <li class="nav-item dropdown">
               <a
                 class="nav-link dropdown-toggle"
@@ -115,6 +112,7 @@ const checkFavorite = computed(() => {
               <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                 <li v-for="category in categories" :key="category.id">
                   <router-link
+                    @click="closeNavbar"
                     @click.prevent="goToAllProductPage(category)"
                     class="dropdown-item"
                     to="/shop"
@@ -124,17 +122,22 @@ const checkFavorite = computed(() => {
               </ul>
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/about-us"
+              <router-link class="nav-item nav-link" to="/sales" @click="closeNavbar"
+                >Sales</router-link
+              >
+            </li>
+            <li>
+              <router-link class="nav-item nav-link" to="/about-us" @click="closeNavbar"
                 >About us</router-link
               >
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/customersupport"
+              <router-link class="nav-item nav-link" to="/customersupport" @click="closeNavbar"
                 >Contact</router-link
               >
             </li>
 
-            <li class="nav-item dropdown" v-if="windowWidth < 992">
+            <!-- <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
                 class="nav-link dropdown-toggle"
                 href="#"
@@ -153,22 +156,24 @@ const checkFavorite = computed(() => {
                 aria-labelledby="customerSupportDropdown"
               >
                 <li>
-                  <router-link class="dropdown-item" to="/">FAQs</router-link>
+                  <router-link class="dropdown-item" to="/CustomerSupport" @click="closeNavbar">FAQs</router-link>
                 </li>
                 <li>
                   <router-link
                     class="dropdown-item"
-                    to="/CustomerSupport/Contact"
+                    to="/CustomerSupport"
+                    @click="closeNavbar"
                     >Contact</router-link
                   >
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/"
+                  <router-link class="dropdown-item" to="/CustomerSupport"
+                  @click="closeNavbar"
                     >Terms of Purchase and Delivery</router-link
                   >
                 </li>
               </ul>
-            </li>
+            </li> -->
 
             <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
@@ -184,29 +189,16 @@ const checkFavorite = computed(() => {
               </a>
               <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                 <li>
-                  <router-link class="dropdown-item" to="/">Login</router-link>
+                  <router-link class="dropdown-item" to="/LoginPage" @click="closeNavbar">Login</router-link>
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="createaccount"
+                  <router-link class="dropdown-item" to="/createaccount" @click="closeNavbar"
                     >Create Account</router-link
                   >
                 </li>
               </ul>
             </li>
           </ul>
-          <form
-            class="d-none d-lg-flex flex-row align-items-center me-auto"
-            @submit.prevent="search"
-          >
-            <input
-              class="form-control me-2"
-              type="search"
-              placeholder="Search category"
-              aria-label="Search"
-              v-model="searchQuery"
-              @keyup.enter="search"
-            />
-          </form>
           <div class="d-none d-lg-flex align-items-center">
             <router-link
               class="nav-link text-dark me-1 d-block d-lg-none"
