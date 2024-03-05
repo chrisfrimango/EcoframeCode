@@ -1,5 +1,5 @@
 <script setup>
-import { computed } from "vue";
+import { computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/productStore";
 import sunwearImage from "@/assets/sunwear.png";
@@ -39,6 +39,9 @@ const productPrice = (product) => {
 <template>
   <BContainer fluid>
     <h2 class="text-center my-4 text-primary">{{ category }}</h2>
+    <div v-if="products.length === 0" class="text-center">
+      <p>No products were found. Try another search or browse our categories.</p>
+    </div>
     <BRow>
       <BCol cols="6" md="4" v-for="product in products" :key="product.id">
         <BCard

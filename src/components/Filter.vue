@@ -22,7 +22,8 @@
         <div class="card-header">Brand</div>
         <ul class="list-group list-group-flush">
           <li class="list-group-item" v-for="brand in brands" :key="brand">
-            <input type="radio" class="me-2" v-model="selectedBrands" :value="brand" :id="brand">
+            <input type="radio" class="me-2"
+            v-model="selectedBrands" :value="brand" :id="brand">
             <label :for="brand">{{ brand }}</label>
           </li>
         </ul>
@@ -108,14 +109,14 @@
     console.log('Categories:', store.getCategories());
     return store.getCategories();
   });
-  const colors = computed(() => ['Black', 'Brown', 'Light', 'Blue', 'Yellow', 'Red','Gold','Grey']);
+  const colors = computed(() => ['Black', 'Brown', 'Light', 'Blue', 'Yellow', 'Red','Gold','Green','Grey']);
   const brands = computed(() => ['Rayban', 'Oakley', 'Gucci', 'Prada', 'Tom Ford', 'Versace']);
   const prices = computed(() => ['Under 1000 SEK', '1000 - 3000 SEK', 'Over 3000 SEK']);
   const ratings = computed(() => [5, 4, 3, 2, 1]);
 
   const applyFilters = () => {
     const filters = {
-      category: selectedCategory.value || "All Products",
+      category: selectedCategory.value || "All glasses",
       brands: selectedBrands.value,
       color: selectedColor.value,
       price: selectedPrice.value,
@@ -151,17 +152,9 @@
     showFilters.value = !showFilters.value;
   };
 
-  // watch(selectedCategory, (newValue) => {
-  // if (newValue === 'All Products' || newValue === '') {
-  //   store.filteredProducts = store.getCategory(newValue);
-  // } else {
-  //   store.filteredProducts = store.getCategory(newValue);
-  // }
-  // });
   watch(() => store.selectedCategory, (newVal) => {
-  store.applyFilters({ category: newVal });
-});
-
+    store.applyFilters({ category: newVal });
+  });
 </script>
 
 
