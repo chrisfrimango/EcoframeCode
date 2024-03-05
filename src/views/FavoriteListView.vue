@@ -42,42 +42,52 @@ const productPrice = (product) => {
         <BCard
           class="rounded-0 mb-5"
           border-variant="light"
-          :title="favorite.modelName"
-          :img-src="sunwearImage"
-          img-alt="Image"
           img-top
           tag="product"
           style="max-width: 20rem"
         >
-          <BCardText class="mb-1 custom-font-style">
+          <router-link
+            @click.prevent="goToProductPage(favorite.id)"
+            to="/product/:id"
+          >
+            <img
+              :src="'/src/assets/sunwear.png'"
+              class="card-img-top"
+              :alt="favorite.modelName"
+            >
+          </router-link>
+          <BCardTitle class="card-items-padding card-first-item">{{ favorite.modelName }}</BCardTitle>
+          <BCardText class="mb-1 custom-font-style card-items-padding">
             {{ favorite.brand }}</BCardText
           >
-          <BCol class="d-flex gap-5">
+          <BCol class="d-flex gap-5 ">
             <BCardText
               v-if="favorites"
               :class="{ 'sales-color': favorite.onSale }"
+              class="card-items-padding"
             >
               {{ productPrice(favorite) }} SEK
             </BCardText>
             <BCardText
               v-if="favorite.onSale"
               :class="{ 'old-price': favorite.onSale }"
+              class="card-items-padding"
             >
               {{ favorite.price }} SEK
             </BCardText>
           </BCol>
-          <BCardText>
+          <BCardText class="card-items-padding">
             Color:
             <span :style="{ color: favorite.color }">{{ favorite.color }}</span>
           </BCardText>
           <router-link
             @click.prevent="goToProductPage(favorite.id)"
             to="/product/:id"
-            class="text-primary"
+            class="text-primary card-items-padding"
             style="text-decoration: underline"
             >See Details</router-link
           >
-          <BCol class="mt-4 d-flex justify-content-between">
+          <BCol class="mt-4 d-flex justify-content-between card-items-padding card-bottom-item">
             <BButton
               @click.prevent="toggleFavorite(favorite.id)"
               variant="outline-danger"
@@ -113,5 +123,23 @@ span {
 .old-price {
   text-decoration: line-through;
   font-weight: 300;
+}
+
+.card {
+  --bs-card-spacer-y: 0;
+  --bs-card-spacer-x: 0;
+}
+
+.card-items-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card-first-item {
+  padding-top: 1rem;
+}
+
+.card-bottom-item {
+  padding-bottom: 1rem;
 }
 </style>

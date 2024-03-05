@@ -53,29 +53,39 @@ console.log(categoryToDisplay.value);
         <BCard
           class="rounded-0 position-relative"
           border-variant="light"
-          :title="category.modelName"
-          img-src="/src/assets/sunwear.png"
-          img-alt="Image"
-          img-top
           tag="products"
           style="max-width: 20rem"
+
         >
-          <BCardText class="mb-1 custom-font-style">
+          <router-link
+            @click.prevent="goToProductPage(category.id)"
+            to="/product/:id"
+          >
+            <img
+              :src="'/src/assets/sunwear.png'"
+              class="card-img-top"
+              :alt="category.modelName"
+            >
+          </router-link>
+          <BCardTitle class="card-items-padding card-first-item">{{ category.modelName }}</BCardTitle>
+          <BCardText class="mb-1 custom-font-style card-items-padding">
             {{ category.brand }}</BCardText
           >
           <BCardText
             v-if="categoryToDisplay"
             :class="{ 'sales-color': category.onSale }"
+            class="card-items-padding"
           >
             {{ productPrice(category) }} SEK
           </BCardText>
           <BCardText
             v-if="category.onSale"
             :class="{ 'old-price': category.onSale }"
+            class="card-items-padding"
           >
             {{ category.price }} SEK
           </BCardText>
-          <BCol class="d-flex justify-content-between">
+          <BCol class="d-flex justify-content-between card-items-padding card-bottom-item">
             <router-link
               @click.prevent="goToProductPage(category.id)"
               to="/product/:id"
@@ -127,5 +137,23 @@ console.log(categoryToDisplay.value);
 .old-price {
   text-decoration: line-through;
   font-weight: 300;
+}
+
+.card {
+  --bs-card-spacer-y: 0;
+  --bs-card-spacer-x: 0;
+}
+
+.card-items-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card-first-item {
+  padding-top: 1rem;
+}
+
+.card-bottom-item {
+  padding-bottom: 1rem;
 }
 </style>

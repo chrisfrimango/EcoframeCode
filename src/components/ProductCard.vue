@@ -25,21 +25,6 @@ const productPrice = computed(() => {
         <img src="../assets/sunwear.png" alt="Image" />
       </BCol>
       <BCol sm="12" md="6" class="columns p-5">
-        <BRow class="product-info breadcrumb">
-          <nav aria-label="breadcrumb">
-            <ol class="breadcrumb">
-              <li class="breadcrumb-item">
-                <router-link :to="{ path: '/' }">Home</router-link>
-              </li>
-              <li class="breadcrumb-item">
-                <router-link :to="{ path: '/shop/All Products' }" >Shop</router-link>
-              </li>
-              <li class="breadcrumb-item active" aria-current="page" >
-                <router-link to="">{{ product.modelName }}</router-link>
-              </li>
-            </ol>
-          </nav>
-        </BRow>
         <BRow class="product-info">
           <h2>{{ product.modelName }}</h2>
           <h5>{{ product.brand }}</h5>

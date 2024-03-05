@@ -47,14 +47,17 @@
   color: white;
   padding: 80px;
 }
+
 .footer-list {
   list-style-type: none;
   padding-left: 0;
   color: inherit;
 }
+
 a {
   color: white;
 }
+
 #copyright {
   margin-top: 1rem;
 }
