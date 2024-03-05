@@ -330,7 +330,6 @@ const toOrderConfirmation = () => {
       // Store updated current account to session storage
       sessionStorage.setItem("currentAccount", JSON.stringify(currentAccount));
       productStore.clearCart();
-
       router.push({ name: "OrderConfirmation" });
     } 
   } else {
@@ -341,17 +340,6 @@ const toOrderConfirmation = () => {
 
 };
 
-
-
-
-//const toOrderConfirmation = () => {
-  //skriv ett if statment om man är inloggad så ska en grej göras, annars ska det bara pusha 
-  //savesummaryData ska sparas och pushas till currentaccount objektet  
-  //dessa 
-  //else statment som gör endast det nedanför 
- // productStore.clearCart(), //i clear cart måste den ränsa carten i session storige
-  //router.push({ name: "OrderConfirmation" });
-//};
 </script>
 
 <style scoped>
