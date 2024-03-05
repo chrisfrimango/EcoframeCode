@@ -39,6 +39,7 @@ const goToMyAccount = () =>
 const onSubmit = handleSubmit((values) => {
   const validate = productStore.validateLogin(values);
   productStore.currentAccount = validate;
+  console.log(typeof productStore.currentAccount);
   productStore.saveCurrentAccountToSession();
   if (validate) {
     resetForm();

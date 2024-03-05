@@ -51,103 +51,113 @@
     <br />
     <div v-if="!showSummary">
       <div v-if="!productStore.loggedIn" class="guestOrMember">
-        <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
+        <p>
+          Are you a member?
+          <span @click="goToLogin" class="toLogin">Login</span> or continue as
+          guest
+        </p>
       </div>
-    <div class="input-container">
-      <!-- Email input -->
-      <div role="group">
-        <BFormInput
-          id="input-email"
-          v-model="email"
-          :state="emailIsValid ? true : false"
-          aria-describedby="input-email-help"
-          placeholder="Email address"
-          trim
-        />
-      </div>
-      <div role="group">
-        <!-- Zipcode input -->
-        <BFormInput
-          id="input-zipcode"
-          v-model="zipcode"
-          :state="zipcodeIsValid ? true : false"
-          aria-describedby="input-zipcode-help"
-          placeholder="Zipcode"
-          trim
-          @input="onZipcodeInput"
-        />
-      </div>
-    </div>
-    <div class="button">
-      <!-- Continue button with disabled attribute -->
-      <BButton variant="success" style="min-width: 200px;" @click="toggleContent" :disabled="!isFormValid">Continue</BButton>
-    </div>
-    <div v-if="showContent">
-      <!-- Delivery options -->
-      <div class="deliveryOptions-container">
-        <p>Delivery options:</p>
-        <div>
-          <BFormRadio
-            v-for="option in deliveryOptions"
-            :key="option.value"
-            v-model="selectedDeliveryOption"
-            :name="'delivery-option'"
-            :value="option.value"
-            :disabled="option.disabled"
-          >
-            {{ option.text }} 
-            <br>
-            {{ option.description }}
-          </BFormRadio>
+      <div class="input-container">
+        <!-- Email input -->
+        <div role="group">
+          <BFormInput
+            id="input-email"
+            v-model="email"
+            :state="emailIsValid ? true : false"
+            aria-describedby="input-email-help"
+            placeholder="Email address"
+            trim
+          />
         </div>
+        <div role="group">
+          <!-- Zipcode input -->
+          <BFormInput
+            id="input-zipcode"
+            v-model="zipcode"
+            :state="zipcodeIsValid ? true : false"
+            aria-describedby="input-zipcode-help"
+            placeholder="Zipcode"
+            trim
+            @input="onZipcodeInput"
+          />
+        </div>
+      </div>
+      <div class="button">
+        <!-- Continue button with disabled attribute -->
+        <BButton
+          variant="success"
+          style="min-width: 200px"
+          @click="toggleContent"
+          :disabled="!isFormValid"
+          >Continue</BButton
+        >
       </div>
       <div v-if="showContent">
-        <div class="line"></div>
-        <!-- Shipping address -->
-        <div class="address-form">
-          <p>Shipping address:</p>
-          <BFormInput v-model="firstName" placeholder="First name" />
-          <BFormInput v-model="lastName" placeholder="Last name" />
-          <BFormInput v-model="address" placeholder="Address" />
-          <BFormInput v-model="city" placeholder="City" />
-          <BFormInput v-model="phone" placeholder="Phone" />
-        </div>
-        <div class="line"></div>
-        <!-- Payment options -->
-        <div class="paymentOptions-container">
-          <p>Payment options:</p>
-          <div v-for="option in paymentOptions" :key="option.value">
+        <!-- Delivery options -->
+        <div class="deliveryOptions-container">
+          <p>Delivery options:</p>
+          <div>
             <BFormRadio
-              v-model="selectedPaymentOption"
-              :name="'payment-option'"
+              v-for="option in deliveryOptions"
+              :key="option.value"
+              v-model="selectedDeliveryOption"
+              :name="'delivery-option'"
               :value="option.value"
               :disabled="option.disabled"
             >
               {{ option.text }}
+              <br />
+              {{ option.description }}
             </BFormRadio>
           </div>
         </div>
-        <!-- Card payment input -->
-        <div
-          v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
-          class="card-payment-input"
-        >
-          <p>Card Information:</p>
-          <BFormInput placeholder="Card Number" />
-        </div>
-        <!-- Pay button -->
-        <div class="line"></div>
-        <div class="button">
-          <BButton
-            variant="primary"
-            style="min-width: 200px"
-            @click="pay"
-            :disabled="!isPaymentValid"
-            >Pay</BButton
+        <div v-if="showContent">
+          <div class="line"></div>
+          <!-- Shipping address -->
+          <div class="address-form">
+            <p>Shipping address:</p>
+            <BFormInput v-model="firstName" placeholder="First name" />
+            <BFormInput v-model="lastName" placeholder="Last name" />
+            <BFormInput v-model="address" placeholder="Address" />
+            <BFormInput v-model="city" placeholder="City" />
+            <BFormInput v-model="phone" placeholder="Phone" />
+          </div>
+          <div class="line"></div>
+          <!-- Payment options -->
+          <div class="paymentOptions-container">
+            <p>Payment options:</p>
+            <div v-for="option in paymentOptions" :key="option.value">
+              <BFormRadio
+                v-model="selectedPaymentOption"
+                :name="'payment-option'"
+                :value="option.value"
+                :disabled="option.disabled"
+              >
+                {{ option.text }}
+              </BFormRadio>
+            </div>
+          </div>
+          <!-- Card payment input -->
+          <div
+            v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
+            class="card-payment-input"
           >
+            <p>Card Information:</p>
+            <BFormInput placeholder="Card Number" />
+          </div>
+          <!-- Pay button -->
+          <div class="line"></div>
+          <div class="button">
+            <BButton
+              variant="primary"
+              style="min-width: 200px"
+              @click="pay"
+              :disabled="!isPaymentValid"
+              >Pay</BButton
+            >
+          </div>
         </div>
       </div>
-    </div>
     </div>
     <!-- Will only show up when the information is correct and payment initiated -->
     <div v-else="showSummary">
@@ -253,7 +263,7 @@ const selectedPaymentOption = ref("");
 
 const goToLogin = () => {
   router.push({ name: "LoginPage" });
-}
+};
 
 const toggleContent = () => {
   showContent.value = !showContent.value;
@@ -268,13 +278,17 @@ watch(selectedPaymentOption, (newValue) => {
 const summaryData = ref({});
 
 const selectedDeliveryOptionText = computed(() => {
-  const option = deliveryOptions.find(opt => opt.value === selectedDeliveryOption.value);
-  return option ? option.text : '';
+  const option = deliveryOptions.find(
+    (opt) => opt.value === selectedDeliveryOption.value
+  );
+  return option ? option.text : "";
 });
 
 const selectedPaymentOptionText = computed(() => {
-  const option = paymentOptions.find(opt => opt.value === selectedPaymentOption.value);
-  return option ? option.text : '';
+  const option = paymentOptions.find(
+    (opt) => opt.value === selectedPaymentOption.value
+  );
+  return option ? option.text : "";
 });
 
 const pay = () => {
@@ -292,14 +306,23 @@ const saveSummaryData = () => {
     city: city.value,
     phone: phone.value,
     selectedDeliveryOption: selectedDeliveryOptionText.value,
-    selectedPaymentOption: selectedPaymentOptionText.value
+    selectedPaymentOption: selectedPaymentOptionText.value,
+    // ordernummer
+    // produktnamn
+    // antal
+    // pris
   };
 };
 
 const toOrderConfirmation = () => {
-  productStore.saveCartItems(),
-  productStore.clearCart(),
-  router.push({ name: "OrderConfirmation" });
+  if (!loggedIn) {
+    productStore.clearCart(), router.push({ name: "OrderConfirmation" });
+  } else {
+    // const orders = [];
+    // productStore.currentAccount.orders.push(summaryData.value);
+    // saveCurrentAccountToSession();
+    productStore.clearCart(), router.push({ name: "OrderConfirmation" });
+  }
 };
 </script>
 
@@ -341,8 +364,8 @@ const toOrderConfirmation = () => {
 }
 
 .toLogin {
-  color: blue; 
-  text-decoration: underline; 
-  cursor: pointer; 
+  color: blue;
+  text-decoration: underline;
+  cursor: pointer;
 }
 </style>

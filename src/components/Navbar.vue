@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted, onUnmounted} from "vue";
+import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 const router = useRouter();
@@ -10,7 +10,6 @@ const cartItemCount = computed(() => productStore.cartItemCount);
 const searchQuery = ref("");
 const activeDropdown = ref(null);
 const windowWidth = ref(window.innerWidth);
-
 
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth;
@@ -39,8 +38,10 @@ const handleDropdownToggle = (dropdownId) => {
   activeDropdown.value = dropdownId;
 };
 
-const checkFavorite = computed(() => {
-  return productStore.favorites.length > 0;
+let checkFavorite = ref(false);
+
+watchEffect(() => {
+  checkFavorite.value = productStore.favorites.length > 0;
 });
 </script>
 
@@ -67,8 +68,13 @@ const checkFavorite = computed(() => {
               to="/MyAccount"
               ><i class="bi bi-person icon-large"></i
             ></router-link>
-            <router-link class="nav-link text-dark me-1" to="/"
-              ><i class="bi bi-heart icon-large"></i
+            <router-link class="nav-link text-dark me-1" to="/favoritelist"
+              ><i
+                class="bi bi-heart icon-large"
+                :class="
+                  checkFavorite.valueOf() ? 'text-danger' : 'text-secondary'
+                "
+              ></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
               ><i class="bi bi-cart icon-large"></i
@@ -97,11 +103,14 @@ const checkFavorite = computed(() => {
               >
                 Glasses
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul
+                class="dropdown-menu bg-white"
+                aria-labelledby="navbarDropdown"
+              >
                 <li v-for="category in categories" :key="category.id">
                   <router-link
                     @click.prevent="goToAllProductPage(category)"
-                    class="dropdown-item"
+                    class="dropdown-item text-dark"
                     to="/shop"
                     >{{ category }}</router-link
                   >
@@ -201,7 +210,9 @@ const checkFavorite = computed(() => {
             <router-link class="nav-link text-dark me-1" to="/favoritelist"
               ><i
                 class="bi bi-heart icon-large"
-                :class="checkFavorite ? 'text-danger' : 'text-secondary'"
+                :class="
+                  checkFavorite.valueOf() ? 'text-danger' : 'text-secondary'
+                "
               ></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"

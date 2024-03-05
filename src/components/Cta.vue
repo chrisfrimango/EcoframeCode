@@ -1,11 +1,17 @@
-<script setup></script>
+<script setup>
+const props = defineProps({
+  discountToDisplay: Number,
+});
+</script>
 <template>
   <BContainer fluid>
     <BRow class="g-0 custom-card">
       <BCol md="6" class="bg-color d-flex align-items-center">
         <BContainer class="p-5 m-4">
           <h1 class="display-5 text-danger">Spring Sale</h1>
-          <p class="lead text-danger">20% off selected frames</p>
+          <p class="lead text-danger">
+            {{ props.discountToDisplay }}% off selected frames
+          </p>
           <BButton to="/sales" variant="primary">Shop Now</BButton>
         </BContainer>
       </BCol>

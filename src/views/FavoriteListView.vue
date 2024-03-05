@@ -1,13 +1,16 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { watchEffect } from "vue";
 import { useProductStore } from "../stores/productStore";
 const productStore = useProductStore();
 import sunwearImage from "@/assets/sunwear.png";
 const router = useRouter();
 
-const favorites = computed(() => productStore.favorites);
-console.log(favorites.value);
+let favorites = [];
+
+watchEffect(() => {
+  favorites = productStore.getFavoriteListFromSession();
+});
 
 const goToProductPage = (productId) => {
   router.push({ name: "ProductPage", params: { productId } });
@@ -77,20 +80,24 @@ const productPrice = (product) => {
             style="text-decoration: underline"
             >See Details</router-link
           >
-          <BCol class="mt-4 d-flex justify-content-between">
-            <BButton
-              @click.prevent="toggleFavorite(favorite.id)"
-              variant="outline-danger"
-              class="mt-2"
-              >Remove</BButton
-            >
-            <BButton
-              @click.prevent="productStore.addToCart(favorite)"
-              class="mt-2"
-              variant="primary"
-              >Add to cart</BButton
-            >
-          </BCol>
+          <BRow class="mt-4 d-flex justify-content-between">
+            <BCol>
+              <BButton
+                @click.prevent="toggleFavorite(favorite.id)"
+                variant="outline-danger"
+                class="mt-2"
+                >Remove</BButton
+              >
+            </BCol>
+            <BCol>
+              <BButton
+                @click.prevent="productStore.addToCart(favorite)"
+                class="mt-2"
+                variant="primary"
+                >Add to cart</BButton
+              >
+            </BCol>
+          </BRow>
         </BCard>
       </BCol>
     </BRow>
