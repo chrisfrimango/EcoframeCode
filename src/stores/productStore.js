@@ -217,7 +217,7 @@ export const useProductStore = defineStore({
         ],
       },
       {
-        category: "All Products",
+        category: "All glasses",
       },
     ],
   }),
@@ -287,7 +287,7 @@ export const useProductStore = defineStore({
     // Hämtar produkter som är på rea
     getProductsOnSale() {
       return this.products
-        .filter((category) => category.category !== "All Products")
+        .filter((category) => category.category !== "All glasses")
         .flatMap((category) => category.products)
         .filter((product) => product.onSale);
     },
@@ -312,9 +312,9 @@ export const useProductStore = defineStore({
 
     // Hämtar alla produkter i en kategori
     getCategory(findCategory) {
-      if (findCategory === "All Products") {
+      if (findCategory === "All glasses") {
         return this.products
-          .filter((category) => category.category !== "All Products")
+          .filter((category) => category.category !== "All glasses")
           .flatMap((category) => category.products);
       }
       const category = this.products.find(
@@ -438,8 +438,7 @@ export const useProductStore = defineStore({
      })) : []
       );
       console.log("Initialized originalProducts:", this.originalProducts);
-    }
-     ,
+    },
     applyFilters(filters) {
       console.log("Applying filters with: ", filters);
 
@@ -447,38 +446,50 @@ export const useProductStore = defineStore({
         console.error("No original products to filter from");
         return;
       }
-    // filtreringen för kategori
-    let filteredProducts = filters.category && filters.category !== "All Products" ?
-    this.originalProducts.filter(product => product.category === filters.category) :
-    this.originalProducts;
-     filteredProducts = filteredProducts.filter(product => {
-    const matchesBrand = !filters.brands || filters.brands.includes(product.brand);
-    const matchesColor = !filters.color || product.color === filters.color;
-    let matchesPrice = true;
-        if (filters.price) {
-      // pris"Under 1000" och "Över 3000"
+
+      // Filtrering för kategori
+      let filteredProducts = this.originalProducts;
+      if (filters.category && filters.category !== "All glasses") {
+        filteredProducts = filteredProducts.filter(product => product.category === filters.category);
+      }
+
+      // Brand filtering
+      if (filters.brands && filters.brands.length) {
+        filteredProducts = filteredProducts.filter(product => filters.brands.includes(product.brand));
+      }
+
+      // Color filtering
+      if (filters.color) {
+        filteredProducts = filteredProducts.filter(product => product.color === filters.color);
+      }
+
+      // Price filtering
+      if (filters.price) {
+        filteredProducts = filteredProducts.filter(product => {
           if (filters.price.includes('Under')) {
             const maxPrice = parseInt(filters.price.replace('Under ', ''), 10);
-            matchesPrice = product.price < maxPrice;
+            return product.price < maxPrice;
           } else if (filters.price.includes('Over')) {
             const minPrice = parseInt(filters.price.replace('Over ', ''), 10);
-            matchesPrice = product.price > minPrice;
+            return product.price > minPrice;
           } else {
             const [minPrice, maxPrice] = filters.price.split('-').map(price => parseInt(price.trim(), 10));
-            matchesPrice = product.price >= minPrice && product.price <= maxPrice;
+            return product.price >= minPrice && product.price <= maxPrice;
           }
-        }
-    const matchesRating = !filters.rating || product.rating >= filters.rating;
+        });
+      }
+      //rating filtering
+      if (filters.rating) {
+        const ratingThreshold = parseFloat(filters.rating);
+        filteredProducts = filteredProducts.filter(product => product.rating >= ratingThreshold);
+      }
 
-    return matchesBrand && matchesColor && matchesPrice && matchesRating;
-    });
+      this.filteredProducts = filteredProducts;
 
-    this.filteredProducts = filteredProducts;
-
-    if (this.filteredProducts.length === 0) {
-      console.error("No matching products found after applying filters.");
+      if (this.filteredProducts.length === 0) {
+        console.error("No matching products found after applying filters.");
       } else {
-         console.log("Filtered products after applying all filters: ", this.filteredProducts);
+        console.log("Filtered products after applying all filters: ", this.filteredProducts);
       }
     },
     clearFilters() {
@@ -493,18 +504,6 @@ export const useProductStore = defineStore({
         return total + itemTotal;
       }, 0);
     },
-
-    //search
-    filterProducts(searchTerm) {
-      const searchLower = searchTerm.toLowerCase();
-      this.filteredProducts = this.products.flatMap(category =>
-        category.products.filter(product =>
-          product.brand.toLowerCase().includes(searchLower) ||
-          product.modelName.toLowerCase().includes(searchLower)
-        )
-      );
-      console.log("Filtered products:", this.filteredProducts);
-    }
   },
 
   getters: {
