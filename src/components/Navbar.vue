@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 
@@ -8,13 +8,9 @@ const router = useRouter();
 const productStore = useProductStore();
 const cartItemCount = computed(() => productStore.cartItemCount);
 const windowWidth = ref(window.innerWidth);
-
-const updateWindowWidth = () => {
-  windowWidth.value = window.innerWidth;
-  const isMobileView = computed(() => windowWidth.value < 992);
-  const navbarToggler = ref(null);
-  const navbarCollapse = ref(null);
-};
+const isMobileView = computed(() => windowWidth.value < 992);
+const navbarToggler = ref(null);
+const navbarCollapse = ref(null);
 
 const closeNavbar = () => {
   if (isMobileView.value && navbarCollapse.value?.classList.contains("show")) {

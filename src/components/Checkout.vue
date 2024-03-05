@@ -50,130 +50,116 @@
     </div>
     <br />
     <div v-if="!showSummary">
-      <div v-if="!productStore.loggedIn" class="guestOrMember">
-        <p>
-          Are you a member?
-          <span @click="goToLogin" class="toLogin">Login</span> or continue as
-          guest
-        </p>
       <div v-if="!productStore.loggedIn">
         <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
       </div>
-      <div class="input-container">
-        <!-- Email input -->
-        <div role="group">
-          <BFormInput
-            id="input-email"
-            v-model="email"
-            :state="emailIsValid ? true : false"
-            aria-describedby="input-email-help"
-            placeholder="Email address"
-            trim
-          />
-        </div>
-        <div role="group">
-          <!-- Zipcode input -->
-          <BFormInput
-            id="input-zipcode"
-            v-model="zipcode"
-            :state="zipcodeIsValid ? true : false"
-            aria-describedby="input-zipcode-help"
-            placeholder="Zipcode"
-            trim
-            @input="onZipcodeInput"
-          />
-        </div>
+    <div class="input-container">
+      <!-- Email input -->
+      <div role="group">
+        <BFormInput
+          id="input-email"
+          v-model="email"
+          :state="emailIsValid ? true : false"
+          aria-describedby="input-email-help"
+          placeholder="Email address"
+          trim
+        />
       </div>
-      <div class="button">
-        <!-- Continue button with disabled attribute -->
-        <BButton
-          variant="success"
-          style="min-width: 200px"
-          @click="toggleContent"
-          :disabled="!isFormValid"
-          >Continue</BButton
-        >
+      <div role="group">
+        <!-- Zipcode input -->
+        <BFormInput
+          id="input-zipcode"
+          v-model="zipcode"
+          :state="zipcodeIsValid ? true : false"
+          aria-describedby="input-zipcode-help"
+          placeholder="Zipcode"
+          trim
+          @input="onZipcodeInput"
+        />
+      </div>
+    </div>
+    <div class="button">
+      <!-- Continue button with disabled attribute -->
+      <BButton variant="success" style="min-width: 200px;" @click="toggleContent" :disabled="!isFormValid">Continue</BButton>
+    </div>
+    <div v-if="showContent">
+      <!-- Delivery options -->
+      <div class="deliveryOptions-container">
+        <p><strong>Delivery options:</strong></p>
+        <div>
+          <BFormRadio
+            v-for="option in deliveryOptions"
+            :key="option.value"
+            v-model="selectedDeliveryOption"
+            :name="'delivery-option'"
+            :value="option.value"
+            :disabled="option.disabled"
+          >
+            {{ option.text }}
+            <br>
+            <div> {{ option.description }} </div>
+            <div class="line"></div>
+          </BFormRadio>
+        </div>
       </div>
       <div v-if="showContent">
-        <!-- Delivery options -->
-        <div class="deliveryOptions-container">
-          <p>Delivery options:</p>
-          <div>
+        <div class="line"></div>
+        <!-- Shipping address -->
+        <div class="address-form">
+          <p><strong>Shipping address:</strong></p>
+          <BFormInput v-model="firstName" placeholder="First name" />
+          <BFormInput v-model="lastName" placeholder="Last name" />
+          <BFormInput v-model="address" placeholder="Address" />
+          <BFormInput v-model="city" placeholder="City" />
+          <BFormInput v-model="phone" placeholder="Phone" />
+        </div>
+        <div class="line"></div>
+        <!-- Payment options -->
+        <div class="paymentOptions-container">
+          <p><strong>Payment options:</strong></p>
+          <div v-for="option in paymentOptions" :key="option.value">
             <BFormRadio
-              v-for="option in deliveryOptions"
-              :key="option.value"
-              v-model="selectedDeliveryOption"
-              :name="'delivery-option'"
+              v-model="selectedPaymentOption"
+              :name="'payment-option'"
               :value="option.value"
               :disabled="option.disabled"
             >
               {{ option.text }}
-              <br />
-              {{ option.description }}
+              <div class="line"></div>
             </BFormRadio>
           </div>
         </div>
-        <div v-if="showContent">
-          <div class="line"></div>
-          <!-- Shipping address -->
-          <div class="address-form">
-            <p>Shipping address:</p>
-            <BFormInput v-model="firstName" placeholder="First name" />
-            <BFormInput v-model="lastName" placeholder="Last name" />
-            <BFormInput v-model="address" placeholder="Address" />
-            <BFormInput v-model="city" placeholder="City" />
-            <BFormInput v-model="phone" placeholder="Phone" />
-          </div>
-          <div class="line"></div>
-          <!-- Payment options -->
-          <div class="paymentOptions-container">
-            <p>Payment options:</p>
-            <div v-for="option in paymentOptions" :key="option.value">
-              <BFormRadio
-                v-model="selectedPaymentOption"
-                :name="'payment-option'"
-                :value="option.value"
-                :disabled="option.disabled"
-              >
-                {{ option.text }}
-              </BFormRadio>
-            </div>
-          </div>
-          <!-- Card payment input -->
-          <div
-            v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
-            class="card-payment-input"
+        <!-- Card payment input -->
+        <div
+          v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
+          class="card-payment-input"
+        >
+          <p><strong>Card Information:</strong></p>
+          <BFormInput placeholder="Card Number" />
+        </div>
+        <!-- Pay button -->
+        <div class="line"></div>
+        <div class="button">
+          <BButton
+            variant="primary"
+            style="min-width: 200px"
+            @click="pay"
+            :disabled="!isPaymentValid"
+            >Pay</BButton
           >
-            <p>Card Information:</p>
-            <BFormInput placeholder="Card Number" />
-          </div>
-          <!-- Pay button -->
-          <div class="line"></div>
-          <div class="button">
-            <BButton
-              variant="primary"
-              style="min-width: 200px"
-              @click="pay"
-              :disabled="!isPaymentValid"
-              >Pay</BButton
-            >
-          </div>
         </div>
       </div>
+    </div>
     </div>
     <!-- Will only show up when the information is correct and payment initiated -->
     <div v-else="showSummary">
       <p><strong>Your information:</strong></p>
       <!-- Custom summary data -->
-      <p>
-        <strong> {{ firstName }} {{ lastName }} </strong>
-      </p>
-      <p>{{ address }}, {{ zipcode }}, {{ city }}</p>
+      <p><strong> {{ firstName }} {{ lastName }} </strong></p>
+      <p> {{ address }}, {{ zipcode }}, {{ city }}</p>
       <p>{{ email }}, {{ phone }}</p>
-      <p>
-        <strong>Delivery:</strong> {{ selectedDeliveryOptionText }},
-        <strong>Payment</strong> {{ selectedPaymentOptionText }}
-      </p>
+      <p><strong>Delivery:</strong> {{ selectedDeliveryOptionText }},
+        <strong>Payment</strong> {{ selectedPaymentOptionText }}</p>
       <BButton
         variant="primary"
         style="min-width: 200px"
@@ -268,7 +254,7 @@ const selectedPaymentOption = ref("");
 
 const goToLogin = () => {
   router.push({ name: "LoginPage" });
-};
+}
 
 const toggleContent = () => {
   showContent.value = !showContent.value;
@@ -283,17 +269,13 @@ watch(selectedPaymentOption, (newValue) => {
 const summaryData = ref({});
 
 const selectedDeliveryOptionText = computed(() => {
-  const option = deliveryOptions.find(
-    (opt) => opt.value === selectedDeliveryOption.value
-  );
-  return option ? option.text : "";
+  const option = deliveryOptions.find(opt => opt.value === selectedDeliveryOption.value);
+  return option ? option.text : '';
 });
 
 const selectedPaymentOptionText = computed(() => {
-  const option = paymentOptions.find(
-    (opt) => opt.value === selectedPaymentOption.value
-  );
-  return option ? option.text : "";
+  const option = paymentOptions.find(opt => opt.value === selectedPaymentOption.value);
+  return option ? option.text : '';
 });
 
 const pay = () => {
@@ -303,14 +285,10 @@ const pay = () => {
 
 const saveSummaryData = () => {
   const orderNumber = productStore.createOrderNumber(); // Accessing createOrderNumber from productStore
-  const cartItemsData = cartItems.value.map((item) => ({
+  const cartItemsData = cartItems.value.map(item => ({
     productName: item.modelName,
     quantity: item.quantity,
-    totalAmount:
-      item.quantity *
-      (item.onSale
-        ? productStore.updateProductSalesPrice(item.id)
-        : item.price),
+    totalAmount: item.quantity * (item.onSale ? productStore.updateProductSalesPrice(item.id) : item.price)
   }));
 
   return {
@@ -324,14 +302,44 @@ const saveSummaryData = () => {
     phone: phone.value,
     selectedDeliveryOption: selectedDeliveryOptionText.value,
     selectedPaymentOption: selectedPaymentOptionText.value,
+    cartItems: cartItemsData
   };
 };
 
 const toOrderConfirmation = () => {
-  productStore.saveCartItems(),
-    productStore.clearCart(),
+  const summaryData = saveSummaryData(); // Get the summary data
+
+  // Check if the user is logged in
+  if (productStore.loggedIn) {
+    // If logged in, save order information to the current account
+    const currentAccount = productStore.getCurrentAccountFromSession(); // Get current account data from session
+
+    // Ensure that currentAccount is a valid object
+    if (currentAccount && typeof currentAccount === 'object') {
+      // Ensure that the 'orders' array exists or initialize it if missing
+      if (!Array.isArray(currentAccount.orders)) {
+        currentAccount.orders = [];
+      }
+
+      const orderData = {
+        orderNumber: summaryData.orderNumber,
+        cartItems: summaryData.cartItems
+      };
+      currentAccount.orders.push(orderData); // Add order data to current account
+
+      // Store updated current account to session storage
+      sessionStorage.setItem("currentAccount", JSON.stringify(currentAccount));
+      productStore.clearCart();
+      router.push({ name: "OrderConfirmation" });
+    }
+  } else {
+    // If not logged in, just clear the cart and push to OrderConfirmation
+    productStore.clearCart();
     router.push({ name: "OrderConfirmation" });
+  }
+
 };
+
 </script>
 
 <style scoped>
@@ -388,34 +396,35 @@ const toOrderConfirmation = () => {
 }
 
 h2 {
-  text-align: center;
+text-align: center;
 }
 
 @media (max-width: 768px) {
-  .checkout-container {
-    width: 90%;
-  }
+    .checkout-container {
+      width: 90%
+    }
 
-  .summary-container {
-    padding: 5px;
-  }
+    .summary-container {
+      padding: 5px;
+    }
 
-  .input-container > div {
-    padding: 5px;
-  }
+    .input-container > div {
+      padding: 5px;
+    }
 
-  .button {
-    margin-top: 5px;
-  }
+    .button {
+      margin-top: 5px;
+    }
 
-  .line {
-    margin: 10px 0;
-  }
+    .line {
+      margin: 10px 0;
+    }
 
-  .header-row,
-  .item-row {
-    padding: 10px;
-    margin-bottom: 5px;
-  }
+    .header-row,
+    .item-row {
+      padding: 10px;
+      margin-bottom: 5px;
+    }
 }
+
 </style>
