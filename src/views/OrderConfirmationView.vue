@@ -3,6 +3,8 @@ import { useProductStore } from "../stores/productStore";
 import { useRouter } from "vue-router";
 const router = useRouter();
 const productStore = useProductStore();
+
+// om inloggad hämta ordernummer från currentaccount
 const orderNumber = productStore.createOrderNumber();
 
 const continueShopping = () => {

@@ -81,7 +81,7 @@ export const useProductStore = defineStore({
               "Fashion meets sustainability with our carbon-neutral sunglasses featuring plant-based lenses, contributing to a brighter future while making a bold statement.",
           },
           {
-            id: 1111,
+            id: uuidv4(),
             modelName: "Rimless",
             brand: "Versace",
             price: 1200,
@@ -222,7 +222,6 @@ export const useProductStore = defineStore({
     ],
   }),
   actions: {
-
     //lägger till användar
     createNewAccount(values) {
       this.accounts.push(values);
@@ -278,10 +277,29 @@ export const useProductStore = defineStore({
         const product = this.getProductById(productId);
         this.favorites.push(product);
       }
+      this.saveFavoriteListToSession();
+      console.log(this.favorites.length);
     },
 
     isFavorite(productId) {
-      return this.favorites.some((product) => product.id === productId);
+      const isfavorite = this.favorites.some(
+        (product) => product.id === productId
+      );
+      if (isfavorite) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+
+    saveFavoriteListToSession() {
+      sessionStorage.setItem("favorites", JSON.stringify(this.favorites));
+    },
+
+    getFavoriteListFromSession() {
+      const favorites = sessionStorage.getItem("favorites");
+      this.favorites = favorites ? JSON.parse(favorites) : [];
+      return this.favorites;
     },
 
     // Hämtar produkter som är på rea
@@ -338,6 +356,7 @@ export const useProductStore = defineStore({
         item.quantity++;
       } else {
         this.cart.push({ ...product, quantity: 1 });
+        this.saveCartToSession();
       }
     },
 
@@ -367,6 +386,7 @@ export const useProductStore = defineStore({
     clearCart() {
       this.cart = [];
     },
+
     // skapa ordernummer
     createOrderNumber() {
       return Math.floor(Math.random() * 1000000);
@@ -375,6 +395,14 @@ export const useProductStore = defineStore({
     //   this.checkoutCart = this.cart;
     //   this.cart = [];
     // },
+    checkIfAccountExist(email) {
+      const accounts = this.getAccountsFromSession();
+      const user = accounts.find((account) => account.email === email);
+      if (user) {
+        return true;
+      }
+      return false;
+    },
 
     saveCurrentAccountToSession() {
       sessionStorage.setItem(
@@ -397,29 +425,27 @@ export const useProductStore = defineStore({
       return accounts ? JSON.parse(accounts) : [];
     },
 
-    checkIfAccountExist(email) {
-      const accounts = this.getAccountsFromSession();
-      const user = accounts.find((account) => account.email === email);
-      if (user) {
-        return true;
-      }
-      return false;
-    },
-
     saveCartToSession() {
       sessionStorage.setItem("cart", JSON.stringify(this.cart));
     },
-
     restoreCartFromSession() {
       const cartFromSession = sessionStorage.getItem("cart");
       if (cartFromSession) {
         this.cart = JSON.parse(cartFromSession);
+        return this.cart;
       }
+    },
+
+    // NEDAN SKA BORT
+    getSavedCartItemsFromSession() {
+      const savedCartItems = sessionStorage.getItem("savedCartItems");
+      this.savedCartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
     },
 
     saveCartItems() {
       const savedCartItems = JSON.parse(JSON.stringify(this.cart));
       this.savedCartItems = savedCartItems;
+      sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems));
       sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems));
     },
 
@@ -431,11 +457,13 @@ export const useProductStore = defineStore({
     //filter
     initializeOriginalProducts() {
       console.log("Products before initialization:", this.products);
-      this.originalProducts = this.products.flatMap(category =>
-      category.products ? category.products.map(product => ({
-      ...product,
-      category: category.category
-     })) : []
+      this.originalProducts = this.products.flatMap((category) =>
+        category.products
+          ? category.products.map((product) => ({
+              ...product,
+              category: category.category,
+            }))
+          : []
       );
       console.log("Initialized originalProducts:", this.originalProducts);
     },
@@ -450,30 +478,38 @@ export const useProductStore = defineStore({
       // Filtrering för kategori
       let filteredProducts = this.originalProducts;
       if (filters.category && filters.category !== "All glasses") {
-        filteredProducts = filteredProducts.filter(product => product.category === filters.category);
+        filteredProducts = filteredProducts.filter(
+          (product) => product.category === filters.category
+        );
       }
 
       // Brand filtering
       if (filters.brands && filters.brands.length) {
-        filteredProducts = filteredProducts.filter(product => filters.brands.includes(product.brand));
+        filteredProducts = filteredProducts.filter((product) =>
+          filters.brands.includes(product.brand)
+        );
       }
 
       // Color filtering
       if (filters.color) {
-        filteredProducts = filteredProducts.filter(product => product.color === filters.color);
+        filteredProducts = filteredProducts.filter(
+          (product) => product.color === filters.color
+        );
       }
 
       // Price filtering
       if (filters.price) {
-        filteredProducts = filteredProducts.filter(product => {
-          if (filters.price.includes('Under')) {
-            const maxPrice = parseInt(filters.price.replace('Under ', ''), 10);
+        filteredProducts = filteredProducts.filter((product) => {
+          if (filters.price.includes("Under")) {
+            const maxPrice = parseInt(filters.price.replace("Under ", ""), 10);
             return product.price < maxPrice;
-          } else if (filters.price.includes('Over')) {
-            const minPrice = parseInt(filters.price.replace('Over ', ''), 10);
+          } else if (filters.price.includes("Over")) {
+            const minPrice = parseInt(filters.price.replace("Over ", ""), 10);
             return product.price > minPrice;
           } else {
-            const [minPrice, maxPrice] = filters.price.split('-').map(price => parseInt(price.trim(), 10));
+            const [minPrice, maxPrice] = filters.price
+              .split("-")
+              .map((price) => parseInt(price.trim(), 10));
             return product.price >= minPrice && product.price <= maxPrice;
           }
         });
@@ -481,7 +517,9 @@ export const useProductStore = defineStore({
       //rating filtering
       if (filters.rating) {
         const ratingThreshold = parseFloat(filters.rating);
-        filteredProducts = filteredProducts.filter(product => product.rating >= ratingThreshold);
+        filteredProducts = filteredProducts.filter(
+          (product) => product.rating >= ratingThreshold
+        );
       }
 
       this.filteredProducts = filteredProducts;
@@ -489,7 +527,10 @@ export const useProductStore = defineStore({
       if (this.filteredProducts.length === 0) {
         console.error("No matching products found after applying filters.");
       } else {
-        console.log("Filtered products after applying all filters: ", this.filteredProducts);
+        console.log(
+          "Filtered products after applying all filters: ",
+          this.filteredProducts
+        );
       }
     },
     clearFilters() {

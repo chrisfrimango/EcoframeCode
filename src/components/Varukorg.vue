@@ -2,11 +2,11 @@
   <div class="container mt-5 varukorg-container">
     <h2 class="mb-4 text-center">Cart</h2>
     <div v-if="cartItems.length > 0">
-      <div class="row text-center mb-3 header-row">
-        <div class="col-2">Product</div>
-        <div class="col-3">Price</div>
-        <div class="col-3">Quantity</div>
-        <div class="col-4">Total amount</div>
+      <div class="row mb-3 text-center header-row">
+        <div class="col-6">Product</div>
+        <div class="col-2">Price</div>
+        <div class="col-2">Quantity</div>
+        <div class="col-2">Total amount</div>
       </div>
       <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
         <div class="row align-items-center text-center item-row">
@@ -78,7 +78,7 @@
         style="max-width: 150px"
         @click="checkout"
       >
-        Till Checkout
+        Checkout
       </button>
     </div>
   </div>
@@ -91,7 +91,7 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const productStore = useProductStore();
-const cartItems = computed(() => productStore.getCartItems);
+const cartItems = computed(() => productStore.restoreCartFromSession());
 const cartTotal = computed(() => productStore.cartTotal);
 
 function updateQuantity(item, amount) {

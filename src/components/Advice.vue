@@ -32,7 +32,10 @@ const buttonclicked = ref(false);
             @click="buttonclicked = false"
             >Close</BButton
           >
-          <BButton v-if="buttonclicked === false" @click="buttonclicked = true"
+          <BButton
+            variant="primary"
+            v-if="buttonclicked === false"
+            @click="buttonclicked = true"
             >Read more</BButton
           >
         </div>

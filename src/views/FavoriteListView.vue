@@ -1,13 +1,16 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { computed } from "vue";
+import { watchEffect } from "vue";
 import { useProductStore } from "../stores/productStore";
 const productStore = useProductStore();
 import sunwearImage from "@/assets/sunwear.png";
 const router = useRouter();
 
-const favorites = computed(() => productStore.favorites);
-console.log(favorites.value);
+let favorites = [];
+
+watchEffect(() => {
+  favorites = productStore.getFavoriteListFromSession();
+});
 
 const goToProductPage = (productId) => {
   router.push({ name: "ProductPage", params: { productId } });
@@ -54,13 +57,15 @@ const productPrice = (product) => {
               :src="'/src/assets/sunwear.png'"
               class="card-img-top"
               :alt="favorite.modelName"
-            >
+            />
           </router-link>
-          <BCardTitle class="card-items-padding card-first-item">{{ favorite.modelName }}</BCardTitle>
+          <BCardTitle class="card-items-padding card-first-item">{{
+            favorite.modelName
+          }}</BCardTitle>
           <BCardText class="mb-1 custom-font-style card-items-padding">
             {{ favorite.brand }}</BCardText
           >
-          <BCol class="d-flex gap-5 ">
+          <BCol class="d-flex gap-5">
             <BCardText
               v-if="favorites"
               :class="{ 'sales-color': favorite.onSale }"
@@ -87,20 +92,24 @@ const productPrice = (product) => {
             style="text-decoration: underline"
             >See Details</router-link
           >
-          <BCol class="mt-4 d-flex justify-content-between card-items-padding card-bottom-item">
-            <BButton
-              @click.prevent="toggleFavorite(favorite.id)"
-              variant="outline-danger"
-              class="mt-2"
-              >Remove</BButton
-            >
-            <BButton
-              @click.prevent="productStore.addToCart(favorite)"
-              class="mt-2"
-              variant="primary"
-              >Add to cart</BButton
-            >
-          </BCol>
+          <BRow class="mt-4 d-flex justify-content-between">
+            <BCol>
+              <BButton
+                @click.prevent="toggleFavorite(favorite.id)"
+                variant="outline-danger"
+                class="mt-2"
+                >Remove</BButton
+              >
+            </BCol>
+            <BCol>
+              <BButton
+                @click.prevent="productStore.addToCart(favorite)"
+                class="mt-2"
+                variant="primary"
+                >Add to cart</BButton
+              >
+            </BCol>
+          </BRow>
         </BCard>
       </BCol>
     </BRow>
