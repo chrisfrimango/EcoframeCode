@@ -385,6 +385,7 @@ export const useProductStore = defineStore({
     // Töm varukorgen
     clearCart() {
       this.cart = [];
+      this.saveCartToSession();
     },
 
     // skapa ordernummer
@@ -437,22 +438,22 @@ export const useProductStore = defineStore({
     },
 
     // NEDAN SKA BORT
-    getSavedCartItemsFromSession() {
-      const savedCartItems = sessionStorage.getItem("savedCartItems");
-      this.savedCartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
-    },
+    // getSavedCartItemsFromSession() {
+    //   const savedCartItems = sessionStorage.getItem("savedCartItems");
+    //   this.savedCartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
+    // },
 
-    saveCartItems() {
-      const savedCartItems = JSON.parse(JSON.stringify(this.cart));
-      this.savedCartItems = savedCartItems;
-      sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems));
-      sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems));
-    },
+    // saveCartItems() {
+    //   const savedCartItems = JSON.parse(JSON.stringify(this.cart));
+    //   this.savedCartItems = savedCartItems;
+    //   sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems));
+    //   sessionStorage.setItem("savedCartItems", JSON.stringify(savedCartItems));
+    // },
 
-    getSavedCartItemsFromSession() {
-      const savedCartItems = sessionStorage.getItem("savedCartItems");
-      this.savedCartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
-    },
+    // getSavedCartItemsFromSession() {
+    //   const savedCartItems = sessionStorage.getItem("savedCartItems");
+    //   this.savedCartItems = savedCartItems ? JSON.parse(savedCartItems) : [];
+    // },
 
     //filter
     initializeOriginalProducts() {

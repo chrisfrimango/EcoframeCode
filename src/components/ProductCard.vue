@@ -15,11 +15,13 @@ const productPrice = computed(() => {
   }
   return product.value.price;
 });
-
 </script>
 
 <template>
-  <BContainer class="mt-5 mb-5" fluid>
+  <BContainer
+    class="mt-5 mb-5 custom-height d-flex flex-column justify-content-center align-items-center"
+    fluid
+  >
     <BRow>
       <BCol sm="12" md="6" class="columns">
         <img src="../assets/sunwear.png" alt="Image" />
@@ -51,6 +53,9 @@ const productPrice = computed(() => {
 </template>
 
 <style scoped>
+.custom-height {
+  min-height: 60vh;
+}
 .sales-color {
   color: red;
 }

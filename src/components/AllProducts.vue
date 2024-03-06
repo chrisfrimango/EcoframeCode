@@ -40,12 +40,14 @@ const productPrice = (product) => {
   <BContainer fluid>
     <h2 class="text-center my-4 text-primary">{{ category }}</h2>
     <div v-if="products.length === 0" class="text-center">
-      <p>No products were found. Try another search or browse our categories.</p>
+      <p>
+        No products were found. Try another search or browse our categories.
+      </p>
     </div>
     <BRow>
       <BCol cols="6" md="4" v-for="product in products" :key="product.id">
         <BCard
-          class="rounded-0"
+          class="rounded-0 hover"
           border-variant="light"
           img-top
           tag="product"
@@ -59,13 +61,19 @@ const productPrice = (product) => {
               :src="'/src/assets/sunwear.png'"
               class="card-img-top"
               :alt="category.modelName"
-            >
+            />
           </router-link>
-          <BCardTitle class="card-items-padding card-first-item">{{ category.modelName }}</BCardTitle>
+          <BCardTitle class="card-items-padding card-first-item">{{
+            category.modelName
+          }}</BCardTitle>
           <BCardText class="mb-1 custom-font-style card-items-padding">
             {{ product.brand }}</BCardText
           >
-          <BCardText v-if="products" :class="{ 'sales-color': product.onSale }" class="card-items-padding">
+          <BCardText
+            v-if="products"
+            :class="{ 'sales-color': product.onSale }"
+            class="card-items-padding"
+          >
             {{ productPrice(product) }} SEK
           </BCardText>
           <BCardText
@@ -75,7 +83,9 @@ const productPrice = (product) => {
           >
             {{ product.price }} SEK
           </BCardText>
-          <BCol class="d-flex justify-content-between card-items-padding card-bottom-item">
+          <BCol
+            class="d-flex justify-content-between card-items-padding card-bottom-item"
+          >
             <router-link
               @click.prevent="goToProductPage(product.id)"
               to="/product/:id"
@@ -109,6 +119,14 @@ const productPrice = (product) => {
 
   &:hover {
     transform: scale(1.2);
+  }
+}
+
+.hover {
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
   }
 }
 

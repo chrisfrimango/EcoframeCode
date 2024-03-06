@@ -49,7 +49,7 @@ const toggleLogin = computed(() => {
           offset="10"
           text="Account"
         >
-          <BDropdownItem class="bg-white" v-if="productStore.loggedIn"
+          <BDropdownItem v-if="productStore.loggedIn"
             ><router-link to="/" @click="productStore.logout">{{
               toggleLogin
             }}</router-link></BDropdownItem

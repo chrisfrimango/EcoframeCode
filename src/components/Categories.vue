@@ -51,11 +51,10 @@ console.log(categoryToDisplay.value);
         :key="category.id"
       >
         <BCard
-          class="rounded-0 position-relative"
+          class="rounded-0 position-relative hover"
           border-variant="light"
           tag="products"
           style="max-width: 20rem"
-
         >
           <router-link
             @click.prevent="goToProductPage(category.id)"
@@ -65,9 +64,11 @@ console.log(categoryToDisplay.value);
               :src="'/src/assets/sunwear.png'"
               class="card-img-top"
               :alt="category.modelName"
-            >
+            />
           </router-link>
-          <BCardTitle class="card-items-padding card-first-item">{{ category.modelName }}</BCardTitle>
+          <BCardTitle class="card-items-padding card-first-item">{{
+            category.modelName
+          }}</BCardTitle>
           <BCardText class="mb-1 custom-font-style card-items-padding">
             {{ category.brand }}</BCardText
           >
@@ -85,7 +86,9 @@ console.log(categoryToDisplay.value);
           >
             {{ category.price }} SEK
           </BCardText>
-          <BCol class="d-flex justify-content-between card-items-padding card-bottom-item">
+          <BCol
+            class="d-flex justify-content-between card-items-padding card-bottom-item"
+          >
             <router-link
               @click.prevent="goToProductPage(category.id)"
               to="/product/:id"
@@ -127,6 +130,14 @@ console.log(categoryToDisplay.value);
 
   &:hover {
     transform: scale(1.2);
+  }
+}
+
+.hover {
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
   }
 }
 

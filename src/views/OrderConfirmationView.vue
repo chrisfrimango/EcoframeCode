@@ -12,12 +12,15 @@ const continueShopping = () => {
 };
 </script>
 <template>
-  <BContainer fluid class="d-flex justify-content-center flex-column">
+  <BContainer
+    fluid
+    class="d-flex justify-content-center flex-column custom-height"
+  >
     <BRow class="mt-5 mb-5">
       <BCol
         class="d-flex justify-content-center align-items-center flex-column"
       >
-        <h1 class="mt-3">Order Confirmation</h1>
+        <h1 class="mt-3 text-success">Order Confirmation</h1>
         <p class="mt-3">
           Thank you for your order! Your order number is:
           <strong>{{ orderNumber }}</strong>
@@ -32,3 +35,9 @@ const continueShopping = () => {
     </BRow>
   </BContainer>
 </template>
+
+<style scoped>
+.custom-height {
+  min-height: 60vh;
+}
+</style>

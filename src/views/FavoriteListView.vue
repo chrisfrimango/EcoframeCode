@@ -43,7 +43,7 @@ const productPrice = (product) => {
         :key="favorite.id"
       >
         <BCard
-          class="rounded-0 mb-5"
+          class="rounded-0 mb-5 hover"
           border-variant="light"
           img-top
           tag="product"
@@ -132,6 +132,14 @@ span {
 .old-price {
   text-decoration: line-through;
   font-weight: 300;
+}
+
+.hover {
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
+  }
 }
 
 .card {

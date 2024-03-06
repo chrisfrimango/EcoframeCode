@@ -50,14 +50,12 @@
     </div>
     <br />
     <div v-if="!showSummary">
-      <div v-if="!productStore.loggedIn" class="guestOrMember">
+      <div v-if="!productStore.loggedIn">
         <p>
           Are you a member?
           <span @click="goToLogin" class="toLogin">Login</span> or continue as
           guest
         </p>
-      <div v-if="!productStore.loggedIn">
-        <p>Are you a member? <span @click="goToLogin" class="toLogin">Login</span> or continue as guest</p>
       </div>
       <div class="input-container">
         <!-- Email input -->
@@ -87,7 +85,7 @@
       <div class="button">
         <!-- Continue button with disabled attribute -->
         <BButton
-          variant="success"
+          variant="primary"
           style="min-width: 200px"
           @click="toggleContent"
           :disabled="!isFormValid"
@@ -97,7 +95,7 @@
       <div v-if="showContent">
         <!-- Delivery options -->
         <div class="deliveryOptions-container">
-          <p>Delivery options:</p>
+          <p><strong>Delivery options:</strong></p>
           <div>
             <BFormRadio
               v-for="option in deliveryOptions"
@@ -109,7 +107,8 @@
             >
               {{ option.text }}
               <br />
-              {{ option.description }}
+              <div>{{ option.description }}</div>
+              <div class="line"></div>
             </BFormRadio>
           </div>
         </div>
@@ -117,7 +116,7 @@
           <div class="line"></div>
           <!-- Shipping address -->
           <div class="address-form">
-            <p>Shipping address:</p>
+            <p><strong>Shipping address:</strong></p>
             <BFormInput v-model="firstName" placeholder="First name" />
             <BFormInput v-model="lastName" placeholder="Last name" />
             <BFormInput v-model="address" placeholder="Address" />
@@ -127,7 +126,7 @@
           <div class="line"></div>
           <!-- Payment options -->
           <div class="paymentOptions-container">
-            <p>Payment options:</p>
+            <p><strong>Payment options:</strong></p>
             <div v-for="option in paymentOptions" :key="option.value">
               <BFormRadio
                 v-model="selectedPaymentOption"
@@ -136,6 +135,7 @@
                 :disabled="option.disabled"
               >
                 {{ option.text }}
+                <div class="line"></div>
               </BFormRadio>
             </div>
           </div>
@@ -144,7 +144,7 @@
             v-if="showCardPaymentInput && selectedPaymentOption === 'X'"
             class="card-payment-input"
           >
-            <p>Card Information:</p>
+            <p><strong>Card Information:</strong></p>
             <BFormInput placeholder="Card Number" />
           </div>
           <!-- Pay button -->
@@ -177,7 +177,7 @@
       <BButton
         variant="primary"
         style="min-width: 200px"
-        @click="toOrderConfirmation"
+        @click.prevent="toOrderConfirmation"
         >Confirm order</BButton
       >
     </div>
@@ -324,19 +324,50 @@ const saveSummaryData = () => {
     phone: phone.value,
     selectedDeliveryOption: selectedDeliveryOptionText.value,
     selectedPaymentOption: selectedPaymentOptionText.value,
+    cartItems: cartItemsData,
   };
 };
 
 const toOrderConfirmation = () => {
-  productStore.saveCartItems(),
-    productStore.clearCart(),
+  const summaryData = saveSummaryData(); // Get the summary data
+
+  // Check if the user is logged in
+  if (productStore.loggedIn) {
+    // If logged in, save order information to the current account
+    const currentAccount = productStore.getCurrentAccountFromSession(); // Get current account data from session
+
+    // Ensure that currentAccount is a valid object
+    if (currentAccount && typeof currentAccount === "object") {
+      // Ensure that the 'orders' array exists or initialize it if missing
+      if (!Array.isArray(currentAccount.orders)) {
+        currentAccount.orders = [];
+      }
+
+      const orderData = {
+        orderNumber: summaryData.orderNumber,
+        cartItems: summaryData.cartItems,
+      };
+      currentAccount.orders.push(orderData); // Add order data to current account
+      console.log(currentAccount);
+      // Store updated current account to session storage
+      productStore.currentAccount = currentAccount;
+      productStore.saveCurrentAccountToSession();
+      // sessionStorage.setItem("currentAccount", JSON.stringify(currentAccount));
+      productStore.clearCart();
+      router.push({ name: "OrderConfirmation" });
+    }
+  } else {
+    // If not logged in, just clear the cart and push to OrderConfirmation
+    productStore.clearCart();
     router.push({ name: "OrderConfirmation" });
+  }
 };
 </script>
 
 <style scoped>
 .checkout-container {
-  width: 100vh;
+  width: 70%;
+  height: auto;
   margin: auto;
   margin-bottom: 200px;
 }

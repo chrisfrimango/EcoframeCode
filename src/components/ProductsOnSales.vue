@@ -32,7 +32,7 @@ const isFavorite = (productId) => {
         class="mt-5 d-flex justify-content-center"
       >
         <BCard
-          class="rounded-0 mb-5"
+          class="rounded-0 mb-5 hover"
           border-variant="light"
           tag="products"
           style="max-width: 20rem"
@@ -45,9 +45,11 @@ const isFavorite = (productId) => {
               :src="'/src/assets/sunwear.png'"
               class="card-img-top"
               :alt="product.modelName"
-            >
+            />
           </router-link>
-          <BCardTitle class="card-items-padding card-first-item">{{ product.modelName }}</BCardTitle>
+          <BCardTitle class="card-items-padding card-first-item">{{
+            product.modelName
+          }}</BCardTitle>
           <BCardText class="card-items-padding"> {{ product.brand }}</BCardText>
           <BCardText class="onsale-color mb-1 card-items-padding">
             {{ productStore.updateProductSalesPrice(product.id) }} SEK
@@ -55,8 +57,12 @@ const isFavorite = (productId) => {
           <BCardText class="custom-font-style card-items-padding">
             {{ product.price }} SEK
           </BCardText>
-          <BCardText class="card-items-padding">Color: {{ product.color }}</BCardText>
-          <BCol class="d-flex justify-content-between card-items-padding card-bottom-item">
+          <BCardText class="card-items-padding"
+            >Color: {{ product.color }}</BCardText
+          >
+          <BCol
+            class="d-flex justify-content-between card-items-padding card-bottom-item"
+          >
             <router-link
               @click.prevent="goToProductPage(product.id)"
               to="/product/:id"
@@ -94,6 +100,14 @@ const isFavorite = (productId) => {
 
   &:hover {
     transform: scale(1.2);
+  }
+}
+
+.hover {
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.1);
   }
 }
 

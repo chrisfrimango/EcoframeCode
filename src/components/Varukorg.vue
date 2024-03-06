@@ -3,10 +3,10 @@
     <h2 class="mb-4 text-center">Cart</h2>
     <div v-if="cartItems.length > 0">
       <div class="row mb-3 text-center header-row">
-        <div class="col-6">Product</div>
-        <div class="col-2">Price</div>
-        <div class="col-2">Quantity</div>
-        <div class="col-2">Total amount</div>
+        <div class="col-6 col-md-3">Product</div>
+        <div class="col-2 col-md-3">Price</div>
+        <div class="col-2 col-md-3">Quantity</div>
+        <div class="col-2 col-md-3">Total amount</div>
       </div>
       <div class="cart-item mb-3" v-for="item in cartItems" :key="item.id">
         <div class="row align-items-center text-center item-row">
@@ -74,7 +74,7 @@
         Continue shopping
       </button>
       <button
-        class="btn btn-success"
+        class="btn btn-primary mb-4"
         style="max-width: 150px"
         @click="checkout"
       >
@@ -92,7 +92,7 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const productStore = useProductStore();
 const cartItems = computed(() => productStore.restoreCartFromSession());
-const cartTotal = computed(() => productStore.cartTotal);
+// const cartTotal = computed(() => productStore.cartTotal);
 
 function updateQuantity(item, amount) {
   productStore.updateItemQuantity(item.id, amount);

@@ -1,6 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted, onUnmounted } from "vue";
+import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 
@@ -11,10 +11,11 @@ const windowWidth = ref(window.innerWidth);
 
 const updateWindowWidth = () => {
   windowWidth.value = window.innerWidth;
-  const isMobileView = computed(() => windowWidth.value < 992);
-  const navbarToggler = ref(null);
-  const navbarCollapse = ref(null);
 };
+
+const isMobileView = computed(() => windowWidth.value < 992);
+const navbarToggler = ref(null);
+const navbarCollapse = ref(null);
 
 const closeNavbar = () => {
   if (isMobileView.value && navbarCollapse.value?.classList.contains("show")) {
@@ -66,6 +67,15 @@ let checkFavorite = ref(false);
 watchEffect(() => {
   checkFavorite.value = productStore.favorites.length > 0;
 });
+
+const handleMyAccount = () => {
+  console.log(productStore.loggedIn);
+  if (productStore.loggedIn) {
+    router.push({ name: "MyAccount" });
+  } else {
+    router.push({ name: "LoginPage" });
+  }
+};
 </script>
 
 <template>
@@ -86,11 +96,10 @@ watchEffect(() => {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="d-flex">
-            <router-link
-              class="nav-link text-dark me-1 d-block d-lg-none"
-              to="/MyAccount"
-              ><i class="bi bi-person icon-large"></i
-            ></router-link>
+            <i
+              @click="handleMyAccount"
+              class="bi bi-person icon-large d-block d-lg-none"
+            ></i>
             <router-link class="nav-link text-dark me-1" to="/favoritelist"
               ><i
                 class="bi bi-heart icon-large"
@@ -238,11 +247,10 @@ watchEffect(() => {
             </li>
           </ul>
           <div class="d-none d-lg-flex align-items-center">
-            <router-link
-              class="nav-link text-dark me-1 d-block d-lg-none"
-              to="/MyAccount"
-              ><i class="bi bi-person icon-large"></i
-            ></router-link>
+            <i
+              @click="handleMyAccount"
+              class="bi bi-person icon-large d-block d-lg-none"
+            ></i>
             <router-link class="nav-link text-dark me-1" to="/favoritelist"
               ><i
                 class="bi bi-heart icon-large"
