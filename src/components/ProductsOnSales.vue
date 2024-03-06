@@ -34,21 +34,29 @@ const isFavorite = (productId) => {
         <BCard
           class="rounded-0 mb-5"
           border-variant="light"
-          :title="product.modelName"
-          img-src="/src/assets/sunwear.png"
-          img-alt="Image"
           tag="products"
           style="max-width: 20rem"
         >
-          <BCardText> {{ product.brand }}</BCardText>
-          <BCardText class="onsale-color mb-1">
+          <router-link
+            @click.prevent="goToProductPage(product.id)"
+            to="/product/:id"
+          >
+            <img
+              :src="'/src/assets/sunwear.png'"
+              class="card-img-top"
+              :alt="product.modelName"
+            >
+          </router-link>
+          <BCardTitle class="card-items-padding card-first-item">{{ product.modelName }}</BCardTitle>
+          <BCardText class="card-items-padding"> {{ product.brand }}</BCardText>
+          <BCardText class="onsale-color mb-1 card-items-padding">
             {{ productStore.updateProductSalesPrice(product.id) }} SEK
           </BCardText>
-          <BCardText class="custom-font-style">
+          <BCardText class="custom-font-style card-items-padding">
             {{ product.price }} SEK
           </BCardText>
-          <BCardText>Color: {{ product.color }}</BCardText>
-          <BCol class="d-flex justify-content-between">
+          <BCardText class="card-items-padding">Color: {{ product.color }}</BCardText>
+          <BCol class="d-flex justify-content-between card-items-padding card-bottom-item">
             <router-link
               @click.prevent="goToProductPage(product.id)"
               to="/product/:id"
@@ -87,5 +95,23 @@ const isFavorite = (productId) => {
   &:hover {
     transform: scale(1.2);
   }
+}
+
+.card {
+  --bs-card-spacer-y: 0;
+  --bs-card-spacer-x: 0;
+}
+
+.card-items-padding {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.card-first-item {
+  padding-top: 1rem;
+}
+
+.card-bottom-item {
+  padding-bottom: 1rem;
 }
 </style>

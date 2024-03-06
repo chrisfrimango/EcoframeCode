@@ -3,10 +3,10 @@ import { useProductStore } from "../stores/productStore";
 const productStore = useProductStore();
 
 const currentAccount = productStore.getCurrentAccountFromSession();
+
 // const checkLoggedIn = productStore.getLoggedInFromSession();
 productStore.getSavedCartItemsFromSession();
 
-const savedCartItems = productStore.savedCartItems;
 </script>
 
 <template>
@@ -23,8 +23,7 @@ const savedCartItems = productStore.savedCartItems;
       </BCol>
       <BCol md="6" class="border">
         <BCol>
-          <h4>Orders</h4>
-          <p>Order 1</p>
+          <h4>Orders:</h4>
           <div v-for="(order, index) in currentAccount.orders" :key="index">
             <h5>Order {{ order.orderNumber }}</h5>
             <div v-if="order.cartItems.length > 0">
@@ -44,21 +43,20 @@ const savedCartItems = productStore.savedCartItems;
                   style="max-height: 100px"
                   />
                 </div>
-                <div class="col-2">{{ item.modelName }}</div>
+                <div class="col-2">{{ item.productName }}</div>
                 <div v-if="item.onSale" class="col-2 text-danger">
                   {{ productStore.updateProductSalesPrice(item.id) }} SEK
                 </div>
                 <div v-else class="col-2">{{ item.price }} SEK</div>
                 <div class="col-2">{{ item.quantity }}</div>
-                <div v-if="item.onSale" class="col-3">
-                  {{item.quantity * productStore.updateProductSalesPrice(item.id)}} SEK
+                <div v-if="item.totalAmount" class="col-3">
+                {{item.quantity * productStore.updateProductSalesPrice(item.id)}} SEK
                 </div>
                 <div v-else class="col-3">{{ item.quantity * item.price }} SEK</div>
               </div>
             </div>
           </div>
           </div>
-          <p>Order 2</p>
         </BCol>
       </BCol>
     </BRow>

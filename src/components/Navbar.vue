@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from "vue-router";
-import { ref, onMounted, onUnmounted, computed } from "vue";
+import { ref, onMounted, onUnmounted, watchEffect } from "vue";
+import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 
 const router = useRouter();
@@ -12,9 +13,9 @@ const navbarToggler = ref(null);
 const navbarCollapse = ref(null);
 
 const closeNavbar = () => {
-  if (isMobileView.value && navbarCollapse.value?.classList.contains('show')) {
-    const event = new Event('click');
-    const navbarToggler = document.querySelector('.navbar-toggler');
+  if (isMobileView.value && navbarCollapse.value?.classList.contains("show")) {
+    const event = new Event("click");
+    const navbarToggler = document.querySelector(".navbar-toggler");
     if (navbarToggler) {
       navbarToggler.dispatchEvent(event);
     }
@@ -22,23 +23,27 @@ const closeNavbar = () => {
 };
 
 const handleOutsideClick = (event) => {
-  if (!navbarCollapse.value.contains(event.target) && !navbarToggler.value.contains(event.target) && isMobileView.value) {
+  if (
+    !navbarCollapse.value.contains(event.target) &&
+    !navbarToggler.value.contains(event.target) &&
+    isMobileView.value
+  ) {
     closeNavbar();
   }
 };
 
 onMounted(() => {
-  navbarToggler.value = document.querySelector('.navbar-toggler');
-  navbarCollapse.value = document.getElementById('navbarNav');
-  document.addEventListener('click', handleOutsideClick);
-  window.addEventListener('resize', () => {
+  navbarToggler.value = document.querySelector(".navbar-toggler");
+  navbarCollapse.value = document.getElementById("navbarNav");
+  document.addEventListener("click", handleOutsideClick);
+  window.addEventListener("resize", () => {
     windowWidth.value = window.innerWidth;
   });
 });
 
 onUnmounted(() => {
-  document.removeEventListener('click', handleOutsideClick);
-  window.removeEventListener('resize', () => {
+  document.removeEventListener("click", handleOutsideClick);
+  window.removeEventListener("resize", () => {
     windowWidth.value = window.innerWidth;
   });
 });
@@ -46,14 +51,16 @@ onUnmounted(() => {
 const categories = ref(productStore.getCategories());
 const goToAllProductPage = (category) => {
   router.push({ name: "Shop", params: { category } }).then(() => {
-    if (isMobileView.value && navbarCollapse.value.classList.contains('show')) {
+    if (isMobileView.value && navbarCollapse.value.classList.contains("show")) {
       navbarToggler.value.click();
     }
   });
 };
 
-const checkFavorite = computed(() => {
-  return productStore.favorites.length > 0;
+let checkFavorite = ref(false);
+
+watchEffect(() => {
+  checkFavorite.value = productStore.favorites.length > 0;
 });
 </script>
 
@@ -74,14 +81,19 @@ const checkFavorite = computed(() => {
           >
             <span class="navbar-toggler-icon"></span>
           </button>
-          <div class="d-flex" >
+          <div class="d-flex">
             <router-link
               class="nav-link text-dark me-1 d-block d-lg-none"
               to="/MyAccount"
               ><i class="bi bi-person icon-large"></i
             ></router-link>
-            <router-link class="nav-link text-dark me-1" to="/"
-              ><i class="bi bi-heart icon-large"></i
+            <router-link class="nav-link text-dark me-1" to="/favoritelist"
+              ><i
+                class="bi bi-heart icon-large"
+                :class="
+                  checkFavorite.valueOf() ? 'text-danger' : 'text-secondary'
+                "
+              ></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"
               ><i class="bi bi-cart icon-large"></i
@@ -95,7 +107,9 @@ const checkFavorite = computed(() => {
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li>
-              <router-link class="nav-item nav-link" to="/" @click="closeNavbar">Home</router-link>
+              <router-link class="nav-item nav-link" to="/" @click="closeNavbar"
+                >Home</router-link
+              >
             </li>
             <li class="nav-item dropdown">
               <a
@@ -109,12 +123,15 @@ const checkFavorite = computed(() => {
               >
                 Glasses
               </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <ul
+                class="dropdown-menu bg-white"
+                aria-labelledby="navbarDropdown"
+              >
                 <li v-for="category in categories" :key="category.id">
                   <router-link
                     @click="closeNavbar"
                     @click.prevent="goToAllProductPage(category)"
-                    class="dropdown-item"
+                    class="dropdown-item text-dark"
                     to="/shop"
                     >{{ category }}</router-link
                   >
@@ -122,17 +139,26 @@ const checkFavorite = computed(() => {
               </ul>
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/sales" @click="closeNavbar"
+              <router-link
+                class="nav-item nav-link"
+                to="/sales"
+                @click="closeNavbar"
                 >Sales</router-link
               >
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/about-us" @click="closeNavbar"
+              <router-link
+                class="nav-item nav-link"
+                to="/about-us"
+                @click="closeNavbar"
                 >About us</router-link
               >
             </li>
             <li>
-              <router-link class="nav-item nav-link" to="/customersupport" @click="closeNavbar"
+              <router-link
+                class="nav-item nav-link"
+                to="/customersupport"
+                @click="closeNavbar"
                 >Contact</router-link
               >
             </li>
@@ -189,10 +215,18 @@ const checkFavorite = computed(() => {
               </a>
               <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                 <li>
-                  <router-link class="dropdown-item" to="/LoginPage" @click="closeNavbar">Login</router-link>
+                  <router-link
+                    class="dropdown-item"
+                    to="/LoginPage"
+                    @click="closeNavbar"
+                    >Login</router-link
+                  >
                 </li>
                 <li>
-                  <router-link class="dropdown-item" to="/createaccount" @click="closeNavbar"
+                  <router-link
+                    class="dropdown-item"
+                    to="/createaccount"
+                    @click="closeNavbar"
                     >Create Account</router-link
                   >
                 </li>
@@ -208,7 +242,9 @@ const checkFavorite = computed(() => {
             <router-link class="nav-link text-dark me-1" to="/favoritelist"
               ><i
                 class="bi bi-heart icon-large"
-                :class="checkFavorite ? 'text-danger' : 'text-secondary'"
+                :class="
+                  checkFavorite.valueOf() ? 'text-danger' : 'text-secondary'
+                "
               ></i
             ></router-link>
             <router-link class="nav-link text-dark position-relative" to="/cart"

@@ -288,7 +288,8 @@ const saveSummaryData = () => {
   const cartItemsData = cartItems.value.map(item => ({
     productName: item.modelName,
     quantity: item.quantity,
-    totalAmount: item.quantity * (item.onSale ? productStore.updateProductSalesPrice(item.id) : item.price)
+    id: item.id,
+    price: item.onSale ? productStore.updateProductSalesPrice(item.id) : item.price,
   }));
 
   return {
@@ -305,6 +306,7 @@ const saveSummaryData = () => {
     cartItems: cartItemsData
   };
 };
+console.log("Summary Data:", summaryData);
 
 const toOrderConfirmation = () => {
   const summaryData = saveSummaryData(); // Get the summary data

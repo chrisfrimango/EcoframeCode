@@ -1,10 +1,31 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  font-weight: normal;
+}
+
+body {
+  min-height: 100vh;
+  transition: color 0.5s, background-color 0.5s;
+  line-height: 1.6;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+  font-size: 15px;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 $theme-colors: (
-  "primary": #454b4b,
+  "primary": #025162,
   "secondary": #d3d3d5,
   "success": #54b28e,
   "info": #3f7679,
   "warning": #ac5b2c,
-  "danger": #88193a,
+  "danger": #b12f56,
   "light": #f4f2f2,
   "dark": #2f2f2f,
   "white": #ffffff,
@@ -14,56 +35,6 @@ $theme-colors: (
   "sidebarcolor": #074040,
   "home": #074040,
   "black": #000000,
-
-  // primary colors
-  "offgrey": #f1f1f1,
-  "easygrey": #aeacac,
-  "darkgrey": #5a5a5a,
-  "lime": #c6e373,
-  "red": #ff5851,
-  "easyblack": #1c1b20,
-  "softgrey": #f8f8f8,
 );
-
-// $offcanvas-color: map-get($theme-colors, "easyblack");
-// $offcanvas-bg-color: map-get($theme-colors, "offgrey");
-// $offcanvas-vertical-height: 100vh;
-// $offcanvas-vertical-width: 100vw;
-// $offcanvas-margin-top: 4rem;
-// $offcanvas-border-color: map-get($theme-colors, "lime");
-// $offcanvas-border-width: 1rem;
-
-// $dropdown-min-width:                10rem;
-// $dropdown-padding-x:                0;
-// $dropdown-padding-y:                .5rem;
-// $dropdown-spacer:                   .125rem;
-// $dropdown-font-size:                $font-size-base;
-// $dropdown-color:                    var(--#{$prefix}body-color);
-$dropdown-bg: #1c1b20;
-// $dropdown-border-color:             var(--#{$prefix}border-color-translucent);
-// $dropdown-border-radius:            var(--#{$prefix}border-radius);
-// $dropdown-border-width:             var(--#{$prefix}border-width);
-// $dropdown-inner-border-radius:      calc(#{$dropdown-border-radius} - #{$dropdown-border-width}); // stylelint-disable-line
-// $dropdown-divider-bg:               $dropdown-border-color;
-// $dropdown-divider-margin-y:         $spacer * .5;
-// $dropdown-box-shadow:               var(--#{$prefix}box-shadow);
-
-$dropdown-link-color: #c6e373;
-$dropdown-link-hover-color: #c6e373;
-$dropdown-link-hover-bg: #c6e373;
-
-// $dropdown-link-active-color: #c6e373;
-// $dropdown-link-active-bg: #c6e373;
-
-// $dropdown-link-disabled-color:      var(--#{$prefix}tertiary-color);
-
-// $dropdown-item-padding-y:           $spacer * .25;
-// $dropdown-item-padding-x:           $spacer;
-
-// $dropdown-header-color:             $gray-600;
-// $dropdown-header-padding-x:         $dropdown-item-padding-x;
-// $dropdown-header-padding-y:         $dropdown-padding-y;
-
-// $dropdown-header-padding:           $dropdown-header-padding-y $dropdown-header-padding-x;
 
 @import "bootstrap/scss/bootstrap";
