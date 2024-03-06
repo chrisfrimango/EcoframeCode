@@ -75,7 +75,7 @@
         <h3>Matching Products: ({{ filteredProducts.length }})</h3>
       </div>
       <div v-else>
-        <p>No matching products found.</p>
+        <p style="margin-left: 20px; font-size: 22px;">No matching products found.</p>
       </div>
     </div>
   </div>
@@ -103,7 +103,8 @@
   });
 
   const filteredProducts = computed(() => store.filteredProducts);
-  const filtersApplied = computed(() => filteredProducts.value.length > 0 && !filtersCleared.value);
+  const filtersApplied = ref(false);
+
 
   const categories = computed(() => {
     console.log('Categories:', store.getCategories());
@@ -123,13 +124,7 @@
       rating: selectedRating.value,
     };
     store.applyFilters(filters);
-
-    if (store.filteredProducts.length === 0) {
-    alert("No matching products found.");
-    } else {
-      console.log("Filtered products: ", store.filteredProducts);
-    }
-    filtersCleared.value = false;
+    filtersApplied.value = true;
   };
 
   const clearFilters = () => {
