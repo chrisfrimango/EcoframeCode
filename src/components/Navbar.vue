@@ -1,6 +1,7 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { ref, onMounted, onUnmounted, watchEffect } from "vue";
+import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 
@@ -8,11 +9,6 @@ const router = useRouter();
 const productStore = useProductStore();
 const cartItemCount = computed(() => productStore.cartItemCount);
 const windowWidth = ref(window.innerWidth);
-
-const updateWindowWidth = () => {
-  windowWidth.value = window.innerWidth;
-};
-
 const isMobileView = computed(() => windowWidth.value < 992);
 const navbarToggler = ref(null);
 const navbarCollapse = ref(null);
@@ -175,45 +171,6 @@ const handleMyAccount = () => {
                 >Contact</router-link
               >
             </li>
-
-            <!-- <li class="nav-item dropdown" v-if="windowWidth < 992">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="customerSupportDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                @click.native.prevent="
-                  handleDropdownToggle('customerSupportDropdown')
-                "
-              >
-                Customer Support
-              </a>
-              <ul
-                class="dropdown-menu"
-                aria-labelledby="customerSupportDropdown"
-              >
-                <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport" @click="closeNavbar">FAQs</router-link>
-                </li>
-                <li>
-                  <router-link
-                    class="dropdown-item"
-                    to="/CustomerSupport"
-                    @click="closeNavbar"
-                    >Contact</router-link
-                  >
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport"
-                  @click="closeNavbar"
-                    >Terms of Purchase and Delivery</router-link
-                  >
-                </li>
-              </ul>
-            </li> -->
-
             <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
                 class="nav-link dropdown-toggle"

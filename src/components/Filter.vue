@@ -64,7 +64,7 @@
 
       <!-- knappar -->
       <div class="d-flex justify-content-between mb-4">
-        <button class="btn btn-secondary me-3" v-if="isAnyFilterActive" @click="clearFilters">Clear Filters</button>
+        <button class="btn btn-secondary me-3" v-if="showClearButton" @click="clearFilters">Clear Filters</button>
         <button class="btn btn-success" @click="applyFilters">Show Products</button>
       </div>
     </div>
@@ -75,7 +75,7 @@
         <h3>Matching Products: ({{ filteredProducts.length }})</h3>
       </div>
       <div v-else>
-        <p>No matching products found.</p>
+        <p style="margin-left: 20px; font-size: 22px;">No matching products found.</p>
       </div>
     </div>
   </div>
@@ -93,7 +93,7 @@
   const selectedPrice = ref('');
   const selectedRating = ref(0);
   const selectedBrands = ref([]);
-  const filtersCleared = ref(false);
+  
   const isAnyFilterActive = computed(() => {
     return selectedCategory.value !== '' ||
            selectedColor.value !== '' ||
@@ -103,7 +103,11 @@
   });
 
   const filteredProducts = computed(() => store.filteredProducts);
-  const filtersApplied = computed(() => filteredProducts.value.length > 0 && !filtersCleared.value);
+  const filtersApplied = ref(false);
+
+  const showClearButton = computed(() => {
+    return isAnyFilterActive.value || filtersApplied.value;
+  });
 
   const categories = computed(() => {
     console.log('Categories:', store.getCategories());
@@ -123,14 +127,14 @@
       rating: selectedRating.value,
     };
     store.applyFilters(filters);
+    filtersApplied.value = true;
 
-    if (store.filteredProducts.length === 0) {
-    alert("No matching products found.");
-    } else {
-      console.log("Filtered products: ", store.filteredProducts);
-    }
-    filtersCleared.value = false;
-  };
+    // Nollställ valda värden för radio-knappar
+    selectedColor.value = '';
+    selectedPrice.value = '';
+    selectedRating.value = 0;
+    selectedBrands.value = [];
+    };
 
   const clearFilters = () => {
     const currentCategory = selectedCategory.value;
@@ -139,7 +143,7 @@
     selectedPrice.value = '';
     selectedRating.value = '';
     selectedBrands.value = [];
-    filtersCleared.value = true;
+    filtersApplied.value = false;
 
     if (isMobileView.value) {
       showFilters.value = false;

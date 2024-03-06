@@ -68,4 +68,8 @@ span {
   text-decoration: line-through;
   font-weight: 300;
 }
+
+.container {
+  min-height: 100vh;
+}
 </style>

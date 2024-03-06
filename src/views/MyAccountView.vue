@@ -7,6 +7,7 @@ const currentAccount = productStore.getCurrentAccountFromSession();
 <template>
   <BContainer fluid class="custom-height">
     <h1 class="text-secondary">Hi, {{ currentAccount.fullName }}</h1>
+    <h1 class="text-secondary">Hi, {{ currentAccount.fullName }}</h1>
     <h5>Welcome to my account</h5>
     <BRow class="mt-5">
       <BCol md="6" class="border">
