@@ -43,12 +43,6 @@ const buttonclicked = ref(false);
       <BCol sm="12" lg="6" class="no-padding" v-if="imagePosition === 'right'">
         <img src="../assets/eye-close-up.png" alt="Image" />
       </BCol>
-      <!-- <BCol class="m-5 p-5" v-if="buttonclicked === true">
-        <h2 class="p-2">{{ heading }}</h2>
-        <p class="p-2">
-          {{ fullTextContent }}
-        </p> -->
-      <!-- </BCol> -->
     </BRow>
   </BContainer>
 </template>
