@@ -1,7 +1,6 @@
 <script setup>
 import { useRouter } from "vue-router";
 import { ref, onMounted, onUnmounted, watchEffect } from "vue";
-import { ref, onMounted, onUnmounted, watchEffect } from "vue";
 import { computed } from "vue";
 import { useProductStore } from "../stores/productStore";
 
