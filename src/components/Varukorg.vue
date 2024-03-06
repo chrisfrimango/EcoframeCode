@@ -106,7 +106,6 @@ function removeFromCart(itemId) {
 
 function continueShopping() {
   router.push({ name: "home" });
-  // router.push({ name: 'Shop', params: { category: category } });
 }
 
 function checkout() {

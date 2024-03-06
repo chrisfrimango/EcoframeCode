@@ -162,45 +162,6 @@ watchEffect(() => {
                 >Contact</router-link
               >
             </li>
-
-            <!-- <li class="nav-item dropdown" v-if="windowWidth < 992">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                id="customerSupportDropdown"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-                @click.native.prevent="
-                  handleDropdownToggle('customerSupportDropdown')
-                "
-              >
-                Customer Support
-              </a>
-              <ul
-                class="dropdown-menu"
-                aria-labelledby="customerSupportDropdown"
-              >
-                <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport" @click="closeNavbar">FAQs</router-link>
-                </li>
-                <li>
-                  <router-link
-                    class="dropdown-item"
-                    to="/CustomerSupport"
-                    @click="closeNavbar"
-                    >Contact</router-link
-                  >
-                </li>
-                <li>
-                  <router-link class="dropdown-item" to="/CustomerSupport"
-                  @click="closeNavbar"
-                    >Terms of Purchase and Delivery</router-link
-                  >
-                </li>
-              </ul>
-            </li> -->
-
             <li class="nav-item dropdown" v-if="windowWidth < 992">
               <a
                 class="nav-link dropdown-toggle"
