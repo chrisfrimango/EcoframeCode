@@ -1,7 +1,7 @@
 <template>
   <div class="container mt-5 varukorg-container">
     <h2 class="mb-4 text-center">Cart</h2>
-    <div v-if="cartItems.length > 0">
+    <div v-if="cartItems && cartItems.length > 0">
       <div class="row mb-3 text-center header-row">
         <div class="col-6 col-md-3">Product</div>
         <div class="col-2 col-md-3">Price</div>
