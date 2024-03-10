@@ -61,7 +61,7 @@ console.log(categoryToDisplay.value);
             to="/product/:id"
           >
             <img
-              :src="'/src/assets/sunwear.png'"
+              src="../assets/sunwear.png"
               class="card-img-top"
               :alt="category.modelName"
             />

@@ -7,7 +7,6 @@ const currentAccount = productStore.getCurrentAccountFromSession();
 <template>
   <BContainer fluid class="custom-height">
     <h1 class="text-secondary">Hi, {{ currentAccount.fullName }}</h1>
-    <h1 class="text-secondary">Hi, {{ currentAccount.fullName }}</h1>
     <h5>Welcome to my account</h5>
     <BRow class="mt-5">
       <BCol md="6" class="border">
@@ -45,22 +44,21 @@ const currentAccount = productStore.getCurrentAccountFromSession();
                     />
                   </div>
                   <div class="col-2">{{ item.productName }}</div>
-                  <div v-if="item.onSale" class="col-2 text-danger">
+                  <!-- <div v-if="item.onSale" class="col-2 text-danger">
                     {{ productStore.updateProductSalesPrice(item.id) }}
                     SEK
-                  </div>
-                  <div v-else class="col-2">{{ item.totaltAmount }} SEK</div>
+                  </div> -->
+                  <div class="col-2">{{ item.price }} SEK</div>
+                  {{ console.log(item) }}
                   <div class="col-2">{{ item.quantity }}</div>
-                  <div v-if="item.onSale" class="col-3">
+                  <!-- <div v-if="item.onSale" class="col-3">
                     {{
                       item.quantity *
                       productStore.updateProductSalesPrice(item.id)
                     }}
                     SEK
-                  </div>
-                  <div v-else class="col-3">
-                    {{ item.quantity * item.totaltAmount }} SEK
-                  </div>
+                  </div> -->
+                  <div class="col-3">{{ item.quantity * item.price }} SEK</div>
                 </div>
               </div>
             </div>

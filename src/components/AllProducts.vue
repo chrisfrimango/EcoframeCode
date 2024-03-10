@@ -2,7 +2,7 @@
 import { computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useProductStore } from "../stores/productStore";
-import sunwearImage from "@/assets/sunwear.png";
+
 
 const productStore = useProductStore();
 const route = useRoute();
@@ -58,7 +58,7 @@ const productPrice = (product) => {
             to="/product/:id"
           >
             <img
-              :src="'/src/assets/sunwear.png'"
+              src="../assets/sunwear.png"
               class="card-img-top"
               :alt="category.modelName"
             />

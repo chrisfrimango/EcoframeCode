@@ -356,8 +356,8 @@ export const useProductStore = defineStore({
         item.quantity++;
       } else {
         this.cart.push({ ...product, quantity: 1 });
-        this.saveCartToSession();
       }
+      this.saveCartToSession();
     },
 
     updateItemQuantity(itemId, amount) {
@@ -373,6 +373,7 @@ export const useProductStore = defineStore({
         }
         this.cart = [...this.cart];
       }
+      this.saveCartToSession();
     },
 
     // Ta bort en produkt från varukorgen

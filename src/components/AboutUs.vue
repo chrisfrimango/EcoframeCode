@@ -9,7 +9,7 @@
     <BRow class="align-items-center my-5">
       <BCol md="6" class="custom-col img-col">
         <BImg
-          src="src/assets/Image/aboutus1.jpg"
+          src="src/assets/aboutus1.jpg"
           style="max-height: 620px"
           alt="Ecoframe Eyewear"
           fluid
@@ -58,7 +58,7 @@
       </BCol>
       <BCol md="6" class="custom-col img-col">
         <BImg
-          src="src/assets/Image/aboutus2.jpg"
+          src="src/assets/aboutus2.jpg"
           style="max-height: 620px"
           alt="Ecoframe Eyewear Community"
           fluid

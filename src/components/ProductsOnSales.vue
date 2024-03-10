@@ -42,7 +42,7 @@ const isFavorite = (productId) => {
             to="/product/:id"
           >
             <img
-              :src="'/src/assets/sunwear.png'"
+              src="../assets/sunwear.png"
               class="card-img-top"
               :alt="product.modelName"
             />

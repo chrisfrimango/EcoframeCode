@@ -5,33 +5,29 @@ import { BCol } from "bootstrap-vue-next";
 export default {
   data() {
     return {
-      privacyPolicy: '',
-      termsAndConditions: '',
+      privacyPolicy: "",
+      termsAndConditions: "",
     };
   },
   mounted() {
-    fetch('src/assets/privacy-policy.txt')
-      .then(response => response.text())
-      .then(text => {
+    fetch("src/assets/privacy-policy.txt")
+      .then((response) => response.text())
+      .then((text) => {
         this.privacyPolicy = text;
       })
-      .catch(error => {
-        console.error('Error fetching privacy policy:', error);
+      .catch((error) => {
+        console.error("Error fetching privacy policy:", error);
       });
-    fetch('src/assets/terms-and-conditions.txt')
-      .then(response => response.text())
-      .then(text => {
+    fetch("src/assets/terms-and-conditions.txt")
+      .then((response) => response.text())
+      .then((text) => {
         this.termsAndConditions = text;
       })
-      .catch(error => {
-        console.error('Error fetching terms and conditions:', error);
+      .catch((error) => {
+        console.error("Error fetching terms and conditions:", error);
       });
-
-
-  }
+  },
 };
-
-
 </script>
 
 <template>
@@ -40,7 +36,7 @@ export default {
       class="position-relative d-flex align-items-center justify-content-center"
     >
       <BImg
-        src="/src/assets/Image/customer support image.jpg"
+        src="/src/assets/customer support image.jpg"
         fluid
         alt="Responsive image"
         style="
@@ -83,11 +79,11 @@ export default {
     <BRow>
       <BCol sm="12" lg="6" class="format-text">
         <h2 class="text-center">Privacy Policy</h2>
-        <p v-if="privacyPolicy"> {{ privacyPolicy }} </p>
+        <p v-if="privacyPolicy">{{ privacyPolicy }}</p>
       </BCol>
       <BCol sm="12" lg="6" class="format-text">
         <h2 class="text-center">Terms & Conditions</h2>
-        <p v-if="termsAndConditions"> {{ termsAndConditions }} </p>
+        <p v-if="termsAndConditions">{{ termsAndConditions }}</p>
       </BCol>
     </BRow>
   </BContainer>

@@ -13,7 +13,6 @@ import LoginPageView from "@/views/LoginPageView.vue";
 import FavoriteListView from "@/views/FavoriteListView.vue";
 import AboutUsView from "@/views/AboutUsView.vue";
 
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
@@ -77,6 +76,11 @@ const router = createRouter({
       name: "MyAccount",
       component: MyAccountView,
     },
+    // {
+    //   path: "/shop/myaccount",
+    //   name: "MyAccount",
+    //   component: MyAccountView,
+    // },
     {
       path: "/favoritelist",
       name: "FavoriteList",
